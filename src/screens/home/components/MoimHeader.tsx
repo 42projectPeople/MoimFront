@@ -44,7 +44,6 @@ const styleHeader = StyleSheet.create({
   moimButton: {
     width: hpSize * 0.15,
     height: hpSize * 0.05,
-    paddingTop: 30,
     backgroundColor: "gray",
   },
   searchButton: {
