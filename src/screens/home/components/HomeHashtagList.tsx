@@ -17,6 +17,7 @@ export const HomeHashtagList: React.FC<{ onPressHashtag: (hashtag: number) => vo
       style={{
         width: wp,
         paddingHorizontal: wp * 0.05,
+        marginTop: hp * 0.03 * -1,
       }}
     >
       <View
@@ -55,6 +56,7 @@ export const HomeHashtagList: React.FC<{ onPressHashtag: (hashtag: number) => vo
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-around",
+          marginTop: hp * 0.03 * -1,
         }}
       >
         <HashtagButton

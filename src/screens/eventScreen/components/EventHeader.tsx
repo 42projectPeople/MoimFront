@@ -1,30 +1,27 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  Alert,
-  Platform,
-} from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import ImageButton from "../../../components/ImageButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 type RootStackParamList = {
   Home: undefined;
   Search: undefined;
 };
 
+const wpSize = wp("100");
+const hpSize = hp("100%");
+
 const styleHeader = StyleSheet.create({
   container: {
     flexDirection: "row",
-    height:
-      Platform.OS === "ios"
-        ? Dimensions.get("window").height * 0.07
-        : Dimensions.get("window").height * 0.1,
+    height: hpSize * 0.09,
     alignItems: "center",
     justifyContent: "center",
     borderBottomColor: "black",
@@ -35,22 +32,17 @@ const styleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: Dimensions.get("window").width * 0.9,
-  },
-  backButton: {
-    marginTop: Platform.OS === "ios" ? -10 : 0,
-    width: Dimensions.get("window").width * 0.13,
-    height: Dimensions.get("window").height * 0.07,
+    width: wpSize * 0.9,
   },
   moimButton: {
-    width: Dimensions.get("window").width * 0.3,
-    height: Dimensions.get("window").height * 0.05,
-    paddingTop: 30,
+    width: hpSize * 0.15,
+    height: hpSize * 0.05,
+    backgroundColor: "gray",
   },
   searchButton: {
-    marginTop: -10,
-    width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").height * 0.07,
+    paddingBottom: hpSize * 0.005,
+    width: wpSize * 0.13,
+    height: hpSize * 0.13,
   },
 });
 
@@ -61,9 +53,10 @@ export const EventHeader: React.FC<{
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const handleBackButton = () => {
+  const onPressBack = () => {
     navigation.goBack();
   };
+
   const onPressSearch = () => {
     navigation.navigate("Search");
   };
@@ -76,13 +69,13 @@ export const EventHeader: React.FC<{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            width: Dimensions.get("window").width * 0.9,
+            width: wpSize * 0.9,
           }}
         >
           <ImageButton
-            onPress={handleBackButton}
-            style={styleHeader.backButton}
-            source={require("../../../assets/back.png")}
+            onPress={onPressBack}
+            style={styleHeader.searchButton}
+            source={require("../../../assets/BackButton.png")}
           />
           <ImageButton
             onPress={onPressSearch}
