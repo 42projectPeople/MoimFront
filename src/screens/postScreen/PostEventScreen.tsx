@@ -116,7 +116,6 @@ export const PostEventScreen = () => {
             isForce={false}
           />
         </View>
-        <Button title="Submit" onPress={handleSubmit} />
         <Spacer size={Dimensions.get("window").height * 0.1} />
       </ScrollView>
     </View>
