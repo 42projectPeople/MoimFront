@@ -6,7 +6,7 @@ export const SearchScreen: React.FC = () => {
   return (
     <View>
       <Header showBackButton={true} />
-      <Text>검색스크린</Text>
+      <Text>서치서치 고생해라</Text>
     </View>
   );
 };
