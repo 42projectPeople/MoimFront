@@ -15,6 +15,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { deleteAllImages } from "../../../redux/Image/ImageAction";
 import { deleteAllEventPost } from "../../../redux/EventPost/EventPostAction";
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
 
 type RootStackParamList = {
   Home: undefined;
@@ -113,10 +120,7 @@ const styleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height:
-      Platform.OS === "ios"
-        ? Dimensions.get("window").height * 0.08
-        : Dimensions.get("window").height * 0.1,
+    height: hp * 0.09,
     borderBottomColor: "black",
     borderBottomWidth: 3,
     backgroundColor: "white",
@@ -125,16 +129,16 @@ const styleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: Dimensions.get("window").width * 0.9,
+    width: wp * 0.9,
   },
   backButton: {
-    marginTop: -10,
-    width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").height * 0.08,
+    paddingTop: hp * 0.005,
+    width: wp * 0.13,
+    height: hp * 0.13,
   },
   submitButton: {
-    marginTop: -10,
-    width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").height * 0.08,
+    paddingBottom: hp * 0.005,
+    width: wp * 0.13,
+    height: hp * 0.13,
   },
 });
