@@ -1,5 +1,12 @@
 import React, { useCallback } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
 
 export const HashtagButton: React.FC<{
   source: number;
@@ -16,11 +23,14 @@ export const HashtagButton: React.FC<{
           justifyContent: "center",
         }}
       >
-        <Image source={props.source} style={hashtagButtonStyle.hashtagButton} />
+        <Image
+          source={props.source}
+          style={hashtagButtonStyle.hashtagButton}
+          resizeMode="contain"
+        />
         <Text
           style={{
-            alignItems: "center",
-            justifyContent: "center",
+            marginTop: wp * 0.08 * -1,
             fontSize: 18,
             fontWeight: "bold",
           }}
@@ -34,7 +44,7 @@ export const HashtagButton: React.FC<{
 
 const hashtagButtonStyle = StyleSheet.create({
   hashtagButton: {
-    width: 70,
-    height: 70,
+    width: wp * 0.2,
+    height: hp * 0.2,
   },
 });

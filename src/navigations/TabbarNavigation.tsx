@@ -8,6 +8,15 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import { HomeNavigation } from "./HomeNavigation";
 import { useSelector } from "react-redux";
 
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
+
 type RootTabParamList = {
   홈: undefined;
   작성하기: undefined;
@@ -19,20 +28,12 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const styleTabBar = StyleSheet.create({
   TabBarButton: {
-    paddingVertical: 30,
-    paddingHorizontal: 30,
-    marginBottom: 20,
-    height: 30,
-    width: 30,
-    flex: 1,
+    height: hp * 0.13,
+    width: wp * 0.13,
   },
   FocusTabBarButton: {
-    paddingVertical: 33,
-    paddingHorizontal: 33,
-    marginBottom: 20,
-    height: 33,
-    width: 33,
-    flex: 1,
+    height: hp * 0.145,
+    width: wp * 0.145,
   },
 });
 const TabBarIcon = (focused: boolean, name: string) => {
@@ -63,10 +64,15 @@ const TabBarIcon = (focused: boolean, name: string) => {
       break;
   }
   return (
-    <Image
-      source={iconSource}
-      style={focused ? styleTabBar.TabBarButton : styleTabBar.FocusTabBarButton}
-    />
+    <View style={{ paddingTop: hp * 0.03 }}>
+      <Image
+        source={iconSource}
+        style={
+          focused ? styleTabBar.TabBarButton : styleTabBar.FocusTabBarButton
+        }
+        resizeMode="contain"
+      />
+    </View>
   );
 };
 
@@ -78,9 +84,8 @@ export const TabBar: React.FC = () => {
         headerShown: false,
         tabBarLabel: "",
         tabBarStyle: {
-          marginBottom: 5,
-          paddingBottom: 30,
-          paddingTop: 45, // change this value to increase the height of the tab bar
+          width: wp,
+          height: hp * 0.1,
           borderTopWidth: 3, // add this to increase the thickness of the top border
           borderTopColor: "black", // add this to change the color of the top border
         },
