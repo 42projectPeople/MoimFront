@@ -115,7 +115,7 @@ const styleHeader = StyleSheet.create({
     alignItems: "center",
     height:
       Platform.OS === "ios"
-        ? Dimensions.get("window").height * 0.07
+        ? Dimensions.get("window").height * 0.08
         : Dimensions.get("window").height * 0.1,
     borderBottomColor: "black",
     borderBottomWidth: 3,
@@ -130,11 +130,11 @@ const styleHeader = StyleSheet.create({
   backButton: {
     marginTop: -10,
     width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").height * 0.07,
+    height: Dimensions.get("window").height * 0.08,
   },
   submitButton: {
     marginTop: -10,
     width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").height * 0.07,
+    height: Dimensions.get("window").height * 0.08,
   },
 });

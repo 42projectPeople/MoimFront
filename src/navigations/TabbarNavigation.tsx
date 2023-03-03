@@ -79,7 +79,7 @@ export const TabBar: React.FC = () => {
         tabBarLabel: "",
         tabBarStyle: {
           marginBottom: 5,
-          paddingBottom: 20,
+          paddingBottom: 30,
           paddingTop: 45, // change this value to increase the height of the tab bar
           borderTopWidth: 3, // add this to increase the thickness of the top border
           borderTopColor: "black", // add this to change the color of the top border

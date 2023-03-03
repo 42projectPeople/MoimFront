@@ -34,7 +34,7 @@ export const HomeScreen: React.FC = () => {
 
 const HomeScreenStyle = StyleSheet.create({
   container: {
-    marginTop: -30,
+    marginTop: -40,
     paddingTop: 50,
     paddingBottom: Dimensions.get("window").height * 0.4,
     marginBottom: Dimensions.get("window").height * 0.1,

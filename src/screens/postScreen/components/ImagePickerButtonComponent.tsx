@@ -30,6 +30,7 @@ export const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
         }}
         onPress={handlePreview}
         disabled={disableUploadButton}
+        hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
       >
         <View style={{ flexDirection: "column", alignItems: "center" }}>
           <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>

@@ -23,7 +23,7 @@ const styleHeader = StyleSheet.create({
     flexDirection: "row",
     height:
       Platform.OS === "ios"
-        ? Dimensions.get("window").height * 0.07
+        ? Dimensions.get("window").height * 0.08
         : Dimensions.get("window").height * 0.1,
     alignItems: "center",
     justifyContent: "center",
@@ -50,7 +50,7 @@ const styleHeader = StyleSheet.create({
   searchButton: {
     marginTop: -10,
     width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").height * 0.07,
+    height: Dimensions.get("window").height * 0.08,
   },
 });
 
