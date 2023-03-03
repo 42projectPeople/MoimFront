@@ -19,7 +19,7 @@ const ImageButton: React.FC<ImageButtonProps> = ({
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Image source={source} style={style} />
+      <Image source={source} style={style} resizeMode="contain" />
     </TouchableOpacity>
   );
 };
