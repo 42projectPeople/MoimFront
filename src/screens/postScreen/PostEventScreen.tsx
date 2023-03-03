@@ -2,16 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   Button,
   StyleSheet,
   ScrollView,
   Dimensions,
-  Platform,
-  KeyboardAvoidingView,
 } from "react-native";
 import * as Location from "expo-location";
-import { MoimHeader } from "../home/components/MoimHeader";
 import { ImagePickerComponent } from "./components/ImagePickerComponent";
 import { Spacer } from "../../components/Spacer";
 import { PostInput } from "./components/PostInputComponent";
