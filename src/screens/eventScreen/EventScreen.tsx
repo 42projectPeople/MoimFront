@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { EventHeader } from "./components/EventHeader";
-import MapView from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
@@ -16,8 +16,6 @@ import {
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
-
-const { width } = Dimensions.get("window");
 
 type ImageType = {
   uri: string;
@@ -42,7 +40,7 @@ const ImageSlide = (): JSX.Element => {
   useEffect(() => {
     if (scrollViewRef.current && activeIndex !== 0) {
       scrollViewRef.current.scrollTo({
-        x: activeIndex * width,
+        x: activeIndex * wp,
         animated: true,
       });
     }
@@ -50,7 +48,7 @@ const ImageSlide = (): JSX.Element => {
 
   const handleMomentumScrollEnd = (event: any) => {
     const { contentOffset } = event.nativeEvent;
-    const index = Math.round(contentOffset.x / width);
+    const index = Math.round(contentOffset.x / wp);
     setActiveIndex(index);
   };
 
@@ -65,10 +63,10 @@ const ImageSlide = (): JSX.Element => {
         contentContainerStyle={{ alignItems: "center" }}
       >
         {images.map((image: ImageType, index: number) => (
-          <View key={index} style={{ width, height: width * 0.75 }}>
+          <View key={index} style={{ width: wp, height: wp * 0.75 }}>
             <Image
               source={image}
-              style={{ width, height: width * 0.75 }}
+              style={{ width: wp, height: wp * 0.75 }}
               resizeMode="cover"
             />
           </View>
@@ -107,36 +105,52 @@ export const EventScreen: React.FC = () => {
     // 여기서 데이터 GET 요청
   }, []);
   return (
-    <ScrollView
-      style={{
-        backgroundColor: "white",
-        flex: 1,
-      }}
-    >
+    <View style={{ flex: 1 }}>
       <EventHeader showBackButton={true} />
-      <View style={{ paddingHorizontal: wp * 0.05 }}>
-        <ImageSlide />
+      <ScrollView
+        style={{
+          backgroundColor: "white",
+        }}
+      >
         <View
           style={{
-            marginTop: 10,
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
+            paddingVertical: hp * 0.05,
+            paddingHorizontal: wp * 0.05,
           }}
         >
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>메인 주제</Text>
-          <MapView
-            style={{ width: "100%", height: 300 }} // MapView component의 style prop을 변경함으로써 맵의 크기를 변경할 수 있습니다.
-            region={{
-              // region prop은 맵이 보여지는 부분(latitude, longitude)을 지정합니다.
-              latitude: 37.78825, // latitude of the center of the map view
-              longitude: -122.4324, // longitude of the center of the map view
-              latitudeDelta: 0.015, // specifies the delta that determines the zoom level of the map
-              longitudeDelta: 0.0121, // specifies the delta that determines the zoom level of the map
+          <ImageSlide />
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          />
+          >
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>메인 주제</Text>
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              style={{ width: wp * 0.9, height: wp * 0.9 * 0.75 }} // MapView component의 style prop을 변경함으로써 맵의 크기를 변경할 수 있습니다.
+              region={{
+                // region prop은 맵이 보여지는 부분(latitude, longitude)을 지정합니다.
+                latitude: 37.489112052, // latitude of the center of the map view
+                longitude: 127.06600648, // longitude of the center of the map view
+                latitudeDelta: 0.015, // specifies the delta that determines the zoom level of the map
+                longitudeDelta: 0.0121, // specifies the delta that determines the zoom level of the map
+              }}
+              followsUserLocation={true}
+              zoomEnabled={true} // 이 부분을 추가하면 지도의 확대/축소 기능이 활성화됩니다.
+              zoomControlEnabled={true} // 이 부분을 추가하면 지도의 확대/축소 컨트롤이 활성화됩니다.
+            >
+              <Marker
+                coordinate={{ latitude: 37.489112052, longitude: 127.06600648 }} // 핀의 위치를 지정합니다.
+                title="현재 주제" // 핀 위에 표시될 제목을 지정합니다.
+                description="Marker Description" // 핀 위에 표시될 설명을 지정합니다.
+              />
+            </MapView>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };

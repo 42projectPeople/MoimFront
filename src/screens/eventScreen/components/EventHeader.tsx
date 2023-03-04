@@ -18,34 +18,6 @@ type RootStackParamList = {
 const wpSize = wp("100");
 const hpSize = hp("100%");
 
-const styleHeader = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    height: hpSize * 0.09,
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomColor: "black",
-    borderBottomWidth: 3,
-    backgroundColor: "white",
-  },
-  container2: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: wpSize * 0.9,
-  },
-  moimButton: {
-    width: hpSize * 0.15,
-    height: hpSize * 0.05,
-    backgroundColor: "gray",
-  },
-  searchButton: {
-    paddingBottom: hpSize * 0.005,
-    width: wpSize * 0.13,
-    height: hpSize * 0.13,
-  },
-});
-
 export const EventHeader: React.FC<{
   showBackButton: boolean;
 }> = (props) => {
@@ -87,3 +59,31 @@ export const EventHeader: React.FC<{
     </SafeAreaView>
   );
 };
+
+const styleHeader = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    height: hpSize * 0.09,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomColor: "black",
+    borderBottomWidth: 3,
+    backgroundColor: "white",
+  },
+  container2: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: wpSize * 0.9,
+  },
+  moimButton: {
+    width: hpSize * 0.15,
+    height: hpSize * 0.05,
+    backgroundColor: "gray",
+  },
+  searchButton: {
+    paddingBottom: hpSize * 0.005,
+    width: wpSize * 0.13,
+    height: hpSize * 0.13,
+  },
+});
