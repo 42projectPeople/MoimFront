@@ -6,12 +6,17 @@ import {
 import React from "react";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { EventScreen } from "../screens/eventScreen/EventScreen";
-import { HashtagScreen } from "../screens/HashtagScreen";
+import { HashtagScreen } from "../screens/hashtagScreen/HashtagScreen";
 
 export type HomeStackParam = {
   Home: undefined;
-  Event: undefined;
-  HashTag: undefined;
+  Event: {
+	title: string,
+	location: string,
+  };
+  HashTag: {
+	category: string
+  };
 };
 
 const HomeStackScreenOptions = {
