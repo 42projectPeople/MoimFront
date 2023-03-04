@@ -1,4 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp} from "@react-navigation/native";
+
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -13,6 +14,7 @@ export type HomeStackParam = {
   Event: {
 	title: string,
 	location: string,
+	imageUri: string,
   };
   HashTag: {
 	category: string
@@ -39,6 +41,12 @@ export const HomeNavigation: React.FC = () => {
   );
 };
 
-export const useHomeNavigation = <RouteName extends keyof HomeStackParam>() => {
-  return useNavigation<NativeStackNavigationProp<HomeStackParam, RouteName>>();
-};
+//export const useHomeNavigation = <RouteName extends keyof HomeStackParam>() => {
+//  return useNavigation<NativeStackNavigationProp<HomeStackParam, RouteName>>();
+//};
+
+//export const useRouteProps = <RouteName extends keyof HomeStackParam>() => {
+//	type props = RouteProp<HomeStackParam, RouteName>;
+//	return useRoute<props>();
+
+//}

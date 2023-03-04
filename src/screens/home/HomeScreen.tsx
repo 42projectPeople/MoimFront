@@ -6,14 +6,19 @@ import { MoimHeader } from "./components/MoimHeader";
 import { Spacer } from "../../components/Spacer";
 import { HomeEventList } from "./components/HomeEventList";
 import { HomeHashtagList } from "./components/HomeHashtagList";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { HomeStackParam } from "../../navigations/HomeNavigation";
+import { useHomeNavigation } from "../../navigations/Navigation";
 
 export const HomeScreen: React.FC = () => {
-  const homenavigation = useNavigation();
+//  const homenavigation = useNavigation();
+  const homenavigation = useHomeNavigation<"Home">();
+
   const onPressEvent = useCallback(() => {
     homenavigation.navigate("Event" as never);
   }, [homenavigation]);
-  const onPressHashtag = useCallback(() => {
-    homenavigation.navigate("HashTag" as never);
+  const onPressHashtag = useCallback((hashtag: string) => {
+    homenavigation.navigate("HashTag", { category : hashtag });
   }, [homenavigation]);
   return (
     <View style={{ backgroundColor: "white" }}>
