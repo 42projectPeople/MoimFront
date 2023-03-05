@@ -1,18 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-} from "react-native";
-import * as Location from "expo-location";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import { ImagePickerComponent } from "./components/ImagePickerComponent";
 import { Spacer } from "../../components/Spacer";
 import { PostInput } from "./components/PostInputComponent";
 import { useNavigation } from "@react-navigation/native";
 import { PostHeader } from "./components/PostHeader";
+import { PostCalender } from "./components/PostCalender";
+import { MapScreen } from "./components/mapComponent";
 
 export enum inputType {
   TITLE,
@@ -27,6 +21,10 @@ export const PostEventScreen = () => {
   const [eventOpenTalk, setEventOpenTalk] = useState("");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | undefined>(
+    undefined
+  );
+  const [selectedTime, setSelectedTime] = useState<Date | undefined>(undefined);
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
@@ -103,8 +101,18 @@ export const PostEventScreen = () => {
             isForce={true}
           />
           <Spacer size={10} />
-          <Text>달력</Text>
+          <PostCalender
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            setSelectedDate={setSelectedDate}
+            setSelectedTime={setSelectedTime}
+          />
           <Spacer size={10} />
+          <MapScreen />
+          <Spacer size={30} />
+          <Spacer size={30} />
+          <Spacer size={30} />
+          <Spacer size={30} />
           <Text>로케이션</Text>
           <PostInput
             inputTitle="오픈톡 링크"

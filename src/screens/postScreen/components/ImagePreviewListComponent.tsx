@@ -113,8 +113,6 @@ export const ImagePreviewList: React.FC<ImagePreviewListProps> = ({
                 setPreviewUris([]);
                 setImageCount(0);
               }
-              console.log("초기화성공?");
-              console.log(ImageCount);
             }}
           </>
           {previewUris.length > 0 && (

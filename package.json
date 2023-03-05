@@ -20,6 +20,7 @@
     "axios": "^1.3.4",
     "expo": "~48.0.4",
     "expo-document-picker": "^11.2.1",
+    "expo-dotenv": "^0.1.0",
     "expo-image-editor": "^1.7.1",
     "expo-image-manipulator": "^11.1.1",
     "expo-image-picker": "^14.1.1",
@@ -36,13 +37,19 @@
     "native": "^0.3.3",
     "react": "18.2.0",
     "react-native": "0.71.3",
+<<<<<<< HEAD
     "react-native-custom-switch": "^1.0.7",
     "react-native-expo-viewport-units": "^0.0.8",
+=======
+    "react-native-calendars": "^1.1293.0",
+    "react-native-config": "^1.5.0",
+>>>>>>> 90965523 (feat: map 컴포넌트와 mpa 서치기능 추가)
     "react-native-image-picker": "^5.1.0",
     "react-native-image-resizer": "^1.4.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-maps": "1.3.2",
+    "react-native-modal-datetime-picker": "^14.0.1",
     "react-native-paper": "^5.2.0",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^4.5.0",
@@ -55,8 +62,11 @@
     "@babel/core": "^7.20.0",
     "@types/lodash": "^4.14.191",
     "@types/react": "~18.0.14",
-    "@types/react-native": "^0.71.3",
+    "@types/react-native-dotenv": "^0.2.0",
+    "babel-plugin-module-resolver": "^5.0.0",
     "dotenv": "^16.0.3",
+    "i": "^0.3.7",
+    "react-native-dotenv": "^3.4.8",
     "typescript": "^4.9.4"
   },
   "private": true

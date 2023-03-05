@@ -1,122 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
-import { Searchbar, Button } from "react-native-paper";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import MapView, { LatLng, Marker } from "react-native-maps";
+import MapSearch from "./MapSearch";
+import { key } from "../../../../config";
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+import { Spacer } from "../../../components/Spacer";
 
-export const MapInput: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [userLocation, setUserLocation] = useState<
-    Location.LocationObject | undefined
-  >();
-  const [searchLocation, setSearchLocation] = useState<
-    Location.LocationObject | undefined
-  >();
+const wp = wpSize("100%");
+const hp = hpSize("100%");
 
-  async function getUserLocation() {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      // Handle permission denied
-      return;
-    }
+interface Address {
+  latitude: number;
+  longitude: number;
+  address: string;
+  name: string;
+}
 
-    const location = await Location.getCurrentPositionAsync({});
-    setUserLocation(location);
-  }
+export function MapScreen() {
+  const [marker, setMarker] = useState<Address | null>(null);
+  const [longitude, setLongitude] = useState<number>(0);
+  const [latitude, setLatitude] = useState<number>(0);
+  const [region, setRegion] = useState<LatLng | undefined>();
 
-  async function searchForLocation() {
-    const { coords } = await Location.geocodeAsync(searchQuery);
-    setSearchLocation({
-      coords: {
-        latitude: coords[0].latitude,
-        longitude: coords[0].longitude,
+  const handlePlaceSelect = async (place: any) => {
+    const url = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(
+      place.roadAddress
+    )}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "X-NCP-APIGW-API-KEY-ID": key.naverC,
+        "X-NCP-APIGW-API-KEY": key.naverS,
       },
     });
-  }
+
+    const data = await response.json();
+
+    console.log(place.name);
+    setLatitude(Number(data.addresses[0].y)); // 위도와 경도의 순서를 바꿉니다.
+    setLongitude(Number(data.addresses[0].x)); // 위도와 경도의 순서를 바꿉니다.
+    setMarker({
+      latitude: Number(data.addresses[0].y),
+      longitude: Number(data.addresses[0].x),
+      address: place.roadAddress,
+      name: place.name,
+    });
+  };
 
   useEffect(() => {
-    getUserLocation();
-  }, []);
+    if (marker) {
+      setRegion({
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+      });
+    }
+  }, [marker]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <Searchbar
-          placeholder="Search for a location"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          style={styles.searchBar}
-        />
-        <Button
-          mode="contained"
-          onPress={searchForLocation}
-          style={styles.searchButton}
-        >
-          Search
-        </Button>
+      <MapView
+        style={styles.map}
+        region={{
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+        }}
+      >
+        {marker && (
+          <Marker
+            coordinate={{
+              latitude: latitude,
+              longitude: longitude,
+            }}
+            title={marker.address}
+          />
+        )}
+      </MapView>
+      <Spacer />
+      <View
+        style={{
+          alignItems: "center",
+          width: wp * 0.9,
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          {marker ? `${marker.name}` : "주소선택을 해주세요."}
+        </Text>
+        <Spacer size={10} />
+        <Text>{marker ? `${marker.address}` : ""}</Text>
       </View>
-      {searchLocation ? (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: searchLocation.coords.latitude,
-            longitude: searchLocation.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: searchLocation.coords.latitude,
-              longitude: searchLocation.coords.longitude,
-            }}
-            title={searchQuery}
-          />
-        </MapView>
-      ) : userLocation ? (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: userLocation.coords.latitude,
-            longitude: userLocation.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: userLocation.coords.latitude,
-              longitude: userLocation.coords.longitude,
-            }}
-            title="Your location"
-          />
-        </MapView>
-      ) : (
-        <Text>Loading...</Text>
-      )}
+      <Spacer />
+      <MapSearch onPlaceSelect={handlePlaceSelect} />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: hp * 0.1,
     flex: 1,
+    width: wp * 0.9,
+    height: wp * 0.9,
     alignItems: "center",
     justifyContent: "center",
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  searchBar: {},
-  searchButton: {
-    marginLeft: 8,
-    width: 20,
-    height: 20,
-    backgroundColor: "gray",
   },
   map: {
     width: "100%",
