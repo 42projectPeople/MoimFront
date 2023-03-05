@@ -72,8 +72,8 @@ export const PostEventScreen = () => {
       />
       <ScrollView
         contentContainerStyle={{
-          paddingTop: Dimensions.get("window").height * 0.05,
-          paddingBottom: Dimensions.get("window").height * 0.15,
+          paddingTop: hp * 0.05,
+          paddingBottom: hp * 0.15,
         }}
       >
         <View style={StylePost.container}>
@@ -105,7 +105,7 @@ export const PostEventScreen = () => {
               setUploadButtonEnabled={setUploadButtonEnabled}
             />
           </View>
-          <Spacer size={30} />
+          <Spacer size={hp * 0.05} />
           <PostInput
             inputTitle="이벤트 설명"
             textMax={200}
@@ -116,22 +116,21 @@ export const PostEventScreen = () => {
             isForce={true}
             height={hp * 0.4}
           />
-          <Spacer size={30} />
+          <Spacer size={hp * 0.05} />
           <PostTitle postTitle="이벤트 날짜 선택" isCheck={true} />
-          <Spacer size={5} />
           <PostCalender
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             setSelectedDate={setSelectedDate}
             setSelectedTime={setSelectedTime}
           />
-          <Spacer size={30} />
+          <Spacer size={hp * 0.05} />
           <View>
             <PostTitle postTitle="이벤트 장소 선택" isCheck={true} />
             <MapScreen marker={marker} setMarker={setMarker} />
           </View>
-          <Spacer size={30} />
-          <Spacer size={30} />
+          <Spacer size={hp * 0.05} />
+          <Spacer size={hp * 0.03} />
           <View>
             <PostInput
               inputTitle="오픈톡 링크"
@@ -145,7 +144,7 @@ export const PostEventScreen = () => {
             />
           </View>
         </View>
-        <Spacer size={Dimensions.get("window").height * 0.1} />
+        <Spacer size={hp * 0.05} />
       </ScrollView>
     </View>
   );
