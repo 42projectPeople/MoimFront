@@ -7,20 +7,35 @@ import { useNavigation } from "@react-navigation/native";
 import { PostHeader } from "./components/PostHeader";
 import { PostCalender } from "./components/PostCalender";
 import { MapScreen } from "./components/mapComponent";
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+import { Octicons } from "@expo/vector-icons";
+import { PostTitle } from "./components/PostTitle";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
 
 export enum inputType {
   TITLE,
   DESCRIPTION,
   OPENTALKLING,
 }
+export interface Address {
+  latitude: number;
+  longitude: number;
+  address: string;
+  name: string;
+}
 
 export const PostEventScreen = () => {
-  const [location, setLocation] = useState("");
   const [eventTitle, setEventTitle] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventOpenTalk, setEventOpenTalk] = useState("");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
+  const [marker, setMarker] = useState<Address | undefined>();
   const [selectedDate, setSelectedDate] = useState<string | undefined>(
     undefined
   );
@@ -30,7 +45,6 @@ export const PostEventScreen = () => {
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
-      formData.append("location", location);
       formData.append("title", eventTitle);
       formData.append("description", eventDescription);
 
@@ -76,11 +90,12 @@ export const PostEventScreen = () => {
             PlaceHolder={"이벤트 제목을 입력해주세요."}
             type={inputType.TITLE}
             isForce={true}
+            height={hp * 0.09}
           />
           <View
             style={{
-              width: Dimensions.get("window").width * 0.8,
-              height: Dimensions.get("window").height * 0.5,
+              width: wp * 0.8,
+              height: hp * 0.5,
             }}
           >
             <ImagePickerComponent
@@ -99,30 +114,36 @@ export const PostEventScreen = () => {
             PlaceHolder={"이벤트 설명을 입력해주세요."}
             type={inputType.DESCRIPTION}
             isForce={true}
+            height={hp * 0.4}
           />
-          <Spacer size={10} />
+          <Spacer size={30} />
+          <PostTitle postTitle="이벤트 날짜 선택" isCheck={true} />
+          <Spacer size={5} />
           <PostCalender
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             setSelectedDate={setSelectedDate}
             setSelectedTime={setSelectedTime}
           />
-          <Spacer size={10} />
-          <MapScreen />
+          <Spacer size={30} />
+          <View>
+            <PostTitle postTitle="이벤트 장소 선택" isCheck={true} />
+            <MapScreen marker={marker} setMarker={setMarker} />
+          </View>
           <Spacer size={30} />
           <Spacer size={30} />
-          <Spacer size={30} />
-          <Spacer size={30} />
-          <Text>로케이션</Text>
-          <PostInput
-            inputTitle="오픈톡 링크"
-            textMax={200}
-            value={eventOpenTalk}
-            onChangeText={setEventOpenTalk}
-            PlaceHolder={"오픈톡 링크를 입력해주세요."}
-            type={inputType.OPENTALKLING}
-            isForce={false}
-          />
+          <View>
+            <PostInput
+              inputTitle="오픈톡 링크"
+              textMax={200}
+              value={eventOpenTalk}
+              onChangeText={setEventOpenTalk}
+              PlaceHolder={"오픈톡 링크를 입력해주세요."}
+              type={inputType.OPENTALKLING}
+              isForce={false}
+              height={hp * 0.2}
+            />
+          </View>
         </View>
         <Spacer size={Dimensions.get("window").height * 0.1} />
       </ScrollView>

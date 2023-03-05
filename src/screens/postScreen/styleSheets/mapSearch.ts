@@ -21,16 +21,17 @@ export const MapSearchStyles = StyleSheet.create({
   },
   searchBar: {
     flex: 1,
-    height: 40,
+    height: hp * 0.05,
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
     paddingHorizontal: 10,
     marginRight: 5,
+    fontSize: 18,
   },
   searchButton: {
     width: wp * 0.25,
-    backgroundColor: "blue",
+    backgroundColor: "#e0321f",
     borderRadius: 5,
     paddingHorizontal: 10,
     justifyContent: "center",
@@ -39,6 +40,8 @@ export const MapSearchStyles = StyleSheet.create({
   },
   searchButtonText: {
     color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   placesContainer: {
     marginTop: hp * 0.05,

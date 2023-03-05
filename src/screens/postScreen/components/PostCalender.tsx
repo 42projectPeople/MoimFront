@@ -19,11 +19,6 @@ interface Props {
 
 export const PostCalender: React.FC<Props> = (props) => {
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
-  let date;
-
-  useEffect(() => {
-    date = new Date();
-  }, []);
   const handleDateSelect = (date: any) => {
     props.setSelectedDate(date.dateString);
     props.setSelectedTime(undefined);
@@ -38,7 +33,9 @@ export const PostCalender: React.FC<Props> = (props) => {
     <View>
       <Calendar
         onDayPress={handleDateSelect}
-        markedDates={{ [props.selectedDate ?? ""]: { selected: true } }}
+        markedDates={{
+          [props.selectedDate ?? ""]: { selected: true },
+        }}
       />
       <View
         style={{

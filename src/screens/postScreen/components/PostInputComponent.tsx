@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Spacer } from "../../../components/Spacer";
@@ -16,6 +17,13 @@ import {
   addOpenTalkLink,
   addTitle,
 } from "../../../redux/EventPost/EventPostAction";
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
 
 export const PostInput: React.FC<{
   inputTitle: string;
@@ -25,6 +33,7 @@ export const PostInput: React.FC<{
   value: string;
   type: inputType;
   isForce: boolean;
+  height: number;
 }> = (props) => {
   const dispatch = useDispatch();
 
@@ -35,7 +44,7 @@ export const PostInput: React.FC<{
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          width: Dimensions.get("window").width * 0.9,
+          width: wp * 0.9,
         }}
       >
         <View style={{ flexDirection: "row" }}>
@@ -57,20 +66,20 @@ export const PostInput: React.FC<{
           </Text>
         </View>
       </View>
+      <Spacer size={5} />
       <View
         style={{
-          marginTop: 10,
+          height: props.height,
           paddingBottom: 5,
           borderRadius: 5,
           borderColor: "rgba(0,0,0,0.2)",
           borderWidth: 1,
+          flexDirection: "row",
         }}
       >
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
+        <ScrollView>
           <TextInput
+            style={{ marginLeft: 10, fontSize: 18 }}
             value={props.value}
             onChangeText={(text) => {
               if (props.type === 0) {
@@ -90,7 +99,7 @@ export const PostInput: React.FC<{
             keyboardType="default"
             clearButtonMode="while-editing"
           />
-        </KeyboardAvoidingView>
+        </ScrollView>
       </View>
     </View>
   );

@@ -95,7 +95,6 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
           <Text style={MapSearchStyles.searchButtonText}>검색</Text>
         </TouchableOpacity>
       </View>
-      <Spacer />
       <Modal
         animationType="slide"
         visible={modalVisible}

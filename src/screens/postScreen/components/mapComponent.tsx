@@ -8,19 +8,15 @@ import {
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { Spacer } from "../../../components/Spacer";
+import { Address } from "../PostEventScreen";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-interface Address {
-  latitude: number;
-  longitude: number;
-  address: string;
-  name: string;
-}
-
-export function MapScreen() {
-  const [marker, setMarker] = useState<Address | null>(null);
+export const MapScreen: React.FC<{
+  marker?: Address;
+  setMarker: (place: Address) => void;
+}> = (props) => {
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
   const [region, setRegion] = useState<LatLng | undefined>();
@@ -43,7 +39,7 @@ export function MapScreen() {
     console.log(place.name);
     setLatitude(Number(data.addresses[0].y)); // 위도와 경도의 순서를 바꿉니다.
     setLongitude(Number(data.addresses[0].x)); // 위도와 경도의 순서를 바꿉니다.
-    setMarker({
+    props.setMarker({
       latitude: Number(data.addresses[0].y),
       longitude: Number(data.addresses[0].x),
       address: place.roadAddress,
@@ -52,13 +48,13 @@ export function MapScreen() {
   };
 
   useEffect(() => {
-    if (marker) {
+    if (props.marker) {
       setRegion({
-        latitude: marker.latitude,
-        longitude: marker.longitude,
+        latitude: props.marker.latitude,
+        longitude: props.marker.longitude,
       });
     }
-  }, [marker]);
+  }, [props.marker]);
 
   return (
     <View style={styles.container}>
@@ -71,13 +67,13 @@ export function MapScreen() {
           longitudeDelta: 0.003,
         }}
       >
-        {marker && (
+        {props.marker && (
           <Marker
             coordinate={{
               latitude: latitude,
               longitude: longitude,
             }}
-            title={marker.address}
+            title={props.marker.address}
           />
         )}
       </MapView>
@@ -89,16 +85,16 @@ export function MapScreen() {
         }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          {marker ? `${marker.name}` : "주소선택을 해주세요."}
+          {props.marker ? `${props.marker.name}` : "주소선택을 해주세요."}
         </Text>
         <Spacer size={10} />
-        <Text>{marker ? `${marker.address}` : ""}</Text>
+        <Text>{props.marker ? `${props.marker.address}` : ""}</Text>
       </View>
       <Spacer />
       <MapSearch onPlaceSelect={handlePlaceSelect} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
