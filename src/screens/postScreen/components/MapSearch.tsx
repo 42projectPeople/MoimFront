@@ -59,7 +59,6 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
             x: tmp.mapx,
             y: tmp.mapy,
           };
-          console.log(place);
           newPlaces.push(place);
         }
         setPlaces([...places, ...newPlaces]);
