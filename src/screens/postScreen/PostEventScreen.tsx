@@ -127,6 +127,7 @@ export const PostEventScreen = () => {
           <Spacer size={hp * 0.05} />
           <View>
             <PostTitle postTitle="이벤트 장소 선택" isCheck={true} />
+            <Spacer size={hp * 0.01} />
             <MapScreen marker={marker} setMarker={setMarker} />
           </View>
           <Spacer size={hp * 0.05} />

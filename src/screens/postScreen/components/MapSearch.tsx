@@ -100,10 +100,18 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <View style={{ justifyContent: "center" }}>
+        <View style={MapSearchStyles.modalContainer}>
+          <TouchableOpacity
+            style={MapSearchStyles.cancelButton}
+            onPress={() => {
+              setModalVisible(false);
+              setPlaces([]);
+              setSearchText("");
+            }}
+          >
+            <Text style={MapSearchStyles.cancelButtonText}>취소</Text>
+          </TouchableOpacity>
+          <ScrollView style={MapSearchStyles.placeListContainer}>
             {places.map((place) => (
               <TouchableOpacity
                 key={place.name}
@@ -116,7 +124,7 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
                 </Text>
               </TouchableOpacity>
             ))}
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     </View>

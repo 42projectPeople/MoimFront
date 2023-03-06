@@ -28,7 +28,6 @@ export const PostCalender: React.FC<Props> = (props) => {
     props.setSelectedTime(time);
     setIsTimePickerVisible(false);
   };
-
   return (
     <View>
       <Calendar
@@ -87,6 +86,7 @@ export const PostCalender: React.FC<Props> = (props) => {
       <DateTimePickerModal
         isVisible={isTimePickerVisible}
         mode="time"
+        minuteInterval={30}
         onConfirm={handleTimeSelect}
         onCancel={() => setIsTimePickerVisible(false)}
       />
