@@ -62,9 +62,10 @@ export const MapSearchStyles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
+    paddingVertical: hp * 0.25,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(255, 255, 255, 0)",
   },
   modalView: {
     flex: 1,
@@ -76,5 +77,20 @@ export const MapSearchStyles = StyleSheet.create({
     height: "50%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  cancelButton: {
+    alignSelf: "flex-start",
+    padding: 10,
+    marginBottom: 10,
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "black",
+  },
+  placeListContainer: {
+    flex: 1,
+    width: "100%",
+    paddingHorizontal: 10,
   },
 });
