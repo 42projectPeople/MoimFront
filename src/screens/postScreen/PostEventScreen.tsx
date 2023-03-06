@@ -13,6 +13,9 @@ import {
 } from "react-native-responsive-screen";
 import { Octicons } from "@expo/vector-icons";
 import { PostTitle } from "./components/PostTitle";
+import { PostTitleInput } from "./components/PostTitleInput";
+import { PostDescriptionInput } from "./components/PostDescriptionInput";
+import { PostOpenTalkInput } from "./components/PostOpenTalkInput";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
@@ -34,28 +37,13 @@ export const PostEventScreen = () => {
   const [eventDescription, setEventDescription] = useState("");
   const [eventOpenTalk, setEventOpenTalk] = useState("");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [ImageUri, setImageUri] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
   const [marker, setMarker] = useState<Address | undefined>();
   const [selectedDate, setSelectedDate] = useState<string | undefined>(
     undefined
   );
   const [selectedTime, setSelectedTime] = useState<Date | undefined>(undefined);
-  const navigation = useNavigation();
-
-  const handleSubmit = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("title", eventTitle);
-      formData.append("description", eventDescription);
-
-      const response = await fetch("https://example.com/api/post-event", {
-        method: "POST",
-        body: formData,
-      });
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
-  };
 
   return (
     <View
@@ -69,6 +57,18 @@ export const PostEventScreen = () => {
         setOpenTalk={setEventOpenTalk}
         setSelectedImages={setSelectedImages}
         setUploadButton={setUploadButtonEnabled}
+        setMarker={setMarker}
+        setSelectedDate={setSelectedDate}
+        setSelectedTime={setSelectedTime}
+        setImageUri={setImageUri}
+        eventTitle={eventTitle}
+        eventDescription={eventDescription}
+        eventOpenTalk={eventOpenTalk}
+        selectedImages={selectedImages}
+        ImageUri={ImageUri}
+        marker={marker}
+        selectedDate={selectedDate}
+        selectedTime={selectedTime}
       />
       <ScrollView
         contentContainerStyle={{
@@ -82,15 +82,9 @@ export const PostEventScreen = () => {
               이벤트 작성하기
             </Text>
           </View>
-          <PostInput
-            inputTitle="이벤트 제목"
-            textMax={50}
-            value={eventTitle}
-            onChangeText={setEventTitle}
-            PlaceHolder={"이벤트 제목을 입력해주세요."}
-            type={inputType.TITLE}
-            isForce={true}
-            height={hp * 0.09}
+          <PostTitleInput
+            setEventTitle={setEventTitle}
+            eventTitle={eventTitle}
           />
           <View
             style={{
@@ -106,15 +100,9 @@ export const PostEventScreen = () => {
             />
           </View>
           <Spacer size={hp * 0.05} />
-          <PostInput
-            inputTitle="이벤트 설명"
-            textMax={200}
-            value={eventDescription}
-            onChangeText={setEventDescription}
-            PlaceHolder={"이벤트 설명을 입력해주세요."}
-            type={inputType.DESCRIPTION}
-            isForce={true}
-            height={hp * 0.4}
+          <PostDescriptionInput
+            setEventDescription={setEventDescription}
+            eventDescription={eventDescription}
           />
           <Spacer size={hp * 0.05} />
           <PostTitle postTitle="이벤트 날짜 선택" isCheck={true} />
@@ -132,18 +120,10 @@ export const PostEventScreen = () => {
           </View>
           <Spacer size={hp * 0.05} />
           <Spacer size={hp * 0.03} />
-          <View>
-            <PostInput
-              inputTitle="오픈톡 링크"
-              textMax={200}
-              value={eventOpenTalk}
-              onChangeText={setEventOpenTalk}
-              PlaceHolder={"오픈톡 링크를 입력해주세요."}
-              type={inputType.OPENTALKLING}
-              isForce={false}
-              height={hp * 0.2}
-            />
-          </View>
+          <PostOpenTalkInput
+            setEventOpenTalk={setEventOpenTalk}
+            eventOpenTalk={eventOpenTalk}
+          />
         </View>
         <Spacer size={hp * 0.05} />
       </ScrollView>

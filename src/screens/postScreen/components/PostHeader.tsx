@@ -8,6 +8,7 @@ import {
   BackHandler,
   Platform,
 } from "react-native";
+import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import ImageButton from "../../../components/ImageButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -20,6 +21,7 @@ import {
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { styleHeader } from "../styleSheets/PostHeader";
+import { Address } from "../PostEventScreen";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
@@ -35,6 +37,18 @@ export const PostHeader: React.FC<{
   setOpenTalk: (text: string) => void;
   setSelectedImages: (image: string[]) => void;
   setUploadButton: (enabled: boolean) => void;
+  setMarker: (place: Address) => void;
+  setSelectedDate: (data: string) => void;
+  setSelectedTime: (time: Date) => void;
+  setImageUri: (imageUri: string[]) => void;
+  eventTitle: string;
+  eventDescription: string;
+  eventOpenTalk: string;
+  selectedImages: string[];
+  ImageUri: string[];
+  marker?: Address;
+  selectedDate?: string;
+  selectedTime?: Date;
 }> = (props) => {
   const dispatch = useDispatch();
   const navigation =
@@ -58,6 +72,14 @@ export const PostHeader: React.FC<{
             props.setOpenTalk("");
             props.setSelectedImages([]);
             props.setUploadButton(false);
+            props.setMarker({
+              latitude: 0,
+              longitude: 0,
+              address: "",
+              name: "",
+            });
+            props.setSelectedDate("");
+            props.setSelectedTime(new Date());
             dispatch(deleteAllImages());
             dispatch(deleteAllEventPost());
             navigation.goBack();
@@ -88,7 +110,10 @@ export const PostHeader: React.FC<{
         {
           text: "Yes",
           onPress: () => {
-            navigation.navigate("Search");
+            console.log(props.selectedDate);
+            console.log(
+              `${props.selectedTime?.getHours()}, ${props.selectedTime?.getMinutes()}`
+            );
           },
         },
       ],
