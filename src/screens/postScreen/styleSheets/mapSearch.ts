@@ -80,13 +80,17 @@ export const MapSearchStyles = StyleSheet.create({
   },
   cancelButton: {
     alignSelf: "flex-start",
-    padding: 10,
+    backgroundColor: "#e0321f",
+    paddingVertical: hp * 0.01,
+    paddingHorizontal: wp * 0.05,
+    borderRadius: 10,
+    marginLeft: 10,
     marginBottom: 10,
   },
   cancelButtonText: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "black",
+    color: "white",
   },
   placeListContainer: {
     flex: 1,
