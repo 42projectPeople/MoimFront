@@ -31,8 +31,25 @@ export const PostEventScreen = () => {
   const [eventOpenTalk, setEventOpenTalk] = useState("");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
+  const [imageUrls, setImageUrls] = useState<object[]>([]);
   const navigation = useNavigation();
-
+  
+  const handleImageUpload = () => {
+    try {
+      const images = selectedImages.map(async (imageURL)=> {
+          const imageUrl = await fetch (imageURL);
+          const blobUrl = await imageUrl.blob();
+          //uploadTosever -> 
+          //getUrlsfromServer
+          //return that url; 
+          return (blobUrl);
+      })
+      setImageUrls(images);
+      console.log(`item = ${JSON.stringify(imageUrls)}`);
+    } catch (error) {
+      console.error("UploadFail:", error)
+    }
+  }
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
@@ -40,6 +57,9 @@ export const PostEventScreen = () => {
       formData.append("title", eventTitle);
       formData.append("description", eventDescription);
 
+      //여기서 이미지 url 서버 -> 저장된 url -> url 리스트 가지고 blob처리 하는
+      //함수 만들어서 넣어야 할듯 (reponse자체를 원하는게 아니니까)
+      handleImageUpload();
       const response = await fetch("https://example.com/api/post-event", {
         method: "POST",
         body: formData,
