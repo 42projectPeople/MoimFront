@@ -1,6 +1,9 @@
-import { View, Text, TouchableWithoutFeedback, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, Dimensions } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
 import { useHomeNavigation } from "../../navigations/Navigation";
+
+const HEIGHT = Dimensions.get("window").height;
+const WIDTH = Dimensions.get("window").width;
 
 type hashtagProps = {
 	title: string,
@@ -18,7 +21,6 @@ const HashTagView: React.FC<hashtagProps> = ({ title, location, imageUri }) => {
 			{title: title, location: location, imageUri: imageUri})}>
 		<View style={styles.mainContainer}>
 			<Image source={{uri: imageUri}} style={styles.image} />
-			{/*<Text style={styles.title}> {title} </Text>*/}
 			<Text style={styles.title} numberOfLines={2}> {title} </Text>
 			<View style={styles.locationContainer}>
 				<EvilIcons style={styles.locationIcon} name="location" size={20} color="grey" />
@@ -33,48 +35,51 @@ const styles = StyleSheet.create({
 	mainContainer: {
 		//backgroundColor: 'tomato',
 		flex: 1,
-		flexDirection: 'row',
+		//flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-between',
-		paddingHorizontal: 20,
-		marginBottom: 10,
-		marginTop: 10,
-	},
-	category: {
-		width: 50,
-		height: 50,
+		//justifyContent: 'center',
+		//paddingHorizontal: HEIGHT * 0.035,
+		marginHorizontal: HEIGHT * 0.035,
+		//marginBottom: HEIGHT * 0.05,
+		//marginTop: HEIGHT * 0.02,
+		//alignItems: 'center'
+		height: HEIGHT * 0.25,
 	},
 	image : {
-		width: 100,
-		height: 100,
+		width: WIDTH * 0.35,
+		height: WIDTH * 0.35,
 	},
 	locationContainer: {
-		marginRight: 10,
-		marginTop: -5,
+		//marginRight: 10,
+		//marginTop: HEIGHT * -0.01,
+		//marginTop: 10,
 		flexDirection: 'row',
-		//color: 'grey',
+		color: 'grey',
 		//marginBottom: 10,
 	},
 	title: {
 		fontSize: 18,
 		fontWeight:'bold',
-		marginBottom: 5,
-		marginTop: 5,
-		marginLeft: -3,
+		//marginBottom: 5,
+		marginTop: HEIGHT * -0.04,
+		//marginLeft: -3,
 	},
 	locationIcon: {
+		marginTop: HEIGHT * -0.05,
 		marginLeft: -5,
 	},
 	locationText: {
+		marginTop: HEIGHT * -0.05,
 		fontSize: 10,
 		color: 'grey'
 	},
-	hashTag: {
-		marginVertical:8,
-		marginLeft: 20,
-		fontSize: 18,
-		fontWeight: 'bold',
-	}
+	//hashTag: {
+	//	marginVertical:8,
+	//	marginLeft: 20,
+	//	fontSize: 18,
+	//	fontWeight: 'bold',
+	//}
 });
 
 export default HashTagView;

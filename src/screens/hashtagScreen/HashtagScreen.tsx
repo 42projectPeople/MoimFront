@@ -6,7 +6,7 @@ import axios from "axios";
 import { useHomeNavigation } from "../../navigations/Navigation";
 import { useRouteProps } from "../../navigations/Navigation";
 
-type dataType = {
+export type dataType = {
 	eventId: string,
 	header: string,
 	location: string,
@@ -52,11 +52,7 @@ export const HashtagScreen: React.FC = () => {
 	}
 
 	useEffect(() => {
-		try {
-			getData();
-		  } catch (error) {
-			console.log(error);
-		  }
+		getData();
 	}, [])
 
 	const handleEndReached = () => {
@@ -87,7 +83,7 @@ export const HashtagScreen: React.FC = () => {
 								imageUri={ main_image }/>
 							</>
 							)
-					}}
+						}}
 						onEndReached={handleEndReached}
 						onEndReachedThreshold={0.5}
 					>
