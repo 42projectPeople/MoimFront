@@ -4,6 +4,9 @@ import { useHomeNavigation } from "../../navigations/Navigation";
 import { widthPercentageToDP as wpSize, 
 		 heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
 
+const HEIGHT = Dimensions.get("window").height;
+const WIDTH = Dimensions.get("window").width;
+
 type hashtagProps = {
 	title: string,
 	location: string,

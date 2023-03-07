@@ -7,9 +7,10 @@ import {
 import React from "react";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { EventScreen } from "src/screens/Event/Event";
-import { HashtagScreen } from "../screens/HashtagScreen";
+import { HashtagScreen } from "src/screens/hashtagScreen/HashtagScreen";
 import { ProfileScreen } from "src/Screens/ProfileScreen";
 import { PostEventScreen } from "src/Screens/EventPost/PostEventScreen";
+import { SearchScreen } from "src/screens/searchScreen/SearchScreen";
 
 export type HomeStackParam = {
   Home: undefined;
@@ -38,6 +39,7 @@ export const HomeNavigation: React.FC = () => {
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="EventPost" component={PostEventScreen} />
       <HomeStack.Screen name="User" component={ProfileScreen} />
+      <HomeStack.Screen name="Search" component={SearchScreen} />
     </HomeStack.Navigator>
   );
 };
