@@ -1,59 +1,48 @@
 import React, { useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  Alert,
-  BackHandler,
-  Platform,
-} from "react-native";
+import { View, Alert, BackHandler } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import ImageButton from "../../../components/ImageButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteAllImages } from "../../../redux/Image/ImageAction";
-import { deleteAllEventPost } from "../../../redux/EventPost/EventPostAction";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { styleHeader } from "../styleSheets/PostHeader";
 import { Address } from "../PostEventScreen";
+import { hashtagType } from "App";
+import { HomeStackParam } from "../../../navigations/HomeNavigation";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { postEventSlice } from "../../../redux/Slices/EventPost";
+import { RootState } from "../../../redux/RootReducer";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-type RootStackParamList = {
-  Home: undefined;
-  Search: undefined;
-};
-
 export const PostHeader: React.FC<{
-  setEventTitle: (text: string) => void;
-  setEventDescription: (text: string) => void;
-  setOpenTalk: (text: string) => void;
   setSelectedImages: (image: string[]) => void;
   setUploadButton: (enabled: boolean) => void;
   setMarker: (place: Address) => void;
   setSelectedDate: (data: string) => void;
-  setSelectedTime: (time: Date) => void;
-  setImageUri: (imageUri: string[]) => void;
-  eventTitle: string;
-  eventDescription: string;
-  eventOpenTalk: string;
+  setSelectedTime: (time: Date | undefined) => void;
+  setSelectedHashtag: (hashtag: hashtagType | undefined) => void;
+  setMaxParticipant: (maxMaxParticipant: number | undefined) => void;
+  setNumber: (number: string | undefined) => void;
+  number: string | undefined;
+  maxParticipant: number | undefined;
   selectedImages: string[];
-  ImageUri: string[];
   marker?: Address;
   selectedDate?: string;
   selectedTime?: Date;
+  selectedHashtag: hashtagType | undefined;
 }> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
+    useNavigation<NativeStackNavigationProp<HomeStackParam, "EventPost">>();
+  const event = useSelector((state: RootState) => state.eventPost);
   const handleBackButton = () => {
     Alert.alert(
       "",
@@ -67,9 +56,6 @@ export const PostHeader: React.FC<{
         {
           text: "Yes",
           onPress: () => {
-            props.setEventDescription("");
-            props.setEventTitle("");
-            props.setOpenTalk("");
             props.setSelectedImages([]);
             props.setUploadButton(false);
             props.setMarker({
@@ -79,9 +65,11 @@ export const PostHeader: React.FC<{
               name: "",
             });
             props.setSelectedDate("");
-            props.setSelectedTime(new Date());
-            dispatch(deleteAllImages());
-            dispatch(deleteAllEventPost());
+            props.setSelectedTime(undefined);
+            props.setSelectedHashtag(undefined);
+            props.setMaxParticipant(undefined);
+            props.setNumber("");
+            dispatch(postEventSlice.actions.deleteAll());
             navigation.goBack();
           },
         },
@@ -109,12 +97,7 @@ export const PostHeader: React.FC<{
         },
         {
           text: "Yes",
-          onPress: () => {
-            console.log(props.selectedDate);
-            console.log(
-              `${props.selectedTime?.getHours()}, ${props.selectedTime?.getMinutes()}`
-            );
-          },
+          onPress: () => {},
         },
       ],
       { cancelable: false }

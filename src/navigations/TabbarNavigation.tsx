@@ -17,7 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-type RootTabParamList = {
+export type RootTabParamList = {
   홈: undefined;
   작성하기: undefined;
   파티리스트: undefined;

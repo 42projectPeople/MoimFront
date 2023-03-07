@@ -7,16 +7,19 @@ import { useNavigation } from "@react-navigation/native";
 import { PostHeader } from "./components/PostHeader";
 import { PostCalender } from "./components/PostCalender";
 import { MapScreen } from "./components/mapComponent";
-import {
-  widthPercentageToDP as wpSize,
-  heightPercentageToDP as hpSize,
-} from "react-native-responsive-screen";
 import { Octicons } from "@expo/vector-icons";
 import { PostTitle } from "./components/PostTitle";
 import { PostTitleInput } from "./components/PostTitleInput";
 import { PostDescriptionInput } from "./components/PostDescriptionInput";
 import { PostOpenTalkInput } from "./components/PostOpenTalkInput";
+import { hashtagType } from "../../../App";
+import { HashtagList } from "./components/HashtagList";
+import { PostMaxParticipantInput } from "./components/PostMaxParticipantInput";
 
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -32,19 +35,27 @@ export interface Address {
   name: string;
 }
 
-export const PostEventScreen = () => {
-  const [eventTitle, setEventTitle] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
-  const [eventOpenTalk, setEventOpenTalk] = useState("");
+export const PostEventScreen: React.FC = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const [ImageUri, setImageUri] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
+  const [selectedHashtag, setSelectedHashtag] = useState<
+    hashtagType | undefined
+  >();
+  const [maxParticipant, setMaxParticipant] = useState<number | undefined>();
   const [marker, setMarker] = useState<Address | undefined>();
   const [selectedDate, setSelectedDate] = useState<string | undefined>(
     undefined
   );
   const [selectedTime, setSelectedTime] = useState<Date | undefined>(undefined);
+  const [number, setNumber] = useState(maxParticipant?.toString());
 
+  const handleHashtagSelect = (hashtag: hashtagType | undefined) => {
+    setSelectedHashtag(hashtag);
+  };
+
+  useEffect(() => {
+    console.log("되니?");
+  }, []);
   return (
     <View
       style={{
@@ -52,23 +63,21 @@ export const PostEventScreen = () => {
       }}
     >
       <PostHeader
-        setEventTitle={setEventTitle}
-        setEventDescription={setEventDescription}
-        setOpenTalk={setEventOpenTalk}
         setSelectedImages={setSelectedImages}
         setUploadButton={setUploadButtonEnabled}
         setMarker={setMarker}
         setSelectedDate={setSelectedDate}
         setSelectedTime={setSelectedTime}
-        setImageUri={setImageUri}
-        eventTitle={eventTitle}
-        eventDescription={eventDescription}
-        eventOpenTalk={eventOpenTalk}
+        setSelectedHashtag={setSelectedHashtag}
+        setMaxParticipant={setMaxParticipant}
+        setNumber={setNumber}
+        number={number}
+        maxParticipant={maxParticipant}
         selectedImages={selectedImages}
-        ImageUri={ImageUri}
         marker={marker}
         selectedDate={selectedDate}
         selectedTime={selectedTime}
+        selectedHashtag={selectedHashtag}
       />
       <ScrollView
         contentContainerStyle={{
@@ -82,14 +91,10 @@ export const PostEventScreen = () => {
               이벤트 작성하기
             </Text>
           </View>
-          <PostTitleInput
-            setEventTitle={setEventTitle}
-            eventTitle={eventTitle}
-          />
+          <PostTitleInput />
           <View
             style={{
-              width: wp * 0.8,
-              height: hp * 0.5,
+              width: wp * 0.9,
             }}
           >
             <ImagePickerComponent
@@ -100,9 +105,19 @@ export const PostEventScreen = () => {
             />
           </View>
           <Spacer size={hp * 0.05} />
-          <PostDescriptionInput
-            setEventDescription={setEventDescription}
-            eventDescription={eventDescription}
+          <View>
+            <PostMaxParticipantInput
+              maxParticipant={maxParticipant}
+              setMaxParticipant={setMaxParticipant}
+              number={number}
+              setNumber={setNumber}
+            />
+          </View>
+          <Spacer size={hp * 0.05} />
+          <PostTitle postTitle="이벤트 해시태그 선택" isCheck={true} />
+          <HashtagList
+            selectedHashtag={selectedHashtag}
+            onHashtagPress={handleHashtagSelect}
           />
           <Spacer size={hp * 0.05} />
           <PostTitle postTitle="이벤트 날짜 선택" isCheck={true} />
@@ -118,12 +133,16 @@ export const PostEventScreen = () => {
             <Spacer size={hp * 0.01} />
             <MapScreen marker={marker} setMarker={setMarker} />
           </View>
+          <Spacer size={hp * 0.15} />
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 28, fontWeight: "bold" }}>
+              추가정보 입력하기
+            </Text>
+          </View>
           <Spacer size={hp * 0.05} />
-          <Spacer size={hp * 0.03} />
-          <PostOpenTalkInput
-            setEventOpenTalk={setEventOpenTalk}
-            eventOpenTalk={eventOpenTalk}
-          />
+          <PostDescriptionInput />
+          <Spacer size={hp * 0.05} />
+          <PostOpenTalkInput />
         </View>
         <Spacer size={hp * 0.05} />
       </ScrollView>
@@ -135,5 +154,7 @@ const StylePost = StyleSheet.create({
   container: {
     marginLeft: 20,
     marginRight: 20,
+    justifyContent: "center",
+    alignContent: "center",
   },
 });

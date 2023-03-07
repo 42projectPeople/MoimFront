@@ -21,11 +21,16 @@ export const PostCalender: React.FC<Props> = (props) => {
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
   const handleDateSelect = (date: any) => {
     props.setSelectedDate(date.dateString);
+
     props.setSelectedTime(undefined);
   };
 
   const handleTimeSelect = (time: Date) => {
     props.setSelectedTime(time);
+    const hours = time.getHours().toString().padStart(2, "0"); // 시간 추출
+    const minutes = time.getMinutes().toString().padStart(2, "0"); // 분 추출
+    const tmp = hours + ":" + minutes;
+    console.log(tmp);
     setIsTimePickerVisible(false);
   };
   return (

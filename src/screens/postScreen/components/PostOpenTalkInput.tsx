@@ -6,21 +6,22 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/RootReducer";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const PostOpenTalkInput: React.FC<{
-  setEventOpenTalk: (eventOpenTalk: string) => void;
-  eventOpenTalk: string;
-}> = (props) => {
+export const PostOpenTalkInput: React.FC = () => {
+  const eventOpenTalkLink = useSelector(
+    (state: RootState) => state.eventPost.eventOpenTalkLink
+  );
   return (
     <View>
       <PostInput
         inputTitle="오픈톡 링크"
         textMax={200}
-        value={props.eventOpenTalk}
-        onChangeText={props.setEventOpenTalk}
+        value={eventOpenTalkLink}
         PlaceHolder={"오픈톡 링크를 입력해주세요."}
         type={inputType.OPENTALKLING}
         isForce={false}

@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  Dimensions,
-  ScrollView,
-} from "react-native";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 import { Spacer } from "../../../components/Spacer";
 import { Octicons } from "@expo/vector-icons";
 import { inputType } from "../PostEventScreen";
 import {
-  addDescription,
-  addOpenTalkLink,
-  addTitle,
-} from "../../../redux/EventPost/EventPostAction";
-import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { RootState } from "../../../redux/RootReducer";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { postEventSlice } from "../../../redux/Slices/EventPost";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
@@ -29,13 +19,31 @@ export const PostInput: React.FC<{
   inputTitle: string;
   textMax: number;
   PlaceHolder?: string;
-  onChangeText: (text: string) => void;
   value: string;
   type: inputType;
   isForce: boolean;
   height: number;
 }> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const event = useSelector((state: RootState) => state.eventPost);
+  const [len, setLen] = useState(0);
+
+  const onChangeText = (text: string) => {
+    if (props.type === 0) {
+      dispatch(postEventSlice.actions.addTitle({ eventTitle: text }));
+      setLen(event.eventTitle.length);
+    } else if (props.type === 1) {
+      dispatch(
+        postEventSlice.actions.addDescription({ eventDescription: text })
+      );
+      setLen(event.eventDescription.length);
+    } else {
+      dispatch(
+        postEventSlice.actions.addOpenTalkLink({ eventOpenTalkLink: text })
+      );
+      setLen(event.eventOpenTalkLink.length);
+    }
+  };
 
   return (
     <View>
@@ -62,7 +70,7 @@ export const PostInput: React.FC<{
         </View>
         <View>
           <Text style={{ alignItems: "center", fontSize: 12, marginTop: 3 }}>
-            {props.value.length} / {props.textMax}
+            {len} / {props.textMax}
           </Text>
         </View>
       </View>
@@ -77,20 +85,14 @@ export const PostInput: React.FC<{
           flexDirection: "row",
         }}
       >
-        <ScrollView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           <TextInput
             style={{ marginLeft: 10, fontSize: 18 }}
             value={props.value}
-            onChangeText={(text) => {
-              if (props.type === 0) {
-                dispatch(addTitle(text));
-              } else if (props.type === 1) {
-                dispatch(addDescription(text));
-              } else if (props.type === 2) {
-                dispatch(addOpenTalkLink(text));
-              }
-              props.onChangeText(text);
-            }}
+            onChangeText={onChangeText}
             maxLength={props.textMax}
             placeholder={props.PlaceHolder || "Enter your text here..."}
             multiline={true}

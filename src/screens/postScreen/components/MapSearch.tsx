@@ -100,7 +100,11 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={MapSearchStyles.modalContainer}>
-          <ScrollView style={MapSearchStyles.placeListContainer}>
+          <ScrollView
+            style={MapSearchStyles.placeListContainer}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             {places.map((place) => (
               <TouchableOpacity
                 key={place.name}

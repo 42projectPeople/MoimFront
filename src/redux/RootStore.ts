@@ -1,16 +1,10 @@
-import { combineReducers, createStore } from "redux";
-import summaryEventReducer from "./SummaryEvent/SummaryEventReducer";
-import locationReducer from "./Location/LocationReducer";
-import { imageReducer } from "./Image/ImageReducer";
-import eventPostReducer from "./EventPost/EventPostReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { rootReducer } from "./RootReducer";
 
-const rootReducer = combineReducers({
-  summaryEvent: summaryEventReducer,
-  location: locationReducer,
-  image: imageReducer,
-  eventPost: eventPostReducer,
+export const store = configureStore({
+  reducer: rootReducer,
 });
 
-const store = createStore(rootReducer);
-
-export default store;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
