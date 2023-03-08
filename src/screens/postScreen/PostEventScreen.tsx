@@ -42,7 +42,6 @@ export const PostEventScreen = () => {
   const navigation = useNavigation();
 
   const ImageConvert = ( images:string[] ) => {
-
     const imageConvertTobinary = (blobUrl:Blob) => {
       const fileRef = new FileReader();
       const testData = fileRef.readAsDataURL(blobUrl);
@@ -57,17 +56,18 @@ export const PostEventScreen = () => {
       return (imageBinary);
     }
   
-    const postUploadImage = async (image:string) => {
+    const postUploadImage = async (image:string) =>{
       try {
         const imageUrl = await fetch (image);
-         const blobUrl = await imageUrl.blob(); 
+         const blobUrl = await imageUrl.blob();
          const dataBin = imageConvertTobinary(blobUrl);
          if (!dataBin)
           return ;
           const date = Date.now();
+          const blobId = blobUrl._data.blobId;
           const response = await axios.post(IMAGE_UPLOAD_URL, {
           image: dataBin.slice(23),
-          imageId: date,
+          imageId: blobId,
           userId: 231412341243123234
           })
           const responseObj = JSON.parse(response.request._response);
@@ -93,9 +93,6 @@ export const PostEventScreen = () => {
       formData.append("location", location);
       formData.append("title", eventTitle);
       formData.append("description", eventDescription);
-      const tmp = ImageConvert(selectedImages);
-      console.log(tmp);
-
       //여기서 이미지 url 서버 -> 저장된 url -> url 리스트 가지고 blob처리 하는
       //함수 만들어서 넣어야 할듯 (reponse자체를 원하는게 아니니까)
       const response = await fetch("https://example.com/api/post-event", {
@@ -178,7 +175,10 @@ export const PostEventScreen = () => {
             isForce={false}
           />
         </View>
-        <Button title="Submit" onPress={handleSubmit} />
+        <Button title="Submit" 
+        onPress={()=>{
+          ImageConvert(selectedImages);
+          handleSubmit();}} />
         <Spacer size={Dimensions.get("window").height * 0.1} />
       </ScrollView>
     </View>
