@@ -1,6 +1,6 @@
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, Dimensions } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
-import { useHomeNavigation } from "../../navigations/Navigation";
+import { useHomeNavigation } from "../../../navigations/Navigation";
 
 type userProfileProps = {
 	nickname: string,
@@ -17,10 +17,6 @@ const UserProfileView: React.FC<userProfileProps> = ({ nickname, profilePhoto })
 		//<TouchableWithoutFeedback 
 		//onPress={() => navigation.navigate("Event", 
 		//	{title: title, location: location, imageUri: imageUri})}>
-		//<View>
-		//	<Image source={{uri: profilePhoto}} style={styles.image} />
-		//	<Text > {nickname} </Text>
-		//</View>
 		<View style={styles.mainContainer}>
 			<Image source={{uri: profilePhoto}} style={styles.image} />
 			<Text style={styles.title}> {nickname} </Text>
@@ -38,7 +34,7 @@ const styles = StyleSheet.create({
 		marginBottom: HEIGHT * 0.03,
 		alignItems: 'center',
 		width: WIDTH * 0.25,
-		height: HEIGHT * 0.2,
+		height: HEIGHT * 0.15,
 	},
 	image : {
 		//alignItems: 'center',
