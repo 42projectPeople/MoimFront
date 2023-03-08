@@ -9,6 +9,7 @@ import {
   Dimensions,
   Platform,
   KeyboardAvoidingView,
+  Image,
 } from "react-native";
 import * as Location from "expo-location";
 import { MoimHeader } from "../home/components/MoimHeader";
@@ -17,6 +18,9 @@ import { Spacer } from "../../components/Spacer";
 import { PostInput } from "./components/PostInputComponent";
 import { useNavigation } from "@react-navigation/native";
 import { PostHeader } from "./components/PostHeader";
+import ImageConvert  from "./components/ImageConvert";
+import axios from "axios";
+
 
 export enum inputType {
   TITLE,
@@ -31,35 +35,69 @@ export const PostEventScreen = () => {
   const [eventOpenTalk, setEventOpenTalk] = useState("");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
-  const [imageUrls, setImageUrls] = useState<object[]>([]);
-  const navigation = useNavigation();
+  const [imageBinary, setImageBinary] = useState<string|ArrayBuffer|null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   
-  const handleImageUpload = () => {
-    try {
-      const images = selectedImages.map(async (imageURL)=> {
-          const imageUrl = await fetch (imageURL);
-          const blobUrl = await imageUrl.blob();
-          //uploadTosever -> 
-          //getUrlsfromServer
-          //return that url; 
-          return (blobUrl);
-      })
-      setImageUrls(images);
-      console.log(`item = ${JSON.stringify(imageUrls)}`);
-    } catch (error) {
-      console.error("UploadFail:", error)
+  const IMAGE_UPLOAD_URL = "https://o42pxi2cvxow5wbrqck7msmnsa0xlduk.lambda-url.ap-northeast-2.on.aws/";
+  const navigation = useNavigation();
+
+  const ImageConvert = ( images:string[] ) => {
+
+    const imageConvertTobinary = (blobUrl:Blob) => {
+      const fileRef = new FileReader();
+      const testData = fileRef.readAsDataURL(blobUrl);
+      try {
+        fileRef.onload = () =>{
+        const testData = fileRef.result;
+        setImageBinary(testData);
+        }
+      } catch (error) {
+        console.error(error)
+      }
+      return (imageBinary);
     }
+  
+    const postUploadImage = async (image:string) => {
+      try {
+        const imageUrl = await fetch (image);
+         const blobUrl = await imageUrl.blob(); 
+         const dataBin = imageConvertTobinary(blobUrl);
+         if (!dataBin)
+          return ;
+          const date = Date.now();
+          const response = await axios.post(IMAGE_UPLOAD_URL, {
+          image: dataBin.slice(23),
+          imageId: date,
+          userId: 231412341243123234
+          })
+          const responseObj = JSON.parse(response.request._response);
+          setImageUrls((urls)=> [...urls, responseObj.url])
+          return (responseObj.url);
+      } catch (error) {
+        console.error("UploadFail:", error)
+      }
+    }
+    if (!images)
+      return [];
+    for (let i = 0; i < images.length; ++i) {
+      const dataUrl = postUploadImage(images[i]);
+    }
+    return (
+      imageUrls ? imageUrls : [] 
+      )
   }
+  
   const handleSubmit = async () => {
     try {
-      const formData = new FormData();
+      const formData = new FormData(); 
       formData.append("location", location);
       formData.append("title", eventTitle);
       formData.append("description", eventDescription);
+      const tmp = ImageConvert(selectedImages);
+      console.log(tmp);
 
       //여기서 이미지 url 서버 -> 저장된 url -> url 리스트 가지고 blob처리 하는
       //함수 만들어서 넣어야 할듯 (reponse자체를 원하는게 아니니까)
-      handleImageUpload();
       const response = await fetch("https://example.com/api/post-event", {
         method: "POST",
         body: formData,
