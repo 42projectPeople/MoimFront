@@ -20,6 +20,7 @@ export type HomeStackParam = {
   HashTag: {
 	category: string
   };
+  Search: undefined;
 };
 
 const HomeStackScreenOptions = {

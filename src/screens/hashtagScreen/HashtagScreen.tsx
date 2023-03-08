@@ -23,7 +23,6 @@ export const HashtagScreen: React.FC = () => {
 	const [page, setPage] = useState(1);
 	const PAGE_SIZE = 12;
 	
-	//`https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=${PAGE_SIZE}`,
 	const getData = async() => {
 		setLoading(true);
 		try {
@@ -68,7 +67,7 @@ export const HashtagScreen: React.FC = () => {
   return (
     <View>
       <MoimHeader showBackButton={true} />
-      <Text>{category}</Text>
+      {/*<Text>{category}</Text>*/}
 			<FlatList
 				data = {dataArr}
 				keyExtractor={(item) => item.eventId}
@@ -86,6 +85,7 @@ export const HashtagScreen: React.FC = () => {
 						}}
 						onEndReached={handleEndReached}
 						onEndReachedThreshold={0.5}
+						showsVerticalScrollIndicator={false}
 					>
 			</FlatList>
     </View>
