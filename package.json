@@ -38,13 +38,8 @@
     "native": "^0.3.3",
     "react": "18.2.0",
     "react-native": "0.71.3",
-<<<<<<< HEAD
-    "react-native-custom-switch": "^1.0.7",
-    "react-native-expo-viewport-units": "^0.0.8",
-=======
     "react-native-calendars": "^1.1293.0",
     "react-native-config": "^1.5.0",
->>>>>>> 90965523 (feat: map 컴포넌트와 mpa 서치기능 추가)
     "react-native-image-picker": "^5.1.0",
     "react-native-image-resizer": "^1.4.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

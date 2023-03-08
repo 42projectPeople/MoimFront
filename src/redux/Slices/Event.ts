@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { hashtagType } from "App";
 
 export interface UserType {
   id: number;
@@ -26,7 +25,7 @@ export interface EventDto {
   eventHashtag: HashtagType;
   eventImages: string[];
   host: UserType;
-  eventMAp: MapType;
+  eventMap: MapType;
   eventParticipant: number;
 }
 

@@ -103,29 +103,29 @@ const ImageSlide = (): JSX.Element => {
 export default ImageSlide;
 
 export const EventScreen: React.FC = () => {
-  const [state, setState] = useState(0);
   const dispatch = useAppDispatch();
-  const event = useSelector((state: RootState) => state.event.event);
+  const event = useSelector((state: RootState) => state.event);
 
   useFocusEffect(
     React.useCallback(() => {
+      // 여기서 GET 요청을 하기 위한 eventId 필요
       return () => {};
     }, [])
   );
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <EventHeader showBackButton={true} />
       <ScrollView
-        style={{
-          backgroundColor: "white",
+        contentContainerStyle={{
+          width: wp,
+          justifyContent: "center",
+          alignContent: "center",
+          paddingHorizontal: wp * 0.05,
+          paddingTop: hp * 0.05,
+          paddingBottom: hp * 0.15,
         }}
       >
-        <View
-          style={{
-            paddingVertical: hp * 0.05,
-            paddingHorizontal: wp * 0.05,
-          }}
-        >
+        <View>
           <ImageSlide />
           <View
             style={{
@@ -138,13 +138,13 @@ export const EventScreen: React.FC = () => {
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>메인 주제</Text>
             <MapView
               provider={PROVIDER_GOOGLE}
-              style={{ width: wp * 0.9, height: wp * 0.9 * 0.75 }} // MapView component의 style prop을 변경함으로써 맵의 크기를 변경할 수 있습니다.
+              style={{ width: wp * 0.9, height: wp * 0.9 }} // MapView component의 style prop을 변경함으로써 맵의 크기를 변경할 수 있습니다.
               region={{
                 // region prop은 맵이 보여지는 부분(latitude, longitude)을 지정합니다.
                 latitude: 37.489112052, // latitude of the center of the map view
                 longitude: 127.06600648, // longitude of the center of the map view
-                latitudeDelta: 0.015, // specifies the delta that determines the zoom level of the map
-                longitudeDelta: 0.0121, // specifies the delta that determines the zoom level of the map
+                latitudeDelta: 0.004, // specifies the delta that determines the zoom level of the map
+                longitudeDelta: 0.004, // specifies the delta that determines the zoom level of the map
               }}
               followsUserLocation={true}
               zoomEnabled={true} // 이 부분을 추가하면 지도의 확대/축소 기능이 활성화됩니다.
@@ -152,8 +152,8 @@ export const EventScreen: React.FC = () => {
             >
               <Marker
                 coordinate={{ latitude: 37.489112052, longitude: 127.06600648 }} // 핀의 위치를 지정합니다.
-                title="현재 주제" // 핀 위에 표시될 제목을 지정합니다.
-                description="Marker Description" // 핀 위에 표시될 설명을 지정합니다.
+                title={event.event[0]?.eventMap.tradeName ?? ""} // 핀 위에 표시될 제목을 지정합니다.
+                description={event.event[0]?.eventMap.location ?? ""} // 핀 위에 표시될 설명을 지정합니다.
               />
             </MapView>
           </View>

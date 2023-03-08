@@ -6,8 +6,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 
 type RootStackParamList = {
@@ -15,8 +15,8 @@ type RootStackParamList = {
   Search: undefined;
 };
 
-const wpSize = wp("100");
-const hpSize = hp("100%");
+const wp = wpSize("100");
+const hp = hpSize("100%");
 
 export const EventHeader: React.FC<{
   showBackButton: boolean;
@@ -41,7 +41,7 @@ export const EventHeader: React.FC<{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            width: wpSize * 0.9,
+            width: wp * 0.9,
           }}
         >
           <ImageButton
@@ -63,9 +63,9 @@ export const EventHeader: React.FC<{
 const styleHeader = StyleSheet.create({
   container: {
     flexDirection: "row",
-    height: hpSize * 0.09,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    height: hp * 0.09,
     borderBottomColor: "black",
     borderBottomWidth: 3,
     backgroundColor: "white",
@@ -74,16 +74,11 @@ const styleHeader = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: wpSize * 0.9,
-  },
-  moimButton: {
-    width: hpSize * 0.15,
-    height: hpSize * 0.05,
-    backgroundColor: "gray",
+    width: wp * 0.9,
   },
   searchButton: {
-    paddingBottom: hpSize * 0.005,
-    width: wpSize * 0.13,
-    height: hpSize * 0.13,
+    paddingBottom: hp * 0.005,
+    width: wp * 0.13,
+    height: hp * 0.13,
   },
 });

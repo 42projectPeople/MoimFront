@@ -4,9 +4,8 @@ import { TabBar } from "./src/navigations/TabbarNavigation";
 import { View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
-import {store} from "./src/redux/RootStore";
-import { useSelector } from "react-redux";
-import Loading from "./src/components/Loading";
+import { store } from "./src/redux/RootStore";
+import Loading from "src/components/Loading";
 
 export default function App() {
 	const [isloading, setIsLoading] = useState(true);

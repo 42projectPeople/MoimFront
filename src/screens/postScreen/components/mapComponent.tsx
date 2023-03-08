@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import MapView, { LatLng, Marker } from "react-native-maps";
+import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { MapSearch } from "./MapSearch";
 import { key } from "../../../../config";
 import {
@@ -75,12 +75,13 @@ export const MapScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <MapView
+        provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
+          latitudeDelta: 0.004,
+          longitudeDelta: 0.004,
         }}
       >
         {isSelected && (
@@ -90,6 +91,7 @@ export const MapScreen: React.FC = () => {
               longitude: longitude,
             }}
             title={eventMap.address}
+            description={eventMap.name}
           />
         )}
       </MapView>
