@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { inputType } from "../PostEventScreen";
+import { inputType } from "../Types/imputType";
 import { PostInput } from "./PostInputComponent";
 import {
   widthPercentageToDP as wpSize,

@@ -3,7 +3,7 @@ import { View, Text, TextInput, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import { Spacer } from "../../../components/Spacer";
 import { Octicons } from "@expo/vector-icons";
-import { inputType } from "../PostEventScreen";
+import { inputType } from "../Types/imputType";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,

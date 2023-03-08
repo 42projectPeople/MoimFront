@@ -20,18 +20,6 @@ import {
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export enum inputType {
-  TITLE,
-  DESCRIPTION,
-  OPENTALKLING,
-}
-export interface Address {
-  latitude: number;
-  longitude: number;
-  address: string;
-  name: string;
-}
-
 export const PostEventScreen: React.FC = () => {
   useFocusEffect(
     React.useCallback(() => {
