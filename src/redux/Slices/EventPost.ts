@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CalenderType {
+interface CalenderType {
   day: number;
   month: number;
   year: number;
 }
-export interface TimeType {
+interface TimeType {
   hours: number;
   minute: number;
 }
 
-export interface Address {
+interface Address {
   latitude: number;
   longitude: number;
   address: string;

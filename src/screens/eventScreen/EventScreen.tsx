@@ -13,6 +13,10 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useFocusEffect } from "@react-navigation/native";
+import { useAppDispatch } from "../../redux/RootStore";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/RootReducer";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
@@ -100,10 +104,14 @@ export default ImageSlide;
 
 export const EventScreen: React.FC = () => {
   const [state, setState] = useState(0);
+  const dispatch = useAppDispatch();
+  const event = useSelector((state: RootState) => state.event.event);
 
-  useEffect(() => {
-    // 여기서 데이터 GET 요청
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {};
+    }, [])
+  );
   return (
     <View style={{ flex: 1 }}>
       <EventHeader showBackButton={true} />
