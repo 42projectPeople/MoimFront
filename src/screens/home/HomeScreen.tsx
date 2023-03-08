@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { View, ScrollView, StyleSheet, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MoimHeader } from "./components/MoimHeader";

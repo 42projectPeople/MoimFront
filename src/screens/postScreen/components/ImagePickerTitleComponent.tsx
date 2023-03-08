@@ -1,6 +1,6 @@
 import { Octicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { TouchableOpacity, View, Dimensions, Text } from "react-native";
+import React from "react";
+import { View, Dimensions, Text } from "react-native";
 import { Spacer } from "../../../components/Spacer";
 
 export const ImagePickerTitle: React.FC<{

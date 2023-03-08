@@ -2,6 +2,14 @@ import React from "react";
 import { TouchableOpacity, View, Text, Dimensions } from "react-native";
 import { Spacer } from "../../../components/Spacer";
 
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
+
 type ImagePickerButtonProps = {
   handlePreview: () => void;
   disableUploadButton: boolean;
@@ -17,7 +25,7 @@ export const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        width: Dimensions.get("window").width * 0.9,
+        width: wp * 0.9,
         marginTop: 10,
       }}
     >
@@ -26,7 +34,7 @@ export const ImagePickerButton: React.FC<ImagePickerButtonProps> = ({
           backgroundColor: disableUploadButton ? "#ccc" : "#e0321f",
           padding: 10,
           borderRadius: 10,
-          width: Dimensions.get("window").width - 300,
+          width: wp - 300,
         }}
         onPress={handlePreview}
         disabled={disableUploadButton}

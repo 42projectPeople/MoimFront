@@ -1,5 +1,5 @@
 import { Octicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import {
   TextInput,
   View,
@@ -12,31 +12,41 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useAppDispatch } from "../../../redux/RootStore";
 import { Spacer } from "../../../components/Spacer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/RootReducer";
+import { postEventSlice } from "../../../redux/Slices/EventPost";
+import { useFocusEffect } from "@react-navigation/native";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const PostMaxParticipantInput: React.FC<{
-  maxParticipant: number | undefined;
-  setMaxParticipant: (maxParticipant: number | undefined) => void;
-  number: string | undefined;
-  setNumber: (number: string | undefined) => void;
-}> = (props) => {
+export const PostMaxParticipantInput: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const eventMaxParticipant = useSelector(
+    (state: RootState) => state.eventPost.eventParticipant
+  );
+  const [number, setNumber] = useState("");
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setNumber("");
+      };
+    }, [])
+  );
+
   const handleConfirmPress = () => {
-    if (props.number) {
-      const maxParticipant = Number(props.number);
-      if (maxParticipant > 1000) {
-        // 1000명 이상인 경우 알림 메시지 출력
-        Alert.alert("잘못된 입력", "1000명 이하로 입력해주세요.", [
-          { text: "확인" },
-        ]);
-      } else {
-        props.setMaxParticipant(maxParticipant);
-        props.setNumber("");
-      }
+    const maxParticipant = Number(number);
+    if (maxParticipant > 1000) {
+      // 1000명 이상인 경우 알림 메시지 출력
+      Alert.alert("잘못된 입력", "1000명 이하로 입력해주세요.", [
+        { text: "확인" },
+      ]);
     } else {
-      props.setMaxParticipant(undefined);
+      dispatch(postEventSlice.actions.addParticipant(maxParticipant));
+      setNumber("");
     }
   };
 
@@ -56,7 +66,7 @@ export const PostMaxParticipantInput: React.FC<{
         </View>
         <View>
           <Text style={{ alignItems: "center", fontSize: 15, marginTop: 3 }}>
-            {props.maxParticipant}
+            {`${eventMaxParticipant} 명`}
           </Text>
         </View>
       </View>
@@ -65,9 +75,9 @@ export const PostMaxParticipantInput: React.FC<{
         <View style={maxParticipantStyle.textInputBox}>
           <TextInput
             style={{ marginLeft: 10, fontSize: 18, flex: 1 }}
-            value={props.number}
+            value={number}
             onChangeText={(text) => {
-              props.setNumber(text);
+              setNumber(text);
             }}
             placeholder="최대 인원수 입력"
             keyboardType="numeric"

@@ -1,4 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface CalenderType {
+  day: number;
+  month: number;
+  year: number;
+}
+export interface TimeType {
+  hours: number;
+  minute: number;
+}
+
+export interface Address {
+  latitude: number;
+  longitude: number;
+  address: string;
+  name: string;
+}
 
 const initialState = {
   eventTitle: "",
@@ -6,13 +23,14 @@ const initialState = {
   eventOpenTalkLink: "",
   eventHashtagId: 0,
   eventSelectImage: "",
+  eventDate: "",
   eventImages: [] as string[],
-  eventMap: { name: "", address: "", longitude: 0, latitude: 0 },
+  eventMap: { name: "", address: "", longitude: 0, latitude: 0 } as Address,
   eventParticipant: 0,
   eventImageCount: 0,
   eventSetCount: 0,
-  eventCalender: "",
-  eventTime: "",
+  eventCalender: { day: 0, month: 0, year: 0 } as CalenderType,
+  eventTime: { hours: 0, minute: 0 } as TimeType,
 };
 
 export const postEventSlice = createSlice({
@@ -28,20 +46,29 @@ export const postEventSlice = createSlice({
     addOpenTalkLink: (state, action) => {
       state.eventOpenTalkLink = action.payload.eventOpenTalkLink;
     },
-    addMap(state, action) {
-      state.eventMap = action.payload.eventMap;
+    addHashtagId(state, action: PayloadAction<number>) {
+      state.eventHashtagId = action.payload;
     },
-    addHashtagId(state, action) {
-      state.eventHashtagId = action.payload.eventHashtagId;
-    },
-    addParticipant(state, action) {
-      state.eventParticipant = action.payload.eventParticipant;
+    addParticipant(state, action: PayloadAction<number>) {
+      state.eventParticipant = action.payload;
     },
     addImages(state, action) {
       state.eventImages.push(action.payload.eventSelectImage as never);
       state.eventImageCount = state.eventImageCount + 1;
     },
-    addSetCount(state, action) {
+    addDate(state, action: PayloadAction<string>) {
+      state.eventDate = action.payload;
+    },
+    addCalender(state, action: PayloadAction<CalenderType>) {
+      state.eventCalender = action.payload;
+    },
+    addTime(state, action: PayloadAction<TimeType>) {
+      state.eventTime = action.payload;
+    },
+    addMap(state, action: PayloadAction<Address>) {
+      state.eventMap = action.payload;
+    },
+    addSetCount(state) {
       state.eventSetCount = state.eventSetCount + 1;
     },
     deleteTitle(state, action) {
@@ -74,6 +101,11 @@ export const postEventSlice = createSlice({
     deleteSetCount(state, action) {
       state.eventSetCount = state.eventSetCount - 1;
     },
+    deleteDate(state) {
+      state.eventDate = "";
+      state.eventTime = { hours: 0, minute: 0 };
+      state.eventCalender = { day: 0, month: 0, year: 0 };
+    },
     deleteAll(state) {
       state.eventTitle = "";
       state.eventDescription = "";
@@ -85,8 +117,9 @@ export const postEventSlice = createSlice({
       state.eventParticipant = 0;
       state.eventImageCount = 0;
       state.eventSetCount = 0;
-      state.eventCalender = "";
-      state.eventTime = "";
+      state.eventDate = "";
+      state.eventCalender = { day: 0, month: 0, year: 0 };
+      state.eventTime = { hours: 0, minute: 0 };
     },
   },
   extraReducers: (builder) => {},

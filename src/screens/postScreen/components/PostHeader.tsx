@@ -5,15 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 import ImageButton from "../../../components/ImageButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteAllImages } from "../../../redux/Image/ImageAction";
+import { useSelector } from "react-redux";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { styleHeader } from "../styleSheets/PostHeader";
-import { Address } from "../PostEventScreen";
-import { hashtagType } from "App";
 import { HomeStackParam } from "../../../navigations/HomeNavigation";
 import { useAppDispatch } from "../../../redux/RootStore";
 import { postEventSlice } from "../../../redux/Slices/EventPost";
@@ -22,23 +19,7 @@ import { RootState } from "../../../redux/RootReducer";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const PostHeader: React.FC<{
-  setSelectedImages: (image: string[]) => void;
-  setUploadButton: (enabled: boolean) => void;
-  setMarker: (place: Address) => void;
-  setSelectedDate: (data: string) => void;
-  setSelectedTime: (time: Date | undefined) => void;
-  setSelectedHashtag: (hashtag: hashtagType | undefined) => void;
-  setMaxParticipant: (maxMaxParticipant: number | undefined) => void;
-  setNumber: (number: string | undefined) => void;
-  number: string | undefined;
-  maxParticipant: number | undefined;
-  selectedImages: string[];
-  marker?: Address;
-  selectedDate?: string;
-  selectedTime?: Date;
-  selectedHashtag: hashtagType | undefined;
-}> = (props) => {
+export const PostHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeStackParam, "EventPost">>();
@@ -56,19 +37,6 @@ export const PostHeader: React.FC<{
         {
           text: "Yes",
           onPress: () => {
-            props.setSelectedImages([]);
-            props.setUploadButton(false);
-            props.setMarker({
-              latitude: 0,
-              longitude: 0,
-              address: "",
-              name: "",
-            });
-            props.setSelectedDate("");
-            props.setSelectedTime(undefined);
-            props.setSelectedHashtag(undefined);
-            props.setMaxParticipant(undefined);
-            props.setNumber("");
             dispatch(postEventSlice.actions.deleteAll());
             navigation.goBack();
           },
@@ -97,7 +65,10 @@ export const PostHeader: React.FC<{
         },
         {
           text: "Yes",
-          onPress: () => {},
+          onPress: () => {
+            // TODO: 여기가 곧 모든걸 파싱하고 폼을 완성해서 서버로 보내는 곳
+            navigation.navigate("Event");
+          },
         },
       ],
       { cancelable: false }

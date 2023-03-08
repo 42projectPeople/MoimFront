@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,26 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { hashtagType } from "../../../../App";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { RootState } from "../../../redux/RootReducer";
+import { useSelector } from "react-redux";
+import { postEventSlice } from "../../../redux/Slices/EventPost";
+import { useFocusEffect } from "@react-navigation/native";
 
-export interface HashtagListProps {
-  selectedHashtag?: hashtagType | undefined;
-  onHashtagPress: (hashtag: hashtagType | undefined) => void;
-}
+export const HashtagList: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [selectedHashtagId, setSelectedHashtagId] = useState<number>(0);
+  const hashtagId = useSelector(
+    (state: RootState) => state.eventPost.eventHashtagId
+  );
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setSelectedHashtagId(hashtagId);
+      };
+    }, [])
+  );
 
-export const HashtagList: React.FC<HashtagListProps> = (props) => {
   const renderHashtagButtons = () => {
     const hashtagName = [
       "음식",
@@ -26,7 +38,7 @@ export const HashtagList: React.FC<HashtagListProps> = (props) => {
     ];
     const hashtagNumber = [1, 2, 3, 4, 5, 6, 7];
     return hashtagName.map((hashtag: string, index: number) => {
-      const isSelected = hashtagNumber[index] === props.selectedHashtag;
+      const isSelected = hashtagNumber[index] === selectedHashtagId;
       return (
         <TouchableOpacity
           key={index}
@@ -34,7 +46,10 @@ export const HashtagList: React.FC<HashtagListProps> = (props) => {
             styles.hashtagButton,
             isSelected && styles.selectedHashtagButton,
           ]}
-          onPress={() => props.onHashtagPress(hashtagNumber[index])}
+          onPress={() => {
+            setSelectedHashtagId(hashtagNumber[index]);
+            dispatch(postEventSlice.actions.addHashtagId(selectedHashtagId));
+          }}
         >
           <Text
             style={[

@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { ImagePickerComponent } from "./components/ImagePickerComponent";
 import { Spacer } from "../../components/Spacer";
-import { PostInput } from "./components/PostInputComponent";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { PostHeader } from "./components/PostHeader";
 import { PostCalender } from "./components/PostCalender";
 import { MapScreen } from "./components/mapComponent";
-import { Octicons } from "@expo/vector-icons";
 import { PostTitle } from "./components/PostTitle";
 import { PostTitleInput } from "./components/PostTitleInput";
 import { PostDescriptionInput } from "./components/PostDescriptionInput";
 import { PostOpenTalkInput } from "./components/PostOpenTalkInput";
-import { hashtagType } from "../../../App";
 import { HashtagList } from "./components/HashtagList";
 import { PostMaxParticipantInput } from "./components/PostMaxParticipantInput";
 
@@ -36,49 +33,19 @@ export interface Address {
 }
 
 export const PostEventScreen: React.FC = () => {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
-  const [selectedHashtag, setSelectedHashtag] = useState<
-    hashtagType | undefined
-  >();
-  const [maxParticipant, setMaxParticipant] = useState<number | undefined>();
-  const [marker, setMarker] = useState<Address | undefined>();
-  const [selectedDate, setSelectedDate] = useState<string | undefined>(
-    undefined
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {};
+    }, [])
   );
-  const [selectedTime, setSelectedTime] = useState<Date | undefined>(undefined);
-  const [number, setNumber] = useState(maxParticipant?.toString());
 
-  const handleHashtagSelect = (hashtag: hashtagType | undefined) => {
-    setSelectedHashtag(hashtag);
-  };
-
-  useEffect(() => {
-    console.log("되니?");
-  }, []);
   return (
     <View
       style={{
         backgroundColor: "white",
       }}
     >
-      <PostHeader
-        setSelectedImages={setSelectedImages}
-        setUploadButton={setUploadButtonEnabled}
-        setMarker={setMarker}
-        setSelectedDate={setSelectedDate}
-        setSelectedTime={setSelectedTime}
-        setSelectedHashtag={setSelectedHashtag}
-        setMaxParticipant={setMaxParticipant}
-        setNumber={setNumber}
-        number={number}
-        maxParticipant={maxParticipant}
-        selectedImages={selectedImages}
-        marker={marker}
-        selectedDate={selectedDate}
-        selectedTime={selectedTime}
-        selectedHashtag={selectedHashtag}
-      />
+      <PostHeader />
       <ScrollView
         contentContainerStyle={{
           paddingTop: hp * 0.05,
@@ -97,41 +64,23 @@ export const PostEventScreen: React.FC = () => {
               width: wp * 0.9,
             }}
           >
-            <ImagePickerComponent
-              selectedImages={selectedImages}
-              uploadButtonEnabled={uploadButtonEnabled}
-              setSelectedImages={setSelectedImages}
-              setUploadButtonEnabled={setUploadButtonEnabled}
-            />
+            <ImagePickerComponent />
           </View>
           <Spacer size={hp * 0.05} />
           <View>
-            <PostMaxParticipantInput
-              maxParticipant={maxParticipant}
-              setMaxParticipant={setMaxParticipant}
-              number={number}
-              setNumber={setNumber}
-            />
+            <PostMaxParticipantInput />
           </View>
           <Spacer size={hp * 0.05} />
           <PostTitle postTitle="이벤트 해시태그 선택" isCheck={true} />
-          <HashtagList
-            selectedHashtag={selectedHashtag}
-            onHashtagPress={handleHashtagSelect}
-          />
+          <HashtagList />
           <Spacer size={hp * 0.05} />
           <PostTitle postTitle="이벤트 날짜 선택" isCheck={true} />
-          <PostCalender
-            selectedDate={selectedDate}
-            selectedTime={selectedTime}
-            setSelectedDate={setSelectedDate}
-            setSelectedTime={setSelectedTime}
-          />
+          <PostCalender />
           <Spacer size={hp * 0.05} />
           <View>
             <PostTitle postTitle="이벤트 장소 선택" isCheck={true} />
             <Spacer size={hp * 0.01} />
-            <MapScreen marker={marker} setMarker={setMarker} />
+            <MapScreen />
           </View>
           <Spacer size={hp * 0.15} />
           <View style={{ alignItems: "center" }}>

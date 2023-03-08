@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -8,17 +7,8 @@ import {
   Modal,
   ScrollView,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Spacer } from "../../../components/Spacer";
 import { key } from "../../../../config";
 import { MapSearchStyles } from "../styleSheets/mapSearch";
-import {
-  widthPercentageToDP as wpSize,
-  heightPercentageToDP as hpSize,
-} from "react-native-responsive-screen";
-
-const wp = wpSize("100%");
-const hp = hpSize("100%");
 
 interface Place {
   x: string;
@@ -29,9 +19,10 @@ interface Place {
 
 interface MapSearchProps {
   onPlaceSelect: (place: Place) => void;
+  setIsSelected: (isSelected: boolean) => void;
 }
 
-export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
+export const MapSearch: React.FC<MapSearchProps> = (props) => {
   const [searchText, setSearchText] = useState<string>("");
   const [places, setPlaces] = useState<Place[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -63,6 +54,7 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
         }
         setPlaces([...places, ...newPlaces]);
         setModalVisible(true);
+        props.setIsSelected(true);
       } else {
         setPlaces([]);
       }
@@ -72,7 +64,7 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
   };
 
   const handlePlacePress = (place: Place) => {
-    onPlaceSelect(place);
+    props.onPlaceSelect(place);
     setPlaces([]);
     setSearchText("");
     setModalVisible(false);
@@ -132,4 +124,4 @@ export default function MapSearch({ onPlaceSelect }: MapSearchProps) {
       </Modal>
     </View>
   );
-}
+};

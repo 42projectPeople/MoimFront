@@ -1,36 +1,64 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Button, TouchableOpacity, Alert } from "react-native";
 import { Calendar } from "react-native-calendars";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useSelector } from "react-redux";
+import { postEventSlice } from "../../../redux/Slices/EventPost";
+import { RootState } from "../../../redux/RootReducer";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { useFocusEffect } from "@react-navigation/native";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-interface Props {
-  selectedDate: string | undefined;
-  selectedTime: Date | undefined;
-  setSelectedDate: (selectedDate: string | undefined) => void;
-  setSelectedTime: (selectedTime: Date | undefined) => void;
-}
-
-export const PostCalender: React.FC<Props> = (props) => {
+export const PostCalender: React.FC = () => {
   const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
-  const handleDateSelect = (date: any) => {
-    props.setSelectedDate(date.dateString);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const eventTime = useSelector(
+    (state: RootState) => state.eventPost.eventTime
+  );
+  const calender = useSelector(
+    (state: RootState) => state.eventPost.eventCalender
+  );
 
-    props.setSelectedTime(undefined);
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setSelectedDate("");
+      };
+    }, [])
+  );
+  const handleDateSelect = (date: any) => {
+    const day = date.day;
+    const month = date.month;
+    const year = date.year;
+    setSelectedDate(date.dateString);
+    dispatch(
+      postEventSlice.actions.addCalender({ day: day, month: month, year: year })
+    );
   };
 
   const handleTimeSelect = (time: Date) => {
-    props.setSelectedTime(time);
-    const hours = time.getHours().toString().padStart(2, "0"); // 시간 추출
-    const minutes = time.getMinutes().toString().padStart(2, "0"); // 분 추출
-    const tmp = hours + ":" + minutes;
-    console.log(tmp);
+    time.getHours();
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    dispatch(postEventSlice.actions.addTime({ hours: hours, minute: minutes }));
+    const param = new Date(
+      calender.year,
+      calender.month - 1,
+      calender.day,
+      eventTime.hours,
+      eventTime.minute
+    );
+    if (param <= new Date()) {
+      Alert.alert("", "이전날짜를 선택하셧습니다.");
+    }
+    dispatch(postEventSlice.actions.addDate(param.toISOString()));
     setIsTimePickerVisible(false);
   };
   return (
@@ -38,7 +66,10 @@ export const PostCalender: React.FC<Props> = (props) => {
       <Calendar
         onDayPress={handleDateSelect}
         markedDates={{
-          [props.selectedDate ?? ""]: { selected: true },
+          [selectedDate ?? ""]: {
+            selected: true,
+            selectedColor: "#e0321f",
+          },
         }}
       />
       <View
@@ -48,11 +79,14 @@ export const PostCalender: React.FC<Props> = (props) => {
         }}
       >
         <Text style={{ fontSize: 16, paddingTop: hp * 0.015 }}>
-          {props.selectedDate ?? `날짜를 선택해주세요.`}
+          {calender.year === 0
+            ? `날짜를 선택해주세요.`
+            : `${calender.year} - ${calender.month} - ${calender.day}`}
         </Text>
-        {props.selectedTime && (
+        {eventTime && (
           <Text style={{ fontSize: 16, paddingTop: hp * 0.015 }}>
-            {props.selectedTime.toTimeString().slice(0, 5)}
+            {eventTime.hours} :{" "}
+            {eventTime.minute === 0 ? "00" : eventTime.minute}
           </Text>
         )}
       </View>

@@ -1,26 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import MapView, { LatLng, Marker } from "react-native-maps";
-import MapSearch from "./MapSearch";
+import { MapSearch } from "./MapSearch";
 import { key } from "../../../../config";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { Spacer } from "../../../components/Spacer";
-import { Address } from "../PostEventScreen";
+import { useFocusEffect } from "@react-navigation/native";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/RootReducer";
+import { postEventSlice } from "../../../redux/Slices/EventPost";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const MapScreen: React.FC<{
-  marker?: Address;
-  setMarker: (place: Address) => void;
-}> = (props) => {
+export const MapScreen: React.FC = () => {
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
   const [region, setRegion] = useState<LatLng | undefined>();
+  const [isSelected, setIsSelected] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const eventMap = useSelector((state: RootState) => state.eventPost.eventMap);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setLatitude(0);
+        setLongitude(0);
+        setRegion(undefined);
+        setIsSelected(false);
+      };
+    }, [])
+  );
   const handlePlaceSelect = async (place: any) => {
     const url = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(
       place.roadAddress
@@ -36,25 +51,26 @@ export const MapScreen: React.FC<{
 
     const data = await response.json();
 
-    console.log(place.name);
     setLatitude(Number(data.addresses[0].y)); // 위도와 경도의 순서를 바꿉니다.
     setLongitude(Number(data.addresses[0].x)); // 위도와 경도의 순서를 바꿉니다.
-    props.setMarker({
-      latitude: Number(data.addresses[0].y),
-      longitude: Number(data.addresses[0].x),
-      address: place.roadAddress,
-      name: place.name,
-    });
+    dispatch(
+      postEventSlice.actions.addMap({
+        latitude: Number(data.address[0].y),
+        longitude: Number(data.address[0].x),
+        address: place.roadAddress,
+        name: place.name,
+      })
+    );
   };
 
   useEffect(() => {
-    if (props.marker) {
+    if (eventMap) {
       setRegion({
-        latitude: props.marker.latitude,
-        longitude: props.marker.longitude,
+        latitude: eventMap.latitude,
+        longitude: eventMap.longitude,
       });
     }
-  }, [props.marker]);
+  }, [eventMap]);
 
   return (
     <View style={styles.container}>
@@ -67,13 +83,13 @@ export const MapScreen: React.FC<{
           longitudeDelta: 0.003,
         }}
       >
-        {props.marker && (
+        {isSelected && (
           <Marker
             coordinate={{
               latitude: latitude,
               longitude: longitude,
             }}
-            title={props.marker.address}
+            title={eventMap.address}
           />
         )}
       </MapView>
@@ -85,13 +101,16 @@ export const MapScreen: React.FC<{
         }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          {props.marker ? `${props.marker.name}` : "주소선택을 해주세요."}
+          {eventMap ? `${eventMap.name}` : "주소선택을 해주세요."}
         </Text>
         <Spacer size={10} />
-        <Text>{props.marker ? `${props.marker.address}` : ""}</Text>
+        <Text>{eventMap ? `${eventMap.address}` : ""}</Text>
       </View>
       <Spacer />
-      <MapSearch onPlaceSelect={handlePlaceSelect} />
+      <MapSearch
+        onPlaceSelect={handlePlaceSelect}
+        setIsSelected={setIsSelected}
+      />
     </View>
   );
 };

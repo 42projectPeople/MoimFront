@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import { Spacer } from "../../../components/Spacer";
