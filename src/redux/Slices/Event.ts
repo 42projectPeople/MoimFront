@@ -20,7 +20,6 @@ export interface HashtagType {
 }
 
 export interface EventDto {
-  eventId: number;
   eventTitle: string;
   eventDescription: string;
   eventOpenTalkLink: string;
@@ -32,9 +31,11 @@ export interface EventDto {
 }
 
 interface InitialState {
+  eventId: number;
   event: EventDto[];
 }
 const initialState: InitialState = {
+  eventId: 0,
   event: [],
 };
 
@@ -45,8 +46,12 @@ export const EventSlice = createSlice({
     addEvent: (state, action: PayloadAction<EventDto>) => {
       state.event.push(action.payload);
     },
+    addEventId: (state, action: PayloadAction<number>) => {
+      state.eventId = action.payload;
+    },
     deleteEvent: (state) => {
       state.event.pop();
+      state.eventId = 0;
     },
   },
 });
