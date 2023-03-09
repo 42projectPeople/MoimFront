@@ -18,6 +18,11 @@ import { RootState } from "../../../redux/RootReducer";
 import { useAppDispatch } from "../../../redux/RootStore";
 import { postEventSlice } from "../../../redux/Slices/EventPost";
 import { useFocusEffect } from "@react-navigation/native";
+import {
+  InputFilterAsSpace,
+  InputFilterAsWhiteSpace,
+  SwearWordsFilter,
+} from "../../../filter";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
@@ -38,15 +43,11 @@ export const PostInput: React.FC<PostInputType> = (props) => {
   const [len, setLen] = useState(0);
 
   const onChangeText = (text: string) => {
-    const filteredText = text.replace(
-      /[^\wㄱ-ㅎㅏ-ㅣ가-힣!@#$%^&*(),.?":{}|<>\n]/g,
-      ""
-    );
+    const first = text.replace(SwearWordsFilter, "***");
+    const filteredText = first.replace(InputFilterAsWhiteSpace, "");
     if (props.type === 0) {
-      const title = text.replace(
-        /[^\wㄱ-ㅎㅏ-ㅣ가-힣!@#$%^&*(),.?":{}|<>]/g,
-        ""
-      );
+      const title = first.replace(InputFilterAsSpace, "");
+
       dispatch(postEventSlice.actions.addTitle({ eventTitle: title }));
     } else if (props.type === 1) {
       dispatch(
