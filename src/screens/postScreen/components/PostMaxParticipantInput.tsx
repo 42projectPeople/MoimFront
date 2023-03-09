@@ -39,11 +39,9 @@ export const PostMaxParticipantInput: React.FC = () => {
 
   const handleConfirmPress = () => {
     const filteredText = number.replace(/[^\d.]/g, ""); // 숫자와 소수점만 추출
-    const dotIndex = filteredText.search(
-      /[^a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣~!@#$%^&*()_+|<>?:{}]/g
-    );
+    const dotIndex = filteredText.indexOf(".");
 
-    if (dotIndex === -1) {
+    if (dotIndex >= 0) {
       Alert.alert("잘못된 입력", "올바른 숫자를 입력해주세요.", [
         { text: "확인" },
       ]);

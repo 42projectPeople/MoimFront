@@ -48,6 +48,7 @@ export const PostEventScreen: React.FC = () => {
         <ScrollView
           contentContainerStyle={{
             paddingBottom: hp * 0.15,
+            paddingTop: hp * 0.08,
             flexGrow: 1,
           }}
         >
