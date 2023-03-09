@@ -38,15 +38,27 @@ export const PostMaxParticipantInput: React.FC = () => {
   );
 
   const handleConfirmPress = () => {
-    const maxParticipant = Number(number);
-    if (maxParticipant > 1000) {
-      // 1000명 이상인 경우 알림 메시지 출력
-      Alert.alert("잘못된 입력", "1000명 이하로 입력해주세요.", [
+    const filteredText = number.replace(/[^\d.]/g, ""); // 숫자와 소수점만 추출
+    const dotIndex = filteredText.search(
+      /[^a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣~!@#$%^&*()_+|<>?:{}]/g
+    );
+
+    if (dotIndex === -1) {
+      Alert.alert("잘못된 입력", "올바른 숫자를 입력해주세요.", [
         { text: "확인" },
       ]);
     } else {
-      dispatch(postEventSlice.actions.addParticipant(maxParticipant));
-      setNumber("");
+      const maxParticipant = parseFloat(filteredText);
+
+      if (isNaN(maxParticipant) || maxParticipant > 1000) {
+        // 숫자가 아닌 값이나 1000명 이상인 경우 알림 메시지 출력
+        Alert.alert("잘못된 입력", "1000명 이하의 숫자를 입력해주세요.", [
+          { text: "확인" },
+        ]);
+      } else {
+        dispatch(postEventSlice.actions.addParticipant(maxParticipant));
+        setNumber("");
+      }
     }
   };
 
@@ -124,9 +136,8 @@ export const maxParticipantStyle = StyleSheet.create({
   textInputBox: {
     height: hp * 0.05,
     paddingBottom: 5,
-    borderRadius: 5,
-    borderColor: "rgba(0,0,0,0.2)",
-    borderWidth: 1,
+    borderBottomColor: "rgba(0,0,0,0.2)",
+    borderBottomWidth: 1,
     flexDirection: "row",
     width: wp * 0.4,
   },

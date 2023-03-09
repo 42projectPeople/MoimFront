@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { ImagePickerTitle } from "./ImagePickerTitleComponent";
-import { ImagePickerButton } from "./ImagePickerButtonComponent";
+import { ImagePickerTitle } from "./ImagePickerTitle";
+import { ImagePickerButton } from "./ImagePickerButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/RootReducer";
 import { useAppDispatch } from "../../../redux/RootStore";
@@ -16,7 +16,7 @@ import { useFocusEffect } from "@react-navigation/native";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const ImagePickerComponent: React.FC = (prop) => {
+export const ImagePickerComponent: React.FC = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
   const eventImages = useSelector(

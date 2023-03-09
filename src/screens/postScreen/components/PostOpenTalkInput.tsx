@@ -1,7 +1,7 @@
 import React from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { inputType } from "../Types/imputType";
-import { PostInput } from "./PostInputComponent";
+import { PostInput } from "./PostInput";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,

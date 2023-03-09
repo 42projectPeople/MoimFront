@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useSelector } from "react-redux";
 import { Spacer } from "../../../components/Spacer";
 import { Octicons } from "@expo/vector-icons";
@@ -11,11 +17,12 @@ import {
 import { RootState } from "../../../redux/RootReducer";
 import { useAppDispatch } from "../../../redux/RootStore";
 import { postEventSlice } from "../../../redux/Slices/EventPost";
+import { useFocusEffect } from "@react-navigation/native";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const PostInput: React.FC<{
+interface PostInputType {
   inputTitle: string;
   textMax: number;
   PlaceHolder?: string;
@@ -23,30 +30,50 @@ export const PostInput: React.FC<{
   type: inputType;
   isForce: boolean;
   height: number;
-}> = (props) => {
+}
+
+export const PostInput: React.FC<PostInputType> = (props) => {
   const dispatch = useAppDispatch();
   const event = useSelector((state: RootState) => state.eventPost);
   const [len, setLen] = useState(0);
 
   const onChangeText = (text: string) => {
+    const filteredText = text.replace(
+      /[^\wㄱ-ㅎㅏ-ㅣ가-힣!@#$%^&*(),.?":{}|<>\n]/g,
+      ""
+    );
     if (props.type === 0) {
-      dispatch(postEventSlice.actions.addTitle({ eventTitle: text }));
-      setLen(event.eventTitle.length);
+      const title = text.replace(
+        /[^\wㄱ-ㅎㅏ-ㅣ가-힣!@#$%^&*(),.?":{}|<>]/g,
+        ""
+      );
+      dispatch(postEventSlice.actions.addTitle({ eventTitle: title }));
     } else if (props.type === 1) {
       dispatch(
-        postEventSlice.actions.addDescription({ eventDescription: text })
+        postEventSlice.actions.addDescription({
+          eventDescription: filteredText,
+        })
       );
-      setLen(event.eventDescription.length);
     } else {
       dispatch(
-        postEventSlice.actions.addOpenTalkLink({ eventOpenTalkLink: text })
+        postEventSlice.actions.addOpenTalkLink({
+          eventOpenTalkLink: filteredText,
+        })
       );
-      setLen(event.eventOpenTalkLink.length);
     }
+    setLen(filteredText.length);
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setLen(0);
+      };
+    }, [])
+  );
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Spacer />
       <View
         style={{
@@ -77,31 +104,28 @@ export const PostInput: React.FC<{
       <Spacer size={5} />
       <View
         style={{
-          height: props.height,
           paddingBottom: 5,
-          borderRadius: 5,
-          borderColor: "rgba(0,0,0,0.2)",
-          borderWidth: 1,
+          borderBottomColor: "rgba(0,0,0,0.2)",
+          borderBottomWidth: 1,
           flexDirection: "row",
+          flex: 1,
         }}
       >
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        >
-          <TextInput
-            style={{ marginLeft: 10, fontSize: 18 }}
-            value={props.value}
-            onChangeText={onChangeText}
-            maxLength={props.textMax}
-            placeholder={props.PlaceHolder || "Enter your text here..."}
-            multiline={true}
-            editable={true}
-            autoFocus={true}
-            keyboardType="default"
-            clearButtonMode="while-editing"
-          />
-        </ScrollView>
+        <TextInput
+          style={{
+            marginLeft: 10,
+            fontSize: 18,
+            width: wp * 0.85,
+            flex: 1,
+          }}
+          value={props.value}
+          onChangeText={onChangeText}
+          maxLength={props.textMax}
+          placeholder={props.PlaceHolder || "Enter your text here..."}
+          multiline={true}
+          clearButtonMode="while-editing"
+          hitSlop={{ top: 10, bottom: 10 }}
+        />
       </View>
     </View>
   );

@@ -78,10 +78,10 @@ export const MapScreen: React.FC = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.004,
-          longitudeDelta: 0.004,
+          latitude: latitude === 0 ? 37.4882618 : latitude,
+          longitude: longitude === 0 ? 127.06529 : longitude,
+          latitudeDelta: latitude === 0 ? 0.01 : 0.004,
+          longitudeDelta: longitude === 0 ? 0.01 : 0.004,
         }}
       >
         {isSelected && (

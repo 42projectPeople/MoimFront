@@ -22,9 +22,8 @@ export const MapSearchStyles = StyleSheet.create({
   searchBar: {
     flex: 1,
     height: hp * 0.05,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 5,
+    borderBottomColor: "rgba(0,0,0,0.2)",
+    borderBottomWidth: 1,
     paddingHorizontal: 10,
     marginRight: 5,
     fontSize: 18,
