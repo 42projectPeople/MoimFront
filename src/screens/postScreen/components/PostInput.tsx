@@ -43,7 +43,7 @@ export const PostInput: React.FC<PostInputType> = (props) => {
   const [len, setLen] = useState(0);
 
   const onChangeText = (text: string) => {
-    const first = text.replace(SwearWordsFilter, "***");
+    const first = text.replace(SwearWordsFilter, "*");
     const filteredText = first.replace(InputFilterAsWhiteSpace, "");
     if (props.type === 0) {
       const title = first.replace(InputFilterAsSpace, "");
