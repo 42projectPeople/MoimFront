@@ -27,7 +27,7 @@ export const HashtagScreen: React.FC = () => {
 		setLoading(true);
 		try {
 			const res = await axios.get(
-				`http://54.180.201.67:3000/hashtag/events/1?page=${page}&recommendation=true&pageSize=${PAGE_SIZE}`,
+				`http://54.180.201.67:3000/hashtag/events/${category}?page=${page}&recommendation=true&pageSize=${PAGE_SIZE}`,
 				{ 
 					headers: { Accept: "application/json", }
 				}

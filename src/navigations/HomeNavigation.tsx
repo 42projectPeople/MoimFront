@@ -18,7 +18,7 @@ export type HomeStackParam = {
 	imageUri: string,
   };
   HashTag: {
-	category: string
+	category: number,
   };
   Search: undefined;
 };

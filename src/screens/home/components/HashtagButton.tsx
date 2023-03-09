@@ -4,10 +4,11 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 export const HashtagButton: React.FC<{
   source: number;
   iconName: string;
-  onPressHashtag: (hashtag: string) => void;
+  hashtag: number,
+  onPressHashtag: (hashtag: number) => void;
 }> = (props) => {
   return (
-    <TouchableOpacity onPress={() => props.onPressHashtag(props.iconName)}>
+    <TouchableOpacity onPress={() => props.onPressHashtag(props.hashtag)}>
       <View
         style={{
           flexDirection: "column",

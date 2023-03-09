@@ -17,7 +17,7 @@ export const HomeScreen: React.FC = () => {
   const onPressEvent = useCallback(() => {
     homenavigation.navigate("Event" as never);
   }, [homenavigation]);
-  const onPressHashtag = useCallback((hashtag: string) => {
+  const onPressHashtag = useCallback((hashtag: number) => {
     homenavigation.navigate("HashTag", { category : hashtag });
   }, [homenavigation]);
   return (
