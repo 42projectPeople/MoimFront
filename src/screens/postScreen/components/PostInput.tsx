@@ -68,7 +68,10 @@ export const PostInput: React.FC<PostInputType> = (props) => {
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        setLen(0);
+        if (props.type === 0) setLen(event.eventTitle.length);
+        else if (props.type === 1) setLen(event.eventDescription.length);
+        else if (props.type === 2) setLen(event.eventOpenTalkLink.length);
+        else setLen(0);
       };
     }, [])
   );

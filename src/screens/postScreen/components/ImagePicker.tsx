@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerTitle } from "./ImagePickerTitle";
@@ -16,22 +16,23 @@ import { useFocusEffect } from "@react-navigation/native";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const ImagePickerComponent: React.FC = () => {
+export const ImagePickerComponent: React.FC = (prop) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
+
+  const dispatch = useAppDispatch();
+
   const eventImages = useSelector(
     (state: RootState) => state.eventPost.eventImages
   );
-  const dispatch = useAppDispatch();
 
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setSelectedImages([]);
-        setUploadButtonEnabled(false);
-      };
+      setSelectedImages(eventImages);
+      setUploadButtonEnabled(eventImages.length >= 5);
     }, [])
   );
+
   const handleImageSelection = async () => {
     let result = (await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -46,34 +47,21 @@ export const ImagePickerComponent: React.FC = () => {
       );
       dispatch(postEventSlice.actions.addImages(newSelectedImages));
       setSelectedImages(newSelectedImages);
-      // enable upload button if the number of images is less than 5
-      if (newSelectedImages.length < 5) {
-        setUploadButtonEnabled(false);
-      }
-    }
-    if (eventImages.length > 4) {
-      // disable upload button if maximum number of images has been reached
-      setUploadButtonEnabled(true);
-      return;
+      setUploadButtonEnabled(newSelectedImages.length >= 5);
     }
   };
 
-  // function to handle image cancellation
   const handleImageCancel = (index: number) => {
     const newSelectedImages = [...selectedImages];
     newSelectedImages.splice(index, 1);
     dispatch(postEventSlice.actions.deleteImages(newSelectedImages));
     setSelectedImages(newSelectedImages);
-
-    // enable upload button if the number of images is less than 5
-    if (newSelectedImages.length < 5) {
-      setUploadButtonEnabled(false);
-    }
+    setUploadButtonEnabled(newSelectedImages.length < 5);
   };
 
   return (
     <View>
-      <ImagePickerTitle ImageCount={selectedImages.length} />
+      <ImagePickerTitle ImageCount={eventImages.length} />
       <View
         style={{
           width: wp * 0.9,

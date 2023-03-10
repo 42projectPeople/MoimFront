@@ -25,10 +25,14 @@ const initialState = {
   eventSelectImage: "",
   eventDate: "",
   eventImages: [] as string[],
-  eventMap: { name: "", address: "", longitude: 0, latitude: 0 } as Address,
+  eventMap: {
+    name: "",
+    address: "",
+    longitude: 127.06529,
+    latitude: 37.4882618,
+  } as Address,
   eventParticipant: 0,
   eventImageCount: 0,
-  eventSetCount: 0,
   eventCalender: { day: 0, month: 0, year: 0 } as CalenderType,
   eventTime: { hours: 0, minute: 0 } as TimeType,
 };
@@ -52,8 +56,8 @@ export const postEventSlice = createSlice({
     addParticipant(state, action: PayloadAction<number>) {
       state.eventParticipant = action.payload;
     },
-    addImages(state, action) {
-      state.eventImages.push(action.payload.eventSelectImage as never);
+    addImages(state, action: PayloadAction<string[]>) {
+      state.eventImages = action.payload;
       state.eventImageCount = state.eventImageCount + 1;
     },
     addDate(state, action: PayloadAction<string>) {
@@ -68,19 +72,16 @@ export const postEventSlice = createSlice({
     addMap(state, action: PayloadAction<Address>) {
       state.eventMap = action.payload;
     },
-    addSetCount(state) {
-      state.eventSetCount = state.eventSetCount + 1;
-    },
-    deleteTitle(state, action) {
+    deleteTitle(state) {
       state.eventTitle = "";
     },
-    deleteDescription(state, action) {
+    deleteDescription(state) {
       state.eventDescription = "";
     },
-    deleteOpenTalkLink(state, action) {
+    deleteOpenTalkLink(state) {
       state.eventOpenTalkLink = "";
     },
-    deleteMap(state, action) {
+    deleteMap(state) {
       state.eventMap = {
         name: "",
         address: "",
@@ -88,18 +89,19 @@ export const postEventSlice = createSlice({
         longitude: 0,
       };
     },
-    deleteHashtagId(state, action) {
+    deleteHashtagId(state) {
       state.eventHashtagId = 0;
     },
-    deleteParticipant(state, action) {
+    deleteParticipant(state) {
       state.eventParticipant = 0;
     },
-    deleteImages(state, action) {
-      state.eventImages.filter((image) => image !== action.payload.imageUri);
-      state.eventImageCount = state.eventImageCount - 1;
+    deleteImages(state, action: PayloadAction<string[]>) {
+      state.eventImages = action.payload;
+      state.eventImageCount = action.payload.length;
     },
-    deleteSetCount(state, action) {
-      state.eventSetCount = state.eventSetCount - 1;
+    deleteAllImage(state) {
+      state.eventImages = [];
+      state.eventImageCount = 0;
     },
     deleteDate(state) {
       state.eventDate = "";
@@ -107,19 +109,8 @@ export const postEventSlice = createSlice({
       state.eventCalender = { day: 0, month: 0, year: 0 };
     },
     deleteAll(state) {
-      state.eventTitle = "";
-      state.eventDescription = "";
-      state.eventOpenTalkLink = "";
-      state.eventHashtagId = 0;
-      state.eventSelectImage = "";
-      state.eventImages = [];
-      state.eventMap = { name: "", address: "", longitude: 0, latitude: 0 };
-      state.eventParticipant = 0;
-      state.eventImageCount = 0;
-      state.eventSetCount = 0;
-      state.eventDate = "";
-      state.eventCalender = { day: 0, month: 0, year: 0 };
-      state.eventTime = { hours: 0, minute: 0 };
+      state = initialState;
+      return initialState;
     },
   },
   extraReducers: (builder) => {},

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { View, Alert, BackHandler } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -24,6 +24,12 @@ export const PostHeader: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeStackParam, "EventPost">>();
   const event = useSelector((state: RootState) => state.eventPost);
+
+  const handleDeleteAll = useCallback(() => {
+    dispatch(postEventSlice.actions.deleteAll());
+    console.log("호출");
+  }, [dispatch]);
+
   const handleBackButton = () => {
     Alert.alert(
       "",
@@ -37,8 +43,8 @@ export const PostHeader: React.FC = () => {
         {
           text: "Yes",
           onPress: () => {
-            dispatch(postEventSlice.actions.deleteAll());
-            navigation.goBack();
+            handleDeleteAll();
+            navigation.navigate("Home");
           },
         },
       ],
@@ -66,6 +72,18 @@ export const PostHeader: React.FC = () => {
         {
           text: "Yes",
           onPress: () => {
+            console.log(event);
+            if (
+              event.eventTitle.length <= 0 &&
+              event.eventImageCount <= 0 &&
+              event.eventHashtagId <= 0 &&
+              event.eventParticipant <= 0 &&
+              event.eventMap.address.length <= 0 &&
+              event.eventDate.length <= 0
+            ) {
+              Alert.alert("", "필수항목을 입력해주세요.");
+              return;
+            }
             // TODO: 여기가 곧 모든걸 파싱하고 폼을 완성해서 서버로 보내는 곳
             navigation.navigate("Event");
           },

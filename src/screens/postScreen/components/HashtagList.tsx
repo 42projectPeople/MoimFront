@@ -14,15 +14,12 @@ import { useFocusEffect } from "@react-navigation/native";
 
 export const HashtagList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [selectedHashtagId, setSelectedHashtagId] = useState<number>(0);
   const hashtagId = useSelector(
     (state: RootState) => state.eventPost.eventHashtagId
   );
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setSelectedHashtagId(hashtagId);
-      };
+      return () => {};
     }, [])
   );
 
@@ -38,7 +35,7 @@ export const HashtagList: React.FC = () => {
     ];
     const hashtagNumber = [1, 2, 3, 4, 5, 6, 7];
     return hashtagName.map((hashtag: string, index: number) => {
-      const isSelected = hashtagNumber[index] === selectedHashtagId;
+      const isSelected = hashtagNumber[index] === hashtagId;
       return (
         <TouchableOpacity
           key={index}
@@ -47,8 +44,7 @@ export const HashtagList: React.FC = () => {
             isSelected && styles.selectedHashtagButton,
           ]}
           onPress={() => {
-            setSelectedHashtagId(hashtagNumber[index]);
-            dispatch(postEventSlice.actions.addHashtagId(selectedHashtagId));
+            dispatch(postEventSlice.actions.addHashtagId(hashtagNumber[index]));
           }}
         >
           <Text

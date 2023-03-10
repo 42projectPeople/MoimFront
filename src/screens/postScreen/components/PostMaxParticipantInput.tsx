@@ -40,19 +40,23 @@ export const PostMaxParticipantInput: React.FC = () => {
   const handleConfirmPress = () => {
     const filteredText = number.replace(/[^\d.]/g, ""); // 숫자와 소수점만 추출
     const dotIndex = filteredText.indexOf(".");
-
     if (dotIndex >= 0) {
       Alert.alert("잘못된 입력", "올바른 숫자를 입력해주세요.", [
         { text: "확인" },
       ]);
     } else {
-      const maxParticipant = parseFloat(filteredText);
-
-      if (isNaN(maxParticipant) || maxParticipant > 1000) {
+      const maxParticipant = Number(filteredText);
+      if (
+        isNaN(maxParticipant) ||
+        maxParticipant > 1000 ||
+        maxParticipant < 1
+      ) {
         // 숫자가 아닌 값이나 1000명 이상인 경우 알림 메시지 출력
-        Alert.alert("잘못된 입력", "1000명 이하의 숫자를 입력해주세요.", [
-          { text: "확인" },
-        ]);
+        Alert.alert(
+          "잘못된 입력",
+          "1명이상 1000명 이하의 숫자를 입력해주세요.",
+          [{ text: "확인" }]
+        );
       } else {
         dispatch(postEventSlice.actions.addParticipant(maxParticipant));
         setNumber("");

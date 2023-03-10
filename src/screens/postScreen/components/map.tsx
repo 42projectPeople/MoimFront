@@ -20,7 +20,6 @@ const hp = hpSize("100%");
 export const MapScreen: React.FC = () => {
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
-  const [region, setRegion] = useState<LatLng | undefined>();
   const [isSelected, setIsSelected] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -29,9 +28,8 @@ export const MapScreen: React.FC = () => {
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        setLatitude(0);
-        setLongitude(0);
-        setRegion(undefined);
+        setLatitude(eventMap.latitude);
+        setLongitude(eventMap.longitude);
         setIsSelected(false);
       };
     }, [])
@@ -55,22 +53,13 @@ export const MapScreen: React.FC = () => {
     setLongitude(Number(data.addresses[0].x)); // 위도와 경도의 순서를 바꿉니다.
     dispatch(
       postEventSlice.actions.addMap({
-        latitude: Number(data.address[0].y),
-        longitude: Number(data.address[0].x),
+        latitude: Number(data.addresses[0].y),
+        longitude: Number(data.addresses[0].x),
         address: place.roadAddress,
         name: place.name,
       })
     );
   };
-
-  useEffect(() => {
-    if (eventMap) {
-      setRegion({
-        latitude: eventMap.latitude,
-        longitude: eventMap.longitude,
-      });
-    }
-  }, [eventMap]);
 
   return (
     <View style={styles.container}>
@@ -78,8 +67,8 @@ export const MapScreen: React.FC = () => {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         region={{
-          latitude: latitude === 0 ? 37.4882618 : latitude,
-          longitude: longitude === 0 ? 127.06529 : longitude,
+          latitude: latitude,
+          longitude: longitude,
           latitudeDelta: latitude === 0 ? 0.01 : 0.004,
           longitudeDelta: longitude === 0 ? 0.01 : 0.004,
         }}
@@ -103,10 +92,10 @@ export const MapScreen: React.FC = () => {
         }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          {eventMap ? `${eventMap.name}` : "주소선택을 해주세요."}
+          {eventMap.name ? `${eventMap.name}` : "주소선택을 해주세요."}
         </Text>
         <Spacer size={10} />
-        <Text>{eventMap ? `${eventMap.address}` : ""}</Text>
+        <Text>{eventMap.address ? `${eventMap.address}` : ""}</Text>
       </View>
       <Spacer />
       <MapSearch
