@@ -1,14 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  View,
-  ScrollView,
-  Image,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState } from "react";
+import { View, ScrollView } from "react-native";
 import { EventHeader } from "./components/Header";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAppDispatch } from "../../redux/RootStore";
 import { useSelector } from "react-redux";
@@ -44,11 +36,6 @@ export const EventScreen: React.FC = () => {
     }, [])
   );
 
-  useEffect(() => {
-    // TODO: GET 요청 eventId가 변경이 된다면? 리렌더링을 위한 코드
-    if (event.event.host.id === user.userId) setIsHost(true);
-    else setIsHost(false);
-  }, [event.eventId]);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <EventHeader />

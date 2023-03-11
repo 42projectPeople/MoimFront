@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
