@@ -9,6 +9,8 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { EventSlice } from "../../../redux/Slices/Event";
 
 type RootStackParamList = {
   Home: undefined;
@@ -18,14 +20,13 @@ type RootStackParamList = {
 const wp = wpSize("100");
 const hp = hpSize("100%");
 
-export const EventHeader: React.FC<{
-  showBackButton: boolean;
-}> = (props) => {
-  const dispatch = useDispatch();
+export const EventHeader: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const onPressBack = () => {
+    dispatch(EventSlice.actions.deleteEvent());
     navigation.goBack();
   };
 

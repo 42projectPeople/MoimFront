@@ -6,17 +6,18 @@ import {
 } from "@react-navigation/native-stack";
 import React from "react";
 import { HomeScreen } from "../screens/home/HomeScreen";
-import { EventScreen } from "../screens/eventScreen/EventScreen";
-import { HashtagScreen } from "../screens/hashtagScreen/HashtagScreen";
-import { PostEventScreen } from "../screens/postScreen/PostEventScreen";
 import { SearchScreen } from "src/screens/searchScreen/SearchScreen";
+import { EventScreen } from "../screens/Event/Event";
+import { PostEventScreen } from "../screens/postScreen/PostEventScreen";
+import { ProfileScreen } from "../screens/ProfileScreen";
+import { HashtagScreen } from "src/screens/hashtagScreen/HashtagScreen";
 
 export type HomeStackParam = {
   Home: undefined;
   Event: undefined;
   HashTag: undefined;
   EventPost: undefined;
-  UserProfile: undefined;
+  User: undefined;
 };
 
 const HomeStackScreenOptions = {
@@ -37,6 +38,7 @@ export const HomeNavigation: React.FC = () => {
       <HomeStack.Screen name="HashTag" component={HashtagScreen} />
       <HomeStack.Screen name="Search" component={SearchScreen} />
       <HomeStack.Screen name="EventPost" component={PostEventScreen} />
+      <HomeStack.Screen name="User" component={ProfileScreen} />
     </HomeStack.Navigator>
   );
 };

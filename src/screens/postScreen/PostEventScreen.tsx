@@ -24,6 +24,7 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { Octicons } from "@expo/vector-icons";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -47,7 +48,7 @@ export const PostEventScreen: React.FC = () => {
       >
         <ScrollView
           contentContainerStyle={{
-            paddingBottom: hp * 0.15,
+            paddingBottom: hp * 0.3,
             paddingTop: hp * 0.08,
             flexGrow: 1,
           }}
@@ -57,8 +58,25 @@ export const PostEventScreen: React.FC = () => {
               <Text style={{ fontSize: 28, fontWeight: "bold" }}>
                 이벤트 작성하기
               </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                }}
+              >
+                <Text style={{ fontSize: 12 }}>(</Text>
+                <Octicons
+                  name="check"
+                  size={15}
+                  color="red"
+                  style={{ paddingHorizontal: 4 }}
+                />
+                <Text style={{ fontSize: 12 }}> 필수항목)</Text>
+              </View>
             </View>
             <PostTitleInput />
+            <Spacer size={hp * 0.05} />
+            <PostDescriptionInput />
+            <Spacer size={hp * 0.05} />
             <View
               style={{
                 width: wp * 0.9,
@@ -66,31 +84,23 @@ export const PostEventScreen: React.FC = () => {
             >
               <ImagePickerComponent />
             </View>
-            <Spacer size={hp * 0.05} />
+            <Spacer size={hp * 0.07} />
             <View>
               <PostMaxParticipantInput />
             </View>
-            <Spacer size={hp * 0.05} />
+            <Spacer size={hp * 0.07} />
             <PostTitle postTitle="이벤트 해시태그 선택" isCheck={true} />
             <HashtagList />
-            <Spacer size={hp * 0.05} />
+            <Spacer size={hp * 0.07} />
             <PostTitle postTitle="이벤트 날짜 선택" isCheck={true} />
             <PostCalender />
-            <Spacer size={hp * 0.05} />
+            <Spacer size={hp * 0.07} />
             <View>
               <PostTitle postTitle="이벤트 장소 선택" isCheck={true} />
               <Spacer size={hp * 0.01} />
               <MapScreen />
             </View>
-            <Spacer size={hp * 0.15} />
-            <View style={{ alignItems: "center" }}>
-              <Text style={{ fontSize: 28, fontWeight: "bold" }}>
-                추가정보 입력하기
-              </Text>
-            </View>
-            <Spacer size={hp * 0.05} />
-            <PostDescriptionInput />
-            <Spacer size={hp * 0.05} />
+            <Spacer size={hp * 0.1} />
             <PostOpenTalkInput />
           </View>
           <Spacer size={hp * 0.05} />

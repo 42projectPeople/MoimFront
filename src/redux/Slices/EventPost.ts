@@ -85,8 +85,8 @@ export const postEventSlice = createSlice({
       state.eventMap = {
         name: "",
         address: "",
-        latitude: 0,
-        longitude: 0,
+        latitude: 37.4882618,
+        longitude: 127.06529,
       };
     },
     deleteHashtagId(state) {

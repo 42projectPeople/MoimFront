@@ -56,7 +56,7 @@ export const ImagePickerComponent: React.FC = (prop) => {
     newSelectedImages.splice(index, 1);
     dispatch(postEventSlice.actions.deleteImages(newSelectedImages));
     setSelectedImages(newSelectedImages);
-    setUploadButtonEnabled(newSelectedImages.length < 5);
+    setUploadButtonEnabled(newSelectedImages.length < 5 ? false : true);
   };
 
   return (
@@ -66,8 +66,8 @@ export const ImagePickerComponent: React.FC = (prop) => {
         style={{
           width: wp * 0.9,
           height: wp * 0.9 * 0.75,
-          borderColor: "rgba(0,0,0,0.2)",
-          borderWidth: 1,
+          borderBottomColor: "rgba(0,0,0,0.2)",
+          borderBottomWidth: 1,
           justifyContent: "center",
           alignItems: "center",
           borderRadius: 10,
@@ -75,7 +75,7 @@ export const ImagePickerComponent: React.FC = (prop) => {
         }}
       >
         {eventImages.length > 0 && (
-          <ScrollView horizontal={true}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {selectedImages.map((imageUri, index) => (
               <View key={index}>
                 <Image
