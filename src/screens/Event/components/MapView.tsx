@@ -46,8 +46,7 @@ export const EventMapView: React.FC = () => {
           longitudeDelta: 0.004, // specifies the delta that determines the zoom level of the map
         }}
         followsUserLocation={true}
-        zoomEnabled={true} // 이 부분을 추가하면 지도의 확대/축소 기능이 활성화됩니다.
-        zoomControlEnabled={true} // 이 부분을 추가하면 지도의 확대/축소 컨트롤이 활성화됩니다.
+        scrollEnabled={false}
       >
         <Marker
           coordinate={{ longitude: longitude, latitude: latitude }} // 핀의 위치를 지정합니다.
