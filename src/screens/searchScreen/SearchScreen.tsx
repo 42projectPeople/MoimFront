@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
-import { View, Text, TextInput, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MoimHeader } from "../home/components/MoimHeader";
 import { EventFlatList } from "./component/EventFlatList";
 import { widthPercentageToDP as wpSize, 
@@ -10,14 +11,15 @@ const wp = wpSize('100%');
 const hp = hpSize('100%');
 
 export const SearchScreen: React.FC = () => {
-	const [input, setInput] = useState('');
+	const [input, setInput] = useState<string>('');
 
 	const handleInputChange = (input: string) => {
 		setInput(input);
 	}
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView edges={["top"]} style={{flex: 1}}>
+
 		<SearchHeader />
 		{/*<MoimHeader showBackButton={true} />*/}
 		<TextInput
@@ -28,7 +30,7 @@ export const SearchScreen: React.FC = () => {
 		/>
 		<EventFlatList input={input} />
 		<View style={styles.lastMargin}></View>
-    </View>
+    </SafeAreaView>
   );
 };
 

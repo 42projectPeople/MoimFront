@@ -30,47 +30,58 @@ export const UserFlatList: React.FC<props> = ({ input }) => {
 		}, 500)
 	).current
 
-	const userArrMap = (res: any) => {
-		const newArr = res.data.map((data: any) => ({
+	const userArrMap = (dataObj: object[]) => {
+		const newArr = dataObj.map((data: any) => ({
 			userId: data.u_userId,
 			nickname: data.u_userNickName,
 			profilePhoto: data.u_userProfilePhoto,
 			}));
-		return (newArr);
+			return (newArr);
+	}
+
+	const isvaild = (target: string | object) => {
+		return (!target ? false : true);
 	}
 
 	const getUserData = async(input: string) => {
-		if(input != null && input != '')
-		{
-			try{
+		try{
 				const res = await axios.get(
-					`http://54.180.201.67:3000/search/user?word=${input}&page=${userPage}&pageSize=${USER_PAGE_SIZE}
-					&sortByLevel=true&sortByName=true`,
-					{ headers: { Accept: "application/json", withCredentials : true }}
+				`http://54.180.201.67:3000/search/user?word=${input}&page=${userPage}&pageSize=${USER_PAGE_SIZE}
+				&sortByLevel=true&sortByName=true`,
+				{ headers: { Accept: "application/json", withCredentials : true }}
 				)
-				const newUserArr = userArrMap(res);
+				if (!isvaild(res.data)) {
+					return ;
+				}
+				const newUserArr = userArrMap(res.data);
 				setUserArr(dataArr =>[...dataArr, ...newUserArr]);
 				setUserPage(userPage + 1);
-			} 
-			catch(error) {
-				console.log(error);
-			}
+		} catch(error) {
+			console.error(error);
 		}
+		
 	}
-
-	const handleEndReachedUser = () => { 
-		try {
-			getUserData(input);
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
-	useEffect(()=> {
-		if(input != null || input != '')
-			delayedQuery(input);
+	const initializeState = () => {
 		setUserArr([]);
 		setUserPage(1);
+	}
+	const handleEndReachedUser = () => { 
+		try {
+			if (isvaild(input))
+				getUserData(input);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	useLayoutEffect(()=> {
+		try {
+			initializeState();
+			if(isvaild(input))
+				delayedQuery(input);
+		} catch (err) {
+			console.error(err);
+		}
 	}, [input])
 
   return (
