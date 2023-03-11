@@ -2,9 +2,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, StyleSheet, View, ViewBase } from "react-native";
-import { PostEventScreen } from "../screens/postScreen/PostEventScreen";
-import { EventListScreen } from "../screens/enrollScreen/EventListScreen";
-import { ProfileScreen } from "../screens/ProfileScreen";
+import { PostEventScreen } from "../Screens/EventPost/PostEventScreen";
+import { ProfileScreen } from "../Screens/ProfileScreen";
 import { HomeNavigation } from "./HomeNavigation";
 import { useSelector } from "react-redux";
 
@@ -13,6 +12,7 @@ import {
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { EventListScreen } from "src/screens/enrollScreen/EventListScreen";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");

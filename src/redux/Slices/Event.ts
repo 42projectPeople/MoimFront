@@ -73,6 +73,9 @@ export const EventSlice = createSlice({
     addEventId(state, action: PayloadAction<number>) {
       state.eventId = action.payload;
     },
+    addEventISGuest(state, action: PayloadAction<boolean>) {
+      state.isGuest = action.payload;
+    },
     deleteEvent(state) {
       state = initialState;
       state.eventId = 0;

@@ -18,12 +18,11 @@ const wp = wpSize("100%");
 const hp = hpSize("100%");
 
 export const MapScreen: React.FC = () => {
-  const [longitude, setLongitude] = useState<number>(0);
-  const [latitude, setLatitude] = useState<number>(0);
-  const [isSelected, setIsSelected] = useState(false);
-
   const dispatch = useAppDispatch();
   const eventMap = useSelector((state: RootState) => state.eventPost.eventMap);
+  const [longitude, setLongitude] = useState<number>(eventMap.longitude);
+  const [latitude, setLatitude] = useState<number>(eventMap.latitude);
+  const [isSelected, setIsSelected] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -72,6 +71,8 @@ export const MapScreen: React.FC = () => {
           latitudeDelta: latitude === 0 ? 0.01 : 0.004,
           longitudeDelta: longitude === 0 ? 0.01 : 0.004,
         }}
+        followsUserLocation={true}
+        scrollEnabled={false}
       >
         {isSelected && (
           <Marker

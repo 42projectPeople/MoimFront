@@ -125,7 +125,13 @@ export const PostCalender: React.FC = () => {
       <DateTimePickerModal
         isVisible={isTimePickerVisible}
         mode="time"
-        minuteInterval={30}
+        minuteInterval={10}
+        isDarkModeEnabled={true}
+        cancelTextIOS={"취소"}
+        confirmTextIOS={"선택"}
+        buttonTextColorIOS={"white"}
+        textColor={"white"}
+        is24Hour={true}
         onConfirm={handleTimeSelect}
         onCancel={() => setIsTimePickerVisible(false)}
       />

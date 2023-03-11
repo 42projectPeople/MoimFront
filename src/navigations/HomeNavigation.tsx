@@ -5,12 +5,12 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
-import { HomeScreen } from "../screens/home/HomeScreen";
+import { HomeScreen } from "../Screens/Home/HomeScreen";
+import { EventScreen } from "../Screens/Event/Event";
+import { HashtagScreen } from "../Screens/HashtagScreen";
+import { PostEventScreen } from "../Screens/EventPost/PostEventScreen";
+import { ProfileScreen } from "../Screens/ProfileScreen";
 import { SearchScreen } from "src/screens/searchScreen/SearchScreen";
-import { EventScreen } from "../screens/Event/Event";
-import { PostEventScreen } from "../screens/postScreen/PostEventScreen";
-import { ProfileScreen } from "../screens/ProfileScreen";
-import { HashtagScreen } from "src/screens/hashtagScreen/HashtagScreen";
 
 export type HomeStackParam = {
   Home: undefined;
