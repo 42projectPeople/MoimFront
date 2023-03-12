@@ -2,8 +2,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, StyleSheet, View, ViewBase } from "react-native";
-import { PostEventScreen } from "../Screens/EventPost/PostEventScreen";
-import { ProfileScreen } from "../Screens/ProfileScreen";
+import { PostEventScreen } from "../screens/EventPost/PostEventScreen";
+import { ProfileScreen } from "../screens/ProfileScreen";
 import { HomeNavigation } from "./HomeNavigation";
 import { useSelector } from "react-redux";
 
