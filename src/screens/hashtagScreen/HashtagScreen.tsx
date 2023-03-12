@@ -5,6 +5,7 @@ import HashTagView from "./HashtagView";
 import axios from "axios";
 import { useHomeNavigation } from "../../navigations/Navigation";
 import { useRouteProps } from "../../navigations/Navigation";
+import SearchHeader from "../searchScreen/SearchHeader";
 
 export type dataType = {
 	eventId: string,
@@ -66,7 +67,7 @@ export const HashtagScreen: React.FC = () => {
 
   return (
     <View>
-      <MoimHeader showBackButton={true} />
+      <SearchHeader />
       {/*<Text>{category}</Text>*/}
 			<FlatList
 				data = {dataArr}

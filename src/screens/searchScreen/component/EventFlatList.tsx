@@ -27,48 +27,60 @@ export const EventFlatList: React.FC<props> = ({ input }) => {
 		}, 500)
 	).current
 
-	const eventArrMap = (res: any) => {
-		const newArr = res.data.map((data: any) => ({
+	const isvaild = (target: string | object) => {
+		return (!target ? false : true);
+	}
+
+	const eventArrMap = (dataObj: object[]) => {
+		const newArr = dataObj.map((data: any) => ({
 			eventId: data.e_eventId,
 			header: data.e_header,
 			location: data.e_location,
 			main_image: data.e_main_image,
 			}));
-		return (newArr);
+			return (newArr);
 	}
 
 	const getEventData = async(input: string) => {
-		if(input != null && input != '')
-		{
-			try{
-				const res = await axios.get(
-					`http://54.180.201.67:3000/search/event?word=${input}&page=${eventPage}&pageSize=${PAGE_SIZE}
-					&sortByViews=true&includeMax=false&sortByRating=false`,
-					{ headers: { Accept: "application/json", withCredentials : true }}
-				)
-				const newEventArr = eventArrMap(res);
-				setEventArr(dataArr =>[...dataArr, ...newEventArr]);
-				setEventPage(eventPage + 1);
-			} 
-			catch(error) {
-				console.log(error);
+		try{
+			const res = await axios.get(
+				`http://54.180.201.67:3000/search/event?word=${input}&page=${eventPage}&pageSize=${PAGE_SIZE}
+				&sortByViews=true&includeMax=false&sortByRating=false`,
+				{ headers: { Accept: "application/json", withCredentials : true }}
+			)
+			if (!isvaild(res.data)) {
+				return ;
 			}
+			const newEventArr = eventArrMap(res.data);
+			setEventArr(dataArr =>[...dataArr, ...newEventArr]);
+			setEventPage(eventPage + 1);
+		} catch(error) {
+			console.error(error);
 		}
+	}
+
+	const initializeState = () => {
+		setEventArr([]);
+		setEventPage(1);
 	}
 
 	const handleEndReachedEvent = () => {
 		try {
-			getEventData(input);
+			if (isvaild(input))
+				getEventData(input);
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	}
 
-	useEffect(()=> {
-		if(input != null || input != '')
-			delayedQuery(input);
-		setEventArr([]);
-		setEventPage(1);
+	useLayoutEffect(()=> {
+		try {
+			initializeState();
+			if(isvaild(input))
+				delayedQuery(input);
+		} catch (err) {
+			console.error(err);
+		}
 	}, [input])
 
   return (
