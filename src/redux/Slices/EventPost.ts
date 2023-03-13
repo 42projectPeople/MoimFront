@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PostEventDto } from "src/Screens/EventPost/Types/PostDto";
 
 interface CalenderType {
   day: number;
@@ -17,7 +18,27 @@ interface Address {
   name: string;
 }
 
-const initialState = {
+export interface EventPostDto {
+  eventTitle: string;
+  eventDescription: string;
+  eventOpenTalkLink: string;
+  eventHashtagId: number;
+  eventDate: string;
+  eventImages: string[];
+  eventSelectImage: string;
+  eventMap: {
+    name: string;
+    address: string;
+    longitude: number;
+    latitude: number;
+  };
+  eventParticipant: number;
+  eventImageCount: number;
+  eventCalender: { day: number; month: number; year: number };
+  eventTime: { hours: number; minute: number };
+}
+
+const initialState: EventPostDto = {
   eventTitle: "",
   eventDescription: "",
   eventOpenTalkLink: "",
@@ -30,25 +51,25 @@ const initialState = {
     address: "",
     longitude: 127.06529,
     latitude: 37.4882618,
-  } as Address,
+  },
   eventParticipant: 0,
   eventImageCount: 0,
-  eventCalender: { day: 0, month: 0, year: 0 } as CalenderType,
-  eventTime: { hours: 0, minute: 0 } as TimeType,
+  eventCalender: { day: 0, month: 0, year: 0 },
+  eventTime: { hours: 0, minute: 0 },
 };
 
 export const postEventSlice = createSlice({
   name: "eventPost",
   initialState: initialState,
   reducers: {
-    addTitle: (state, action) => {
-      state.eventTitle = action.payload.eventTitle;
+    addTitle: (state, action: PayloadAction<string>) => {
+      state.eventTitle = action.payload;
     },
-    addDescription: (state, action) => {
-      state.eventDescription = action.payload.eventDescription;
+    addDescription: (state, action: PayloadAction<string>) => {
+      state.eventDescription = action.payload;
     },
-    addOpenTalkLink: (state, action) => {
-      state.eventOpenTalkLink = action.payload.eventOpenTalkLink;
+    addOpenTalkLink: (state, action: PayloadAction<string>) => {
+      state.eventOpenTalkLink = action.payload;
     },
     addHashtagId(state, action: PayloadAction<number>) {
       state.eventHashtagId = action.payload;
@@ -71,6 +92,9 @@ export const postEventSlice = createSlice({
     },
     addMap(state, action: PayloadAction<Address>) {
       state.eventMap = action.payload;
+    },
+    addAll(state, action: PayloadAction<EventPostDto>) {
+      state = action.payload;
     },
     deleteTitle(state) {
       state.eventTitle = "";

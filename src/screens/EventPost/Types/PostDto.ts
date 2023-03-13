@@ -1,9 +1,9 @@
 export interface PostEventDto {
   header: string;
-  main_image: string;
   images: string[];
   eventDate: string;
-  location: string;
+  tradeName: string;
+  address: string;
   longitude: number;
   latitude: number;
   openTalk: string;

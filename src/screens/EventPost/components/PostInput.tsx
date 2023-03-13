@@ -48,19 +48,11 @@ export const PostInput: React.FC<PostInputType> = (props) => {
     if (props.type === 0) {
       const title = first.replace(InputFilterAsSpace, "");
 
-      dispatch(postEventSlice.actions.addTitle({ eventTitle: title }));
+      dispatch(postEventSlice.actions.addTitle(title));
     } else if (props.type === 1) {
-      dispatch(
-        postEventSlice.actions.addDescription({
-          eventDescription: filteredText,
-        })
-      );
+      dispatch(postEventSlice.actions.addDescription(filteredText));
     } else {
-      dispatch(
-        postEventSlice.actions.addOpenTalkLink({
-          eventOpenTalkLink: filteredText,
-        })
-      );
+      dispatch(postEventSlice.actions.addOpenTalkLink(filteredText));
     }
     setLen(filteredText.length);
   };
