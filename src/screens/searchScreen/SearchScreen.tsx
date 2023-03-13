@@ -19,9 +19,7 @@ export const SearchScreen: React.FC = () => {
 
   return (
     <SafeAreaView edges={["top"]} style={{flex: 1}}>
-
 		<SearchHeader />
-		{/*<MoimHeader showBackButton={true} />*/}
 		<TextInput
 			style={styles.textinput}
 			value={input}

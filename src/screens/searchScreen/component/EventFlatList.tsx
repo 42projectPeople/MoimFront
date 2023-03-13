@@ -20,6 +20,17 @@ type props = {
 export const EventFlatList: React.FC<props> = ({ input }) => {
 	const [eventArr, setEventArr] = useState<dataType[]>([]);
 	const [eventPage, setEventPage] = useState(1);
+	const [loading, setLoading] = useState(false);
+
+	useLayoutEffect(()=> {
+		try {
+			initializeState();
+			if(isvaild(input))
+				delayedQuery(input);
+		} catch (err) {
+			console.error(err);
+		}
+	}, [input])
 
 	const delayedQuery = useRef(
 		debounce(async(input: string) => {
@@ -37,8 +48,8 @@ export const EventFlatList: React.FC<props> = ({ input }) => {
 			header: data.e_header,
 			location: data.e_location,
 			main_image: data.e_main_image,
-			}));
-			return (newArr);
+		}));
+		return (newArr);
 	}
 
 	const getEventData = async(input: string) => {
@@ -52,8 +63,11 @@ export const EventFlatList: React.FC<props> = ({ input }) => {
 				return ;
 			}
 			const newEventArr = eventArrMap(res.data);
+			if (newEventArr.length === 0 || newEventArr.length < PAGE_SIZE)
+					setEventPage(-1);
+				else
+					setEventPage(eventPage + 1);
 			setEventArr(dataArr =>[...dataArr, ...newEventArr]);
-			setEventPage(eventPage + 1);
 		} catch(error) {
 			console.error(error);
 		}
@@ -66,22 +80,14 @@ export const EventFlatList: React.FC<props> = ({ input }) => {
 
 	const handleEndReachedEvent = () => {
 		try {
-			if (isvaild(input))
+			if (isvaild(input) && !loading && eventPage != -1)
 				getEventData(input);
+			else
+				return ;
 		} catch (error) {
 			console.error(error);
 		}
 	}
-
-	useLayoutEffect(()=> {
-		try {
-			initializeState();
-			if(isvaild(input))
-				delayedQuery(input);
-		} catch (err) {
-			console.error(err);
-		}
-	}, [input])
 
   return (
     <View style={{flex: 1}}>
@@ -101,6 +107,7 @@ export const EventFlatList: React.FC<props> = ({ input }) => {
 			}}
 			onEndReached={handleEndReachedEvent}
 			onEndReachedThreshold={0.5}
+			disableVirtualization={false}
 			showsVerticalScrollIndicator={false}
 		/>
     </View>

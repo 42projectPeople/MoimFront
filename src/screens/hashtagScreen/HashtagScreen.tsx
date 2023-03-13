@@ -6,6 +6,7 @@ import axios from "axios";
 import { useHomeNavigation } from "../../navigations/Navigation";
 import { useRouteProps } from "../../navigations/Navigation";
 import SearchHeader from "../searchScreen/SearchHeader";
+import Loading from "../../components/Loading";
 
 export type dataType = {
 	eventId: string,
@@ -24,24 +25,42 @@ export const HashtagScreen: React.FC = () => {
 	const [page, setPage] = useState(1);
 	const PAGE_SIZE = 12;
 	
+	useEffect(() => {
+		getData();
+	}, [])
+
+	const isvaild = (target: string | object) => {
+		return (!target ? false : true);
+	}
+	
+	const arrMap = (dataObj: object[]) => {
+		const newArr = dataObj.map((data: any) => ({
+			eventId: data.e_eventDate,
+				header: data.e_header,
+				location: data.e_location,
+				main_image: data.e_main_image,
+			}));
+		return (newArr);
+	}
+
 	const getData = async() => {
 		setLoading(true);
 		try {
 			const res = await axios.get(
 				`http://54.180.201.67:3000/hashtag/events/${category}?page=${page}&recommendation=true&pageSize=${PAGE_SIZE}`,
-				{ 
-					headers: { Accept: "application/json", }
-				}
+				{ headers: { Accept: "application/json", }}
 			)
-			//나중에 수정
-			const newDataArr = res.data.map((data: any) => ({
-				eventId: data.e_eventDate,
-				header: data.e_header,
-				location: data.e_location,
-				main_image: data.e_main_image,
-			  }));
+			if (!isvaild(res.data))
+			{
+				return ; // 수정
+			}
+			const newDataArr = arrMap(res.data);
+			if (newDataArr.length === 0 || newDataArr.length < PAGE_SIZE)
+				setPage(-1);
+			else
+				setPage(page + 1);
 			setDataArr(dataArr =>[...dataArr, ...newDataArr]);
-			setPage(page + 1);
+			
 		}
 		catch(error){
 			console.log(error);
@@ -51,24 +70,25 @@ export const HashtagScreen: React.FC = () => {
 		}
 	}
 
-	useEffect(() => {
-		getData();
-	}, [])
-
 	const handleEndReached = () => {
-		if (!loading) {
+		if (loading || page === -1)
+			return ;
+		else 
+		{
 			try {
-			  getData();
+				getData();
 			} catch (error) {
-			  console.log(error);
+				console.log(error);
 			}
-		  }
+		}
 	}
 
   return (
-    <View>
-      <SearchHeader />
-      {/*<Text>{category}</Text>*/}
+	loading ? 
+		<Loading />
+	:
+		<View style={{flex: 1}}>
+			<SearchHeader />
 			<FlatList
 				data = {dataArr}
 				keyExtractor={(item) => item.eventId}
@@ -76,20 +96,16 @@ export const HashtagScreen: React.FC = () => {
 				renderItem={({ item }) => {
 					const { header, location, main_image } = item;
 					return (
-							<>
-								<HashTagView 
-								title={ header.length > 40 ? header.slice(0, 39) : header }
-								location={ location.length > 40 ? location.slice(0,20) : location } 
-								imageUri={ main_image }/>
-							</>
-							)
-						}}
-						onEndReached={handleEndReached}
-						onEndReachedThreshold={0.5}
-						showsVerticalScrollIndicator={false}
-					>
-			</FlatList>
-    </View>
-  );
+						<HashTagView 
+						title={ header.length > 40 ? header.slice(0, 39) : header }
+						location={ location.length > 40 ? location.slice(0,20) : location } 
+						imageUri={ main_image }/>
+					)}}
+				onEndReached={handleEndReached}
+				onEndReachedThreshold={0.5}
+				showsVerticalScrollIndicator={false}
+			/>
+		</View>
+	);
 };
 
