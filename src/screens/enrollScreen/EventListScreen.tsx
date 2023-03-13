@@ -69,19 +69,23 @@ export const EventListScreen: React.FC = () => {
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity onPress={() => handelPressRole('host')} 
 					activeOpacity={0.7}
-					style={role ? styles.clickedRole : styles.unclickedRole}>
+					>
+						<View style={role ? styles.clickedRole : styles.unclickedRole}>
 						<Text 
 							style={role ? styles.ClickedRoleText : styles.roleText}> 
 							HOST 
 						</Text>
+						</View>
 					</TouchableOpacity>
 					<TouchableOpacity  onPress={() => handelPressRole('guest')} 
 					activeOpacity={0.7}
-					style={!role ? styles.clickedRole : styles.unclickedRole}>
+					>
+						<View style={!role ? styles.clickedRole : styles.unclickedRole}>
 						<Text 
 							style={!role ? styles.ClickedRoleText : styles.roleText}> 
 							GUEST 
 						</Text>
+						</View>
 					</TouchableOpacity>
 				</View>
 				<ScrollView style={styles.scrollContainer} 
@@ -100,22 +104,21 @@ const styles = StyleSheet.create({
 		marginHorizontal: wp * 0.06,
 	},
 	buttonContainer: {
-		width: wp * 0.38,
+		//width: wp * 0.38,
 		height: hp * 0.035,
 		flexDirection: 'row',
+		marginHorizontal: wp * 0.1,
 		marginBottom: hp * 0.01,
-		marginTop: hp * 0.006,
+		marginTop: hp * 0.002,
+		justifyContent: 'space-between',
+
 	},
 	clickedRole: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
 		borderBottomWidth: 2,
 	},
 	unclickedRole: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	roleText: {
 		fontSize: wp * 0.055,

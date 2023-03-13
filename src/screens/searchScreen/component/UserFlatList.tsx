@@ -23,6 +23,17 @@ type props = {
 export const UserFlatList: React.FC<props> = ({ input }) => {
 	const [userArr, setUserArr] = useState<userData[]>([]);
 	const [userPage, setUserPage] = useState(1);
+	const [loading, setLoading] = useState(false);
+
+	useLayoutEffect(()=> {
+		try {
+			initializeState();
+			if(isvaild(input))
+				delayedQuery(input);
+		} catch (err) {
+			console.error(err);
+		}
+	}, [input])
 
 	const delayedQuery = useRef(
 		debounce(async(input: string) => {
@@ -35,8 +46,8 @@ export const UserFlatList: React.FC<props> = ({ input }) => {
 			userId: data.u_userId,
 			nickname: data.u_userNickName,
 			profilePhoto: data.u_userProfilePhoto,
-			}));
-			return (newArr);
+		}));
+		return (newArr);
 	}
 
 	const isvaild = (target: string | object) => {
@@ -44,6 +55,7 @@ export const UserFlatList: React.FC<props> = ({ input }) => {
 	}
 
 	const getUserData = async(input: string) => {
+		setLoading(true);
 		try{
 				const res = await axios.get(
 				`http://54.180.201.67:3000/search/user?word=${input}&page=${userPage}&pageSize=${USER_PAGE_SIZE}
@@ -54,10 +66,15 @@ export const UserFlatList: React.FC<props> = ({ input }) => {
 					return ;
 				}
 				const newUserArr = userArrMap(res.data);
+				if (newUserArr.length === 0 || newUserArr.length < USER_PAGE_SIZE)
+					setUserPage(-1);
+				else
+					setUserPage(userPage + 1);
 				setUserArr(dataArr =>[...dataArr, ...newUserArr]);
-				setUserPage(userPage + 1);
 		} catch(error) {
 			console.error(error);
+		} finally {
+			setLoading(false);
 		}
 		
 	}
@@ -67,22 +84,14 @@ export const UserFlatList: React.FC<props> = ({ input }) => {
 	}
 	const handleEndReachedUser = () => { 
 		try {
-			if (isvaild(input))
+			if (isvaild(input) && !loading && userPage != -1)
 				getUserData(input);
+			else
+				return ;
 		} catch (error) {
 			console.error(error);
 		}
 	}
-
-	useLayoutEffect(()=> {
-		try {
-			initializeState();
-			if(isvaild(input))
-				delayedQuery(input);
-		} catch (err) {
-			console.error(err);
-		}
-	}, [input])
 
   return (
     <View style={{height: hp * 0.13 }}>
@@ -101,9 +110,11 @@ export const UserFlatList: React.FC<props> = ({ input }) => {
 						</>
 						)
 					}}
-					onEndReached={handleEndReachedUser}
-					onEndReachedThreshold={0.5}
-				>
+			onEndReached={handleEndReachedUser}
+			onEndReachedThreshold={0.5}
+			disableVirtualization={false}
+			ListEmptyComponent={<View/>}
+		>
 		</FlatList>
     </View>
   );
