@@ -17,6 +17,8 @@ import { Spacer } from "../../components/Spacer";
 import { SummaryUser } from "./components/SummaryUser";
 import { EventDescription } from "./components/Description";
 import { EventOpenTalkLink } from "./components/OpenTalkLink";
+import { EventSlice } from "src/redux/Slices/Event";
+import { postEventSlice } from "src/redux/Slices/EventPost";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -29,9 +31,12 @@ export const EventScreen: React.FC = () => {
   useFocusEffect(
     React.useCallback(() => {
       // 여기서 GET 요청을 하기 위한 eventId 필요
+      console.log(event.event);
       return () => {
         if (event.event.host.id === user.userId) setIsHost(true);
         else setIsHost(false);
+        console.log(event.event);
+        event.event;
       };
     }, [])
   );
