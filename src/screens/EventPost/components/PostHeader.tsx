@@ -27,10 +27,11 @@ export const PostHeader: React.FC = () => {
     useNavigation<NativeStackNavigationProp<HomeStackParam, "EventPost">>();
   const event = useSelector((state: RootState) => state.eventPost);
   const IsUpdate = useSelector((state: RootState) => state.UI.IsEventUpdate);
+  const globalState = useSelector((state: RootState) => state.global);
+
   const handleDeleteAll = useCallback(() => {
     dispatch(postEventSlice.actions.deleteAll());
   }, [dispatch]);
-  const globalState = useSelector((state: RootState) => state.global);
 
   const [ImageBinary, setImageBinary] = useState<string | ArrayBuffer | null>(
     null
