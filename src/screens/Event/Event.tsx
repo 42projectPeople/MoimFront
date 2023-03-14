@@ -26,18 +26,11 @@ export const EventScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const event = useSelector((state: RootState) => state.event);
   const user = useSelector((state: RootState) => state.global);
-  const [isHost, setIsHost] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
       // 여기서 GET 요청을 하기 위한 eventId 필요
-      console.log(event.event);
-      return () => {
-        if (event.event.host.id === user.userId) setIsHost(true);
-        else setIsHost(false);
-        console.log(event.event);
-        event.event;
-      };
+      return () => {};
     }, [])
   );
 
@@ -65,7 +58,7 @@ export const EventScreen: React.FC = () => {
               alignItems: "center",
             }}
           >
-            <EventTitle isHost={false} />
+            <EventTitle />
           </View>
           <Spacer size={hp * 0.03} />
           <SummaryUser />

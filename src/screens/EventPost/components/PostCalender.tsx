@@ -20,10 +20,10 @@ export const PostCalender: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const dispatch = useAppDispatch();
   const eventTime = useSelector(
-    (state: RootState) => state.eventPost.eventTime
+    (state: RootState) => state.eventPost.EventDto.eventTime
   );
   const calender = useSelector(
-    (state: RootState) => state.eventPost.eventCalender
+    (state: RootState) => state.eventPost.EventDto.eventCalender
   );
 
   useFocusEffect(

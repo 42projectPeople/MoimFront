@@ -19,18 +19,18 @@ const hp = hpSize("100%");
 
 export const MapScreen: React.FC = () => {
   const dispatch = useAppDispatch();
-  const eventMap = useSelector((state: RootState) => state.eventPost.eventMap);
+  const eventMap = useSelector(
+    (state: RootState) => state.eventPost.EventDto.eventMap
+  );
   const [longitude, setLongitude] = useState<number>(eventMap.longitude);
   const [latitude, setLatitude] = useState<number>(eventMap.latitude);
   const [isSelected, setIsSelected] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setLatitude(eventMap.latitude);
-        setLongitude(eventMap.longitude);
-        setIsSelected(false);
-      };
+      setLatitude(eventMap.latitude);
+      setLongitude(eventMap.longitude);
+      setIsSelected(false);
     }, [])
   );
   const handlePlaceSelect = async (place: any) => {

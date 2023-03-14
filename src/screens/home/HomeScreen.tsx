@@ -13,15 +13,18 @@ import {
 import { useHomeNavigation } from "../../navigations/Navigation";
 
 export const HomeScreen: React.FC = () => {
-//  const homenavigation = useNavigation();
+  //  const homenavigation = useNavigation();
   const homenavigation = useHomeNavigation<"Home">();
 
   const onPressEvent = useCallback(() => {
     homenavigation.navigate("Event" as never);
   }, [homenavigation]);
-  const onPressHashtag = useCallback((hashtag: number) => {
-    homenavigation.navigate("HashTag", { category : hashtag });
-  }, [homenavigation]);
+  const onPressHashtag = useCallback(
+    (hashtag: number) => {
+      homenavigation.navigate("HashTag");
+    },
+    [homenavigation]
+  );
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <MoimHeader showBackButton={false} />

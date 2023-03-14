@@ -13,9 +13,7 @@ import { Spacer } from "../../../components/Spacer";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const EventTitle: React.FC<{
-  isHost: boolean;
-}> = (props) => {
+export const EventTitle: React.FC = () => {
   const event = useSelector((state: RootState) => state.event);
   const [isCheck, setIsCheck] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
@@ -31,20 +29,20 @@ export const EventTitle: React.FC<{
   };
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        if (
-          event.event.eventMaxParticipant === event.event.eventCurrParticipant
-        ) {
-          setIsFinished(false); // TODO: 지금은 데이터가 없으니까 false, 나중에 데이터를 받아온다면 꼭 true로 바꿔줄 것
-          //TODO: data도 비교해서 지난 파티일경우 피니시드를 true로 켜주면 됨
-        } else {
-          setIsCheck(false);
-        }
-        if (event.isGuest === false) setIsCheck(false);
-        else if (event.isGuest === true) {
-          setIsCheck(true);
-        }
-      };
+      const tmpDate = new Date(event.event.eventDate);
+      const newDate = new Date();
+      console.log(tmpDate, newDate);
+      if (tmpDate <= newDate) setIsFinished(true);
+      if (
+        event.event.eventMaxParticipant === event.event.eventCurrParticipant
+      ) {
+        setIsFinished(false); // TODO: 지금은 데이터가 없으니까 false, 나중에 데이터를 받아온다면 꼭 true로 바꿔줄 것
+        //TODO: data도 비교해서 지난 파티일경우 피니시드를 true로 켜주면 됨
+      } else {
+        setIsCheck(false);
+      }
+      if (event.eventUserRoll === "guest") setIsCheck(true);
+      else if (event.eventUserRoll !== "guest") setIsCheck(false);
     }, [])
   );
 
@@ -169,8 +167,8 @@ export const EventTitle: React.FC<{
             alignItems: "center",
           }}
         >
-          {props.isHost ? (
-            <Text>수정하기</Text>
+          {event.eventUserRoll === "host" ? (
+            <Text>수정하기</Text> // TODO : dispatch(action.isUpdate (true)); 그래야 Post 페이지에서 분기처리할 수 있음
           ) : isFinished ? (
             <Text>참여 불가</Text>
           ) : (

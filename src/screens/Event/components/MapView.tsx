@@ -22,10 +22,8 @@ export const EventMapView: React.FC = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setLatitude(eventMap.latitude);
-        setLongitude(eventMap.longitude);
-      };
+      setLatitude(eventMap.latitude);
+      setLongitude(eventMap.longitude);
     }, [])
   );
 

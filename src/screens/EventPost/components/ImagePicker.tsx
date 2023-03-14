@@ -17,18 +17,23 @@ const wp = wpSize("100%");
 const hp = hpSize("100%");
 
 export const ImagePickerComponent: React.FC = (prop) => {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploadButtonEnabled, setUploadButtonEnabled] = useState(false);
 
   const dispatch = useAppDispatch();
 
+  const IsUpdate = useSelector((state: RootState) => state.UI.IsEventUpdate);
   const eventImages = useSelector(
-    (state: RootState) => state.eventPost.eventImages
+    (state: RootState) => state.eventPost.EventDto.eventImages
+  );
+  const selectedImage = useSelector(
+    (state: RootState) => state.eventPost.eventSelectImage
+  );
+  const removeImages = useSelector(
+    (state: RootState) => state.eventPost.removeImages
   );
 
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedImages(eventImages);
       setUploadButtonEnabled(eventImages.length >= 5);
     }, [])
   );
@@ -45,18 +50,48 @@ export const ImagePickerComponent: React.FC = (prop) => {
       const newSelectedImages = eventImages.concat(
         ...result.assets.map((asset) => asset.uri)
       );
-      dispatch(postEventSlice.actions.addImages(newSelectedImages));
-      setSelectedImages(newSelectedImages);
-      setUploadButtonEnabled(newSelectedImages.length >= 5);
+      if (IsUpdate === false) {
+        dispatch(postEventSlice.actions.addImages(newSelectedImages));
+        dispatch(
+          postEventSlice.actions.addSetImageCount(newSelectedImages.length)
+        );
+        setUploadButtonEnabled(newSelectedImages.length >= 5);
+      } else if (IsUpdate === true) {
+        dispatch(postEventSlice.actions.addSelectedImage(newSelectedImages));
+        dispatch(
+          postEventSlice.actions.addSetImageCount(
+            eventImages.length + selectedImage.length
+          )
+        );
+      }
     }
   };
 
   const handleImageCancel = (index: number) => {
-    const newSelectedImages = [...selectedImages];
-    newSelectedImages.splice(index, 1);
-    dispatch(postEventSlice.actions.deleteImages(newSelectedImages));
-    setSelectedImages(newSelectedImages);
-    setUploadButtonEnabled(newSelectedImages.length < 5 ? false : true);
+    if (IsUpdate === false) {
+      const newSelectedImages = [...eventImages];
+      const removedItem = newSelectedImages.splice(index, 1)[0]; // 인덱스 위치의 요소를 제거하고 반환합니다.
+      dispatch(postEventSlice.actions.deleteImages(newSelectedImages));
+      setUploadButtonEnabled(newSelectedImages.length < 5 ? false : true);
+    } else if (IsUpdate === true) {
+      const orgImages = [...eventImages];
+      const newImages = [...selectedImage];
+      if (index > orgImages.length) {
+        newImages.splice(index, 1);
+        dispatch(postEventSlice.actions.deleteSelectImages(newImages));
+        dispatch(
+          postEventSlice.actions.addSetImageCount(
+            orgImages.length + newImages.length
+          )
+        );
+      } else if (index <= orgImages.length) {
+        const removedItem = orgImages.splice(index, 1)[0];
+        // TODO: 이미지서버에 delete요청
+        dispatch(
+          postEventSlice.actions.addRemoveImages([...removeImages, removedItem])
+        );
+      }
+    }
   };
 
   return (
@@ -76,7 +111,7 @@ export const ImagePickerComponent: React.FC = (prop) => {
       >
         {eventImages.length > 0 && (
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {selectedImages.map((imageUri, index) => (
+            {eventImages.map((imageUri, index) => (
               <View key={index}>
                 <Image
                   source={{ uri: imageUri }}

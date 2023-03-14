@@ -36,12 +36,11 @@ export interface EventDto {
 
 interface InitialState {
   eventId: number;
-  isGuest: boolean;
   event: EventDto;
+  eventUserRoll: string;
 }
 const initialState: InitialState = {
   eventId: 0,
-  isGuest: false,
   event: {
     eventTitle: "",
     eventDescription: "",
@@ -61,6 +60,7 @@ const initialState: InitialState = {
     eventViewCount: 0,
     eventDate: "",
   },
+  eventUserRoll: "",
 };
 
 export const EventSlice = createSlice({
@@ -72,9 +72,6 @@ export const EventSlice = createSlice({
     },
     addEventId(state, action: PayloadAction<number>) {
       state.eventId = action.payload;
-    },
-    addEventISGuest(state, action: PayloadAction<boolean>) {
-      state.isGuest = action.payload;
     },
     deleteEvent(state) {
       state = initialState;
