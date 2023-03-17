@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect } from "react";
 import { View, ScrollView, StyleSheet, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,19 +11,32 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { useHomeNavigation } from "../../navigations/Navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/RootReducer";
+import { useAppDispatch } from "../../redux/RootStore";
 
 export const HomeScreen: React.FC = () => {
   //  const homenavigation = useNavigation();
   const homenavigation = useHomeNavigation<"Home">();
+  const events = useSelector((state: RootState) => state.home.summaryEvents);
+  const dispatch = useAppDispatch();
 
-  const onPressEvent = useCallback(() => {
-    homenavigation.navigate("Event" as never);
-  }, [homenavigation]);
   const onPressHashtag = useCallback(
     (hashtag: number) => {
       homenavigation.navigate("HashTag");
     },
     [homenavigation]
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      //여기서 로딩 true 였다가
+      console.log("무조건 홈이지?");
+      if (events.length <= 0)
+        // TODO 여기서 events GET 요청
+        // 로딩 false
+        return () => {};
+    }, [])
   );
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
@@ -31,7 +44,7 @@ export const HomeScreen: React.FC = () => {
       <Spacer size={20} />
       <ScrollView>
         <HomeHashtagList onPressHashtag={onPressHashtag} />
-        <HomeEventList onPressEvent={onPressEvent} />
+        <HomeEventList />
       </ScrollView>
     </View>
   );

@@ -5,16 +5,38 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/RootReducer";
+import { useAppDispatch } from "../../../redux/RootStore";
 import { Spacer } from "../../../components/Spacer";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { HomeStackParam } from "../../../navigations/HomeNavigation";
+import { useNavigation } from "@react-navigation/native";
+import { UISlice } from "../../../redux/Slices/UI";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
 export const EventButton: React.FC<{
-  onPressEvent: () => void;
+  index: number;
 }> = (props) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeStackParam, "Home">>();
+  const events = useSelector((state: RootState) => state.home.summaryEvents);
+  const dispatch = useAppDispatch();
+  const onPressEvent = () => {
+    console.log(props.index);
+    dispatch(
+      UISlice.actions.setSelectEventId(
+        events[props.index]?.eventId !== undefined
+          ? events[props.index].eventId
+          : 0
+      )
+    );
+    navigation.navigate("Event");
+  };
   return (
-    <TouchableOpacity onPress={props.onPressEvent}>
+    <TouchableOpacity onPress={onPressEvent}>
       <View style={{ width: wp * 0.4 }}>
         <Image
           source={{

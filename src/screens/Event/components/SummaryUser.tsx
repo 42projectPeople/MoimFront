@@ -12,6 +12,7 @@ import { Spacer } from "../../../components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackParam } from "../../../navigations/HomeNavigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { UISlice } from "../../../redux/Slices/UI";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -21,7 +22,7 @@ export const SummaryUser: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeStackParam, "Event">>();
   const onPressUser = () => {
-    // TODO: user dispatch()
+    dispatch(UISlice.actions.setSelectUserId(eventUser.id));
     navigation.navigate("User");
   };
   return (

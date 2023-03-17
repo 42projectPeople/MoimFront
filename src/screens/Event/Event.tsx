@@ -7,11 +7,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/RootReducer";
 import { ImageSlide } from "./components/ImageSlide";
 import { EventMapView } from "./components/MapView";
-
-import {
-  widthPercentageToDP as wpSize,
-  heightPercentageToDP as hpSize,
-} from "react-native-responsive-screen";
 import { EventTitle } from "./components/Title";
 import { Spacer } from "../../components/Spacer";
 import { SummaryUser } from "./components/SummaryUser";
@@ -19,6 +14,11 @@ import { EventDescription } from "./components/Description";
 import { EventOpenTalkLink } from "./components/OpenTalkLink";
 import { EventSlice } from "src/redux/Slices/Event";
 import { postEventSlice } from "src/redux/Slices/EventPost";
+
+import {
+  widthPercentageToDP as wpSize,
+  heightPercentageToDP as hpSize,
+} from "react-native-responsive-screen";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
