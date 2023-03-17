@@ -6,10 +6,33 @@ import { key } from "../../config";
 import { useAppDispatch } from "../redux/RootStore";
 import { GlobalSlice } from "../redux/Slices/Global";
 
+interface AuthError extends Error {
+  response?: {
+    status: number;
+    data?: any;
+  };
+}
+
 const instance = axios.create({
   baseURL: key.URL,
   timeout: 10000, // 타임아웃 설정, 10초 내에 응답이 없으면 에러 처리
 });
+
+// // 인터셉터 추가(헤더에 token 붙혀서 보내기) ps - 지금 적용하면 서버하고 통신못할수도
+// instance.interceptors.request.use(
+//   async (config) => {
+//     const accessToken = useSelector(
+//       (state: RootState) => state.global.AccessToken
+//     );
+//     if (accessToken) {
+//       config.headers.Authorization = `Bearer ${accessToken}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 instance.interceptors.response.use(
   (response) => response, // 2xx status 코드인 경우 그대로 반환
@@ -31,11 +54,14 @@ instance.interceptors.response.use(
           dispatch(GlobalSlice.actions.addAToken(accessToken));
           await SecureStore.setItemAsync("refreshToken", refreshToken); // 시크릿저장소에 refreshToken을 저장
           // 기존 요청의 Authorization 헤더에 새로운 accessToken을 담아서 재요청
+          // 유저 아이디를 받는지 모르겠음.. 받는데 어떻게 받는지 모름..
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return instance(originalRequest);
         } catch (e) {
-          // refreshToken 재발급 실패시 로그아웃 처리 등 필요한 작업 수행
-          // ...
+          const authError = new Error("Authentication error") as AuthError;
+          authError.name = "AuthError";
+          authError.response = { status: 401 };
+          return Promise.reject(authError);
         }
       }
     }
