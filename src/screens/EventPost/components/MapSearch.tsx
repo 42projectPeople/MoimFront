@@ -52,6 +52,7 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
       props.setIsSelected(true);
     } catch (e) {
       if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
+        console.log(e);
         // refreshToken 재발급 실패시 로그아웃 처리하고, loginScreen으로 네비게이션해야함
       } else {
         console.error(e);

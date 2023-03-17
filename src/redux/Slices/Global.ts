@@ -16,13 +16,12 @@ export const GlobalSlice = createSlice({
   name: "global",
   initialState: initialState,
   reducers: {
-    addAuth(state, action: PayloadAction<Auth>) {
-      state.isLogin = true;
-      state.userId = action.payload.userId;
-      state.AccessToken = action.payload.AccessToken;
-    },
     addAToken(state, action: PayloadAction<string>) {
       state.AccessToken = action.payload;
+      state.isLogin = true;
+    },
+    addUserId(state, action: PayloadAction<number>) {
+      state.userId = action.payload;
     },
   },
 });
