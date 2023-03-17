@@ -29,8 +29,12 @@
     "expo-linking": "^4.0.1",
     "expo-location": "^15.1.1",
     "expo-media-library": "^15.2.2",
+<<<<<<< HEAD
     "expo-react-native-fast-image": "^2.0.0",
     "expo-secure-store": "^12.1.1",
+=======
+    "expo-secure-store": "~12.1.1",
+>>>>>>> 07f3cbcd (feat: axios 인터셉터 및 mapAPIServer 연동)
     "expo-status-bar": "~1.4.4",
     "force": "^0.0.3",
     "fund": "^1.0.0",
