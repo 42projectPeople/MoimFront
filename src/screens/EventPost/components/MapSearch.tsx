@@ -39,7 +39,7 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
       for (let i = 1; i <= 5; i++) {
         const place = data[`place${i}`];
         if (!place) {
-          break; // 데이터가 존재하지 않으면 루프를 종료합니다.
+          break; // 데이터가 존재하지 않으면 루프를 종료
         }
         const newPlace: Place = {
           name: place.name,
@@ -51,7 +51,11 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
       setModalVisible(true);
       props.setIsSelected(true);
     } catch (e) {
-      console.error(e);
+      if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
+        // refreshToken 재발급 실패시 로그아웃 처리하고, loginScreen으로 네비게이션해야함
+      } else {
+        console.error(e);
+      }
     }
   };
 

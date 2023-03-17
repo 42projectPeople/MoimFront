@@ -34,7 +34,9 @@ export const HomeScreen: React.FC = () => {
       console.log("무조건 홈이지?");
       if (events.length <= 0)
         // TODO 여기서 events GET 요청
-        // 로딩 false
+        // GET요청하면서 로그인 처리까지 될 거임
+        // 만약 로그인 실패시 loginPage로 navigation 하면 됨
+        // 로딩 false는 final로 처리하고,
         return () => {};
     }, [])
   );
