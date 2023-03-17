@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import {
   Text,
@@ -7,12 +8,11 @@ import {
   Modal,
   ScrollView,
 } from "react-native";
+import instance from "../../../utils/axios";
 import { key } from "../../../../config";
 import { MapSearchStyles } from "../styleSheets/mapSearch";
 
 interface Place {
-  x: string;
-  y: string;
   name: string;
   roadAddress: string;
 }
@@ -29,35 +29,27 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
 
   const handleSearch = async () => {
     try {
-      const encodedQuery = encodeURIComponent(searchText);
-      const response = await fetch(
-        `https://openapi.naver.com/v1/search/local.json?query=${encodedQuery}&display=5&sort=random`,
-        {
-          headers: {
-            "X-Naver-Client-Id": key.naverSearchC,
-            "X-Naver-Client-Secret": key.naverSearchS,
-          },
+      const response = await instance.get("http://127.0.0.1:3000/map/search", {
+        params: {
+          keyword: searchText,
+        },
+      });
+      const data = response.data;
+      const newPlaces: Place[] = [];
+      for (let i = 1; i <= 5; i++) {
+        const place = data[`place${i}`];
+        if (!place) {
+          break; // 데이터가 존재하지 않으면 루프를 종료합니다.
         }
-      );
-      const data = await response.json();
-      if (data && data.items && data.items.length > 0) {
-        const newPlaces: Place[] = [];
-        for (let i = 0; i < 5; ++i) {
-          const tmp = data.items[i];
-          const place: Place = {
-            name: tmp.title.replace(/(<([^>]+)>)/gi, ""),
-            roadAddress: tmp.roadAddress.replace(/(<([^>]+)>)/gi, ""),
-            x: tmp.mapx,
-            y: tmp.mapy,
-          };
-          newPlaces.push(place);
-        }
-        setPlaces([...places, ...newPlaces]);
-        setModalVisible(true);
-        props.setIsSelected(true);
-      } else {
-        setPlaces([]);
+        const newPlace: Place = {
+          name: place.name,
+          roadAddress: place.address,
+        };
+        newPlaces.push(newPlace);
       }
+      setPlaces([...places, ...newPlaces]);
+      setModalVisible(true);
+      props.setIsSelected(true);
     } catch (e) {
       console.error(e);
     }

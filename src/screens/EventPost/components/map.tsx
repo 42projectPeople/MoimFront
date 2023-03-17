@@ -17,6 +17,11 @@ import { postEventSlice } from "../../../redux/Slices/EventPost";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
+interface Place {
+  name: string;
+  roadAddress: string;
+}
+
 export const MapScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const eventMap = useSelector(
@@ -33,31 +38,27 @@ export const MapScreen: React.FC = () => {
       setIsSelected(false);
     }, [])
   );
-  const handlePlaceSelect = async (place: any) => {
-    const url = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(
-      place.roadAddress
-    )}`;
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "X-NCP-APIGW-API-KEY-ID": key.naverC,
-        "X-NCP-APIGW-API-KEY": key.naverS,
-      },
-    });
-
+  const handlePlaceSelect = async (place: Place) => {
+    const response = await fetch(
+      `http://127.0.0.1:3000/map/coordination?address=${place.roadAddress}`
+    );
+    // TODO:: 나중에 배포하면 배포서버 URL로 수정하기
     const data = await response.json();
 
-    setLatitude(Number(data.addresses[0].y)); // 위도와 경도의 순서를 바꿉니다.
-    setLongitude(Number(data.addresses[0].x)); // 위도와 경도의 순서를 바꿉니다.
-    dispatch(
-      postEventSlice.actions.addMap({
-        latitude: Number(data.addresses[0].y),
-        longitude: Number(data.addresses[0].x),
-        address: place.roadAddress,
-        name: place.name,
-      })
-    );
+    if (data && data.address && data.address.length > 0) {
+      setLatitude(Number(data.latitude));
+      setLongitude(Number(data.longitude));
+      dispatch(
+        postEventSlice.actions.addMap({
+          latitude: Number(data.latitude),
+          longitude: Number(data.longitude),
+          address: place.roadAddress,
+          name: place.name,
+        })
+      );
+    } else {
+      console.error("Invalid data:", data);
+    }
   };
 
   return (

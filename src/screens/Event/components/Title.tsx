@@ -167,10 +167,36 @@ export const EventTitle: React.FC = () => {
             alignItems: "center",
           }}
         >
-          {event.eventUserRoll === "host" ? (
-            <Text>수정하기</Text> // TODO : dispatch(action.isUpdate (true)); 그래야 Post 페이지에서 분기처리할 수 있음
+          {event.eventUserRoll === "host" ? ( // TODO : dispatch(action.isUpdate (true)); 그래야 Post 페이지에서 분기처리할 수 있음
+            <TouchableOpacity>
+              <View
+                style={{
+                  width: wp * 0.25,
+                  backgroundColor: "#e0321f",
+                  borderRadius: 5,
+                  paddingHorizontal: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: hp * 0.05,
+                }}
+              >
+                <Text>수정하기</Text>
+              </View>
+            </TouchableOpacity>
           ) : isFinished ? (
-            <Text>참여 불가</Text>
+            <View
+              style={{
+                width: wp * 0.25,
+                backgroundColor: "#727272",
+                borderRadius: 5,
+                paddingHorizontal: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                height: hp * 0.05,
+              }}
+            >
+              <Text>참여불가</Text>
+            </View>
           ) : (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <TouchableOpacity onPress={handleCheckOnPress}>

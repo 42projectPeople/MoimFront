@@ -22,7 +22,7 @@ import {
   InputFilterAsSpace,
   InputFilterAsWhiteSpace,
   SwearWordsFilter,
-} from "../../../filter";
+} from "../../../utils/filter";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");

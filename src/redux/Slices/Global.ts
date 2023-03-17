@@ -10,8 +10,6 @@ const initialState = {
   isLogin: false,
   userId: 0,
   AccessToken: "",
-  currUid: -1,
-  currEventId: -1,
 };
 
 export const GlobalSlice = createSlice({
@@ -22,6 +20,9 @@ export const GlobalSlice = createSlice({
       state.isLogin = true;
       state.userId = action.payload.userId;
       state.AccessToken = action.payload.AccessToken;
+    },
+    addAToken(state, action: PayloadAction<string>) {
+      state.AccessToken = action.payload;
     },
   },
 });
