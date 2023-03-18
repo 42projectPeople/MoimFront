@@ -22,6 +22,7 @@ const SearchHeader = () => {
   return (
     <SafeAreaView
       style={{
+		height: hp * 0.09,
         borderBottomColor: "black",
         borderBottomWidth: 3,
         paddingBottom: 5,

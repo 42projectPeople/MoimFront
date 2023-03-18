@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
 import { dataType } from "../../hashtagScreen/HashtagScreen";
 import axios from "axios";
-import HashTagView from "../../hashtagScreen/HashtagView";
+import HashTagView from "../../hashtagScreen/component/HashtagView";
 import { UserFlatList } from "./UserFlatList";
 import { debounce } from "lodash";
 import { widthPercentageToDP as wpSize, 

@@ -2,15 +2,15 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image, StyleSheet, View, ViewBase } from "react-native";
-import { ProfileScreen } from "../Screens/ProfileScreen";
+import { ProfileScreen } from "../screens/ProfileScreen";
 import { HomeNavigation } from "./HomeNavigation";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { EventListScreen } from "../Screens/enrollScreen/EventListScreen";
-import { PostEventScreen } from "../Screens/EventPost/PostEventScreen";
+import { EventListScreen } from "../screens/enrollScreen/EventListScreen";
+import { PostEventScreen } from "../screens/EventPost/PostEventScreen";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");

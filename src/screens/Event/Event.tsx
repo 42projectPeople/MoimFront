@@ -35,8 +35,6 @@ export const EventScreen: React.FC = () => {
       return () => {
         if (event.event.host.id === user.userId) setIsHost(true);
         else setIsHost(false);
-        console.log(event.event);
-        event.event;
       };
     }, [])
   );

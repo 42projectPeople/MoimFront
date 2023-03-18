@@ -1,6 +1,6 @@
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, Dimensions } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
-import { useHomeNavigation } from "../../navigations/Navigation";
+import { useHomeNavigation } from "../../../navigations/Navigation";
 import { widthPercentageToDP as wpSize, 
 		 heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
 
@@ -8,23 +8,21 @@ const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
 
 type hashtagProps = {
-	title: string,
+	header: string,
 	location: string,
-	imageUri: string
-	//어캐 객체타입도 넣을 수 잇을 거 같은데..
+	imageUri: string,
 }
 const wp = wpSize('100%');
 const hp = hpSize('100%');
-const HashTagView: React.FC<hashtagProps> = ({ title, location, imageUri }) => {
+const HashTagView: React.FC<hashtagProps> = ({ header, location, imageUri }) => {
 	const navigation = useHomeNavigation<"HashTag">();
 	return (
 		<TouchableWithoutFeedback 
-		onPress={() => navigation.navigate("Event", 
-			{title: title, location: location, imageUri: imageUri})}>
+		onPress={() => navigation.navigate("Event")}>
 		<View style={styles.mainContainer}>
 			<Image source={{uri: imageUri}} style={styles.image} />
 			<View style={styles.titleContainer}>
-				<Text style={styles.title} numberOfLines={2}> {title} </Text>
+				<Text style={styles.title} numberOfLines={2}> {header} </Text>
 			</View>
 			<View style={styles.locationContainer}>
 				<EvilIcons style={styles.locationIcon} name="location" size={20} color="grey" />

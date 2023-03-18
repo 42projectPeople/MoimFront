@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import SearchHeader from "../searchScreen/SearchHeader";
+import { EnrollHeader } from "./component/EnrollHeader";
 import { EventList } from "./component/EventList";
 import { widthPercentageToDP as wpSize, 
 	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
@@ -63,8 +63,8 @@ export const EventListScreen: React.FC = () => {
 	}
 
   return (
-		<>
-			<SearchHeader />
+		<View style={{ flex: 1, backgroundColor: "white" }}>
+			<EnrollHeader />
 			<View style={styles.container}>
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity onPress={() => handelPressRole('host')} 
@@ -93,7 +93,7 @@ export const EventListScreen: React.FC = () => {
 					<EventList dataArr={role ? hostEvent : guestEvent} />
 				</ScrollView>
 				</View>
-		</>
+		</View>
   );
 };
 
