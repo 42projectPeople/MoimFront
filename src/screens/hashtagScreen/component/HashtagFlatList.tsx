@@ -1,27 +1,22 @@
 import React from "react";
 import { FlatList } from "react-native";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/RootReducer";
-import HashTagView from "./HashtagView";
+import SummaryEvent from "./SummaryEvent";
 import { selectData } from "../../../redux/Slices/HashTag";
+import useHandleEndReached from "./useHandelEndReached";
 
-export const HashtagFlatList:React.FC<{ 
-	handleEndReached: () => void }>  = ({ handleEndReached}) => {
+export const HashtagFlatList:React.FC = () => {
 	const data = useSelector(selectData);
-	
+	const handleEndReached = useHandleEndReached();
+
 	return (
 		<FlatList
 			data = {data}
-			keyExtractor={(item) => item.main_image}
+			keyExtractor={(item) => item.eventId.toString()}
 			numColumns={2}
 			renderItem={({ item }) => {
-				const { header, location, main_image } = item;
-				return (
-					<HashTagView 
-					header={ header?.length > 40 ? header?.slice(0, 39) : header }
-					location={ location?.length > 40 ? location?.slice(0,20) : location } 
-					imageUri={ main_image }/>
-				)}}
+				return ( <SummaryEvent {...item} /> );
+			}}
 			onEndReached={handleEndReached}
 			onEndReachedThreshold={0.5}
 			showsVerticalScrollIndicator={false}

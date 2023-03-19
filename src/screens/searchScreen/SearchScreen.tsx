@@ -1,34 +1,36 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MoimHeader } from "../home/components/MoimHeader";
+import React from "react";
+import { View, TextInput, StyleSheet} from "react-native";
+import { useSelector } from "react-redux";
+import { SearchHeader } from "./SearchHeader";
 import { EventFlatList } from "./component/EventFlatList";
+import { useAppDispatch } from "../../redux/RootStore";
+import { SearchSlice, selectInput } from "../../redux/Slices/Search";
 import { widthPercentageToDP as wpSize, 
 	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
-import SearchHeader from "./SearchHeader";
 
 const wp = wpSize('100%');
 const hp = hpSize('100%');
 
 export const SearchScreen: React.FC = () => {
-	const [input, setInput] = useState<string>('');
+	const dispatch = useAppDispatch();
+	const input = useSelector(selectInput);
 
 	const handleInputChange = (input: string) => {
-		setInput(input);
+		dispatch(SearchSlice.actions.setInput(input));
 	}
 
   return (
-    <SafeAreaView edges={["top"]} style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
 		<SearchHeader />
 		<TextInput
 			style={styles.textinput}
 			value={input}
 			placeholder="검색어를 입력하세요."
-			onChangeText={(handleInputChange)}
+			onChangeText={handleInputChange}
 		/>
-		<EventFlatList input={input} />
+		<EventFlatList />
 		<View style={styles.lastMargin}></View>
-    </SafeAreaView>
+    </View>
   );
 };
 

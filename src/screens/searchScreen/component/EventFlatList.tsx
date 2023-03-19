@@ -1,113 +1,48 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
-import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
-import { dataType } from "../../hashtagScreen/HashtagScreen";
-import axios from "axios";
-import HashTagView from "../../hashtagScreen/component/HashtagView";
-import { UserFlatList } from "./UserFlatList";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
+import SummaryEvent from "../../hashtagScreen/component/SummaryEvent";
+import { View, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 import { debounce } from "lodash";
-import { widthPercentageToDP as wpSize, 
-	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
+import { useAppDispatch } from "../../../redux/RootStore";
+import { SearchSlice, selectInput, selectEventData } from "../../../redux/Slices/Search";
+import { getEventData } from "./getEventData";
+import { useHandleEndReachedEvent } from "./handleEndReached";
+import { UserFlatList } from "./UserFlatList";
 
-const wp = wpSize('100%');
-const hp = hpSize('100%');
-
-const PAGE_SIZE = 12;
-
-type props = {
-	input: string
-}
-
-export const EventFlatList: React.FC<props> = ({ input }) => {
-	const [eventArr, setEventArr] = useState<dataType[]>([]);
-	const [eventPage, setEventPage] = useState(1);
-	const [loading, setLoading] = useState(false);
+export const EventFlatList: React.FC = () => {
+	const dispatch = useAppDispatch();
+	const input = useSelector(selectInput);
+	const data = useSelector(selectEventData);
+	const handleEndReached = useHandleEndReachedEvent();
 
 	useLayoutEffect(()=> {
 		try {
-			initializeState();
-			if(isvaild(input))
-				delayedQuery(input);
+			dispatch(SearchSlice.actions.deleteEventData());
+			if (input)
+				delayedQuery();
 		} catch (err) {
 			console.error(err);
 		}
 	}, [input])
 
 	const delayedQuery = useRef(
-		debounce(async(input: string) => {
-		await getEventData(input);
+		debounce(async() => {
+			dispatch(getEventData());
 		}, 500)
 	).current
-
-	const isvaild = (target: string | object) => {
-		return (!target ? false : true);
-	}
-
-	const eventArrMap = (dataObj: object[]) => {
-		const newArr = dataObj.map((data: any) => ({
-			eventId: data.e_eventId,
-			header: data.e_header,
-			location: data.e_location,
-			main_image: data.e_main_image,
-		}));
-		return (newArr);
-	}
-
-	const getEventData = async(input: string) => {
-		try{
-			const res = await axios.get(
-				`http://54.180.201.67:3000/search/event?word=${input}&page=${eventPage}&pageSize=${PAGE_SIZE}
-				&sortByViews=true&includeMax=false&sortByRating=false`,
-				{ headers: { Accept: "application/json", withCredentials : true }}
-			)
-			if (!isvaild(res.data)) {
-				return ;
-			}
-			const newEventArr = eventArrMap(res.data);
-			if (newEventArr.length === 0 || newEventArr.length < PAGE_SIZE)
-					setEventPage(-1);
-				else
-					setEventPage(eventPage + 1);
-			setEventArr(dataArr =>[...dataArr, ...newEventArr]);
-		} catch(error) {
-			console.error(error);
-		}
-	}
-
-	const initializeState = () => {
-		setEventArr([]);
-		setEventPage(1);
-	}
-
-	const handleEndReachedEvent = () => {
-		try {
-			if (isvaild(input) && !loading && eventPage != -1)
-				getEventData(input);
-			else
-				return ;
-		} catch (error) {
-			console.error(error);
-		}
-	}
 
   return (
     <View style={{flex: 1}}>
 		<FlatList
-			ListHeaderComponent={<UserFlatList input={input}/>}
-			data = {eventArr}
-			keyExtractor={(item) => item.eventId}
+			ListHeaderComponent={UserFlatList}
+			data = {data}
+			keyExtractor={(item) => item.eventId.toString()}
 			numColumns={2}
 			renderItem={({ item }) => {
-				const { header, location, main_image } = item;
-				return (
-					<HashTagView 
-					title={ header.length > 40 ? header.slice(0, 39) : header }
-					location={ location.length > 40 ? location.slice(0,20) : location } 
-					imageUri={ main_image }/>
-				)
+				return ( <SummaryEvent {...item} /> );
 			}}
-			onEndReached={handleEndReachedEvent}
+			onEndReached={handleEndReached}
 			onEndReachedThreshold={0.5}
-			disableVirtualization={false}
 			showsVerticalScrollIndicator={false}
 		/>
     </View>

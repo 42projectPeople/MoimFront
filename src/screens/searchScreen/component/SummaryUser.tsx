@@ -1,16 +1,12 @@
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, Dimensions } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
 import { useHomeNavigation } from "../../../navigations/Navigation";
+import { summaryUserType } from "src/redux/Slices/Search";
 
-type userProfileProps = {
-	nickname: string,
-	profilePhoto: string,
-}
-
-const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
+const HEIGHT = Dimensions.get("window").height;
 
-const UserProfileView: React.FC<userProfileProps> = ({ nickname, profilePhoto }) => {
+const SummaryUser: React.FC<summaryUserType> = (props) => {
 
 	//const navigation = useHomeNavigation<"">();
 	return (
@@ -18,8 +14,8 @@ const UserProfileView: React.FC<userProfileProps> = ({ nickname, profilePhoto })
 		//onPress={() => navigation.navigate("Event", 
 		//	{title: title, location: location, imageUri: imageUri})}>
 		<View style={styles.mainContainer}>
-			<Image source={{uri: profilePhoto}} style={styles.image} />
-			<Text style={styles.title}> {nickname} </Text>
+			<Image source={{uri: props.main_image}} style={styles.image} />
+			<Text style={styles.title}> {props.nickname} </Text>
 		</View>
 	//</TouchableWithoutFeedback>
 	)
@@ -54,4 +50,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default UserProfileView;
+export default SummaryUser;

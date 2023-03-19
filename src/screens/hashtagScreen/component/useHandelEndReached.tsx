@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../redux/RootStore";
-import { selectPage, fetchHashtagData } from "../../../redux/Slices/HashTag";
+import { selectPage } from "../../../redux/Slices/HashTag";
 import { useCallback } from "react";
+import { getHashtagData } from "./getHashtagData";
 
 const useHandleEndReached = () => {
 	const dispatch = useAppDispatch();
@@ -11,7 +12,7 @@ const useHandleEndReached = () => {
 	  if (page === -1) {
 		return;
 	  }
-	  dispatch(fetchHashtagData());
+	  dispatch(getHashtagData());
 	}, [page, dispatch]);
   
 	return handleEndReached;
