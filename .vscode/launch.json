@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "type": "chrome",
+      "name": "http://console.log(\"음\");",
+      "request": "launch",
+      "url": "http://console.log(\"음\");"
+    }
+  ]
+}
