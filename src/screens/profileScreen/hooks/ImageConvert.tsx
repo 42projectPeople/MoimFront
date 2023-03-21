@@ -23,7 +23,7 @@ const useImageConvert = ( images:string[] ) => {
   
     const postUploadImage = async (image:string) =>{
       try {
-        const imageUrl = await fetch (image);
+        const imageUrl = await fetch(image);
          const blobUrl = await imageUrl.blob();
          const dataBin = imageConvertTobinary(blobUrl);
          if (!dataBin)

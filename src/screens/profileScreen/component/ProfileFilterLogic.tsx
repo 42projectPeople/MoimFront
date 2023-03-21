@@ -7,32 +7,42 @@ import { useAppDispatch } from 'src/redux/RootStore'
 import  Missing  from './Missing';
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/RootReducer'
-import { ProfileSlice } from 'src/redux/Slices/Profile'
+import { ProfileSlice, UserInfoType } from 'src/redux/Slices/Profile'
+
+interface ResponseUserType {
+	userId: number,
+	userName: string,
+	userNickName: string,
+	userRole: string,
+	userProfilePhoto: string,
+	userLevel: number,
+	userTitle: string
+}
 
 const ProfileFileterLogic:React.FC = () => {
 	const dispatch = useAppDispatch();
-	const user = useSelector((state: RootState) => state.profile.userInfo);
-	const { data, fetchError, isLoading } = useAxiosFetch(`moim.com/user/${userid}`);
+	const reqUid = useSelector((state:RootState) => state.global.userId);
+	//reqest uri 수정 해야함.
+	const { data, fetchError, isLoading } = useAxiosFetch<ResponseUserType>(`http://54.180.201.67:3000/user/${reqUid}`);
 	
 	useEffect(() => {
-		const userInfo = {
-			id: data.userId,
-			name: data.userName,
-			nickName:data.userNickName,
-			profileImage: data.userProfilePhoto,
-			title: data.userTitle,
+		const responseData = data[0];
+		const userInfo:UserInfoType = {
+			id: responseData.userId,
+			name: responseData.userName,
+			nickName: responseData.userNickName,
+			profileImage: responseData.userProfilePhoto,
+			title: responseData.userTitle,
 		}
 		dispatch(ProfileSlice.actions.addUserInfo(userInfo));
-
-	  }
 	}, [data])
 
 	return (
-    <View>
-      {isLoading && <Text>loading...</Text>}
-      {!isLoading && fetchError && <Missing /> }
-      {!isLoading && !fetchError && <ProfileView />}
-    </View>
+    	<View>
+    	  {isLoading && <Text>loading...</Text>}
+    	  {!isLoading && fetchError && <Missing /> }
+    	  {!isLoading && !fetchError && <ProfileView />}
+   		</View>
   )
 }
 

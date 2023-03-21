@@ -38,6 +38,7 @@ export const ProfileUserView:React.FC = () => {
 				<ProfileTitleComponent />
 				<Spacer size={HP * 0.03} />
 			</View>
+
 		</View>
   )
 }

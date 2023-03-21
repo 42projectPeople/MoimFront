@@ -11,14 +11,15 @@ export interface UserInfoType {
 export interface UserEventType {
 	eventId: number;
 	eventTitle: string;
-	evnetAddress: string;
+	eventAddress: string;
 	eventMainImage: string;
 }
 
 export interface UserReviewType {
-	reviewerId: string;
+	reviewerId: number;
 	reviewerNickName: string;
-	reviewerProfileImage: string;
+	reviewerLatestDate: string;
+	reviewerContent: string;
 }
 
 export interface UserProfileObj {
@@ -40,13 +41,14 @@ const initialState: UserProfileObj = {
 	userEvent: [{
 		eventId: 0,
 		eventTitle: '',
-		evnetAddress: '',
+		eventAddress: '',
 		eventMainImage: '',
 	}],
 	userReview: [{
-		reviewerId: '',
+		reviewerId: 0,
 		reviewerNickName: '',
-		reviewerProfileImage: '',
+		reviewerLatestDate: '',
+		reviewerContent: '',
 	}],
 	wpSize: 0,
 	hpSize: 0,
@@ -60,10 +62,10 @@ export const ProfileSlice = createSlice({
 			state.userInfo = action.payload;
 		},
 		addUserEvent(state, action:PayloadAction<UserEventType[]>) {
-			state.userEvent = action.payload;
+			state.userEvent = [...state.userEvent, ...action.payload];
 		},
 		addUserReview(state, action:PayloadAction<UserReviewType[]>) {
-			state.userReview = action.payload;
+			state.userReview = [...state.userReview, ...action.payload];
 		},
 		addWpSize(state, action:PayloadAction<number>) {
 			state.wpSize = action.payload;
@@ -71,7 +73,12 @@ export const ProfileSlice = createSlice({
 		addHpSize(state, action:PayloadAction<number>) {
 			state.hpSize = action.payload;
 		},
-		
+		removeUserEvent(state, action:PayloadAction<number>) {
+			state.userEvent.filter(event => event.eventId !== action.payload)
+		},
+		removeUserReview(state, action:PayloadAction<number>) {
+			state.userReview.filter(event => event.reviewerId !== action.payload)
+		},
 		removeAll(state) {
 			state = initialState;
 			return initialState;

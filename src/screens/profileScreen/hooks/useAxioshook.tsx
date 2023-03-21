@@ -1,12 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { UserInfoType, UserReviewType, UserEventType } from '../../../redux/Slices/Profile'
+import axios, { AxiosPromise, AxiosResponse } from 'axios';
+
 
 /* axios 관련 훅 */
-export const useAxiosFetch = (dataUrl: string) => {
-	const [data, setData] = useState<object>({});
-	const [fetchError, setFetchError] = useState(null);
+export const useAxiosFetch = <T extends {}>(dataUrl: string): { data: T[], fetchError:null | string, isLoading: boolean } => {
+	const [data, setData] = useState<Array<T>>([]);
+	const [fetchError, setFetchError] = useState<null | string>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect (() => {
@@ -14,19 +14,22 @@ export const useAxiosFetch = (dataUrl: string) => {
 		const source = axios.CancelToken.source();
 
 		const fetchData = async (url:string) => {
-			
 			setIsLoading(true);
 			try {
 				const response = await axios.get(url, {
 					cancelToken: source.token
 				})
 				if (isMounted) {
+/* 					response.data.map((data) => {
+						setData(data);
+					}) */
 					setData(response.data);
+					console.log(response.data);
 					setFetchError(null);
 				}
 			} catch (error) {
 				if (isMounted) {
-					setFetchError(error.message);
+					setFetchError(error.response.data as string);
 					setData([]);
 				}
 			} finally {
