@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Text,
   TextInput,
@@ -7,6 +7,7 @@ import {
   View,
   Modal,
   ScrollView,
+  Alert,
 } from "react-native";
 import instance from "../../../utils/axios";
 import { key } from "../../../../config";
@@ -27,38 +28,48 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleSearch = async () => {
-    try {
-      const response = await instance.get("http://127.0.0.1:3000/map/search", {
-        params: {
-          keyword: searchText,
-        },
-      });
-      const data = response.data;
-      const newPlaces: Place[] = [];
-      for (let i = 1; i <= 5; i++) {
-        const place = data[`place${i}`];
-        if (!place) {
-          break; // 데이터가 존재하지 않으면 루프를 종료
+  const handleSearch = useCallback(
+    async (searchText: string) => {
+      try {
+        const response = await instance.get(`${key.URL}map/search`, {
+          params: {
+            keyword: searchText,
+          },
+        });
+        const data = response.data;
+        const newPlaces: Place[] = [];
+        for (let i = 1; i <= 5; i++) {
+          const place = data[`place${i}`];
+          if (!place) {
+            break; // 데이터가 존재하지 않으면 루프를 종료
+          }
+          const newPlace: Place = {
+            name: place.name,
+            roadAddress: place.address,
+          };
+          newPlaces.push(newPlace);
         }
-        const newPlace: Place = {
-          name: place.name,
-          roadAddress: place.address,
-        };
-        newPlaces.push(newPlace);
+        setPlaces([...places, ...newPlaces]);
+        setModalVisible(true);
+        props.setIsSelected(true);
+      } catch (e) {
+        if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
+          // refreshToken 재발급 실패시 로그아웃 처리하고, loginScreen으로 네비게이션해야함
+        } else {
+          console.error(e);
+        }
       }
-      setPlaces([...places, ...newPlaces]);
-      setModalVisible(true);
-      props.setIsSelected(true);
-    } catch (e) {
-      if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
-        console.log(e);
-        // refreshToken 재발급 실패시 로그아웃 처리하고, loginScreen으로 네비게이션해야함
-      } else {
-        console.error(e);
-      }
+    },
+    [places, modalVisible]
+  );
+
+  const handleSearchPress = useCallback(() => {
+    if (searchText.length <= 0) {
+      Alert.alert("", "검색어를 입력해주세요.");
+      return;
     }
-  };
+    handleSearch(searchText);
+  }, [searchText, handleSearch]);
 
   const handlePlacePress = (place: Place) => {
     props.onPlaceSelect(place);
@@ -78,7 +89,7 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
         />
         <TouchableOpacity
           style={MapSearchStyles.searchButton}
-          onPress={handleSearch}
+          onPress={handleSearchPress}
         >
           <Text style={MapSearchStyles.searchButtonText}>검색</Text>
         </TouchableOpacity>

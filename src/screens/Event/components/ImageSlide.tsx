@@ -5,6 +5,7 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -14,6 +15,8 @@ import {
 } from "react-native-responsive-screen";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/RootReducer";
+import { useFocusEffect } from "@react-navigation/native";
+import { isLength } from "lodash";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -40,6 +43,7 @@ export const ImageSlide: React.FC = () => {
   const eventImages = useSelector(
     (state: RootState) => state.event.event.eventImages
   );
+  const IsLoading = useSelector((state: RootState) => state.event.IsLoading);
 
   useEffect(() => {
     if (scrollViewRef.current && activeIndex !== 0) {
@@ -56,7 +60,17 @@ export const ImageSlide: React.FC = () => {
     setActiveIndex(index);
   };
 
-  return (
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {};
+    }, [])
+  );
+
+  return IsLoading === true ? (
+    <View style={{ marginHorizontal: 15 }}>
+      <ActivityIndicator />
+    </View>
+  ) : (
     <View style={{ marginHorizontal: 15 }}>
       <ScrollView
         ref={scrollViewRef}
@@ -66,25 +80,15 @@ export const ImageSlide: React.FC = () => {
         onMomentumScrollEnd={handleMomentumScrollEnd}
         contentContainerStyle={{ alignItems: "center" }}
       >
-        {eventImages.length === 0
-          ? images.map((image: ImageType, index: number) => (
-              <View key={index} style={{ width: wp, height: wp * 0.75 }}>
-                <Image
-                  source={image}
-                  style={{ width: wp, height: wp * 0.75 }}
-                  resizeMode="cover"
-                />
-              </View>
-            ))
-          : eventImages.map((image: string, index: number) => (
-              <View key={index} style={{ width: wp, height: wp * 0.75 }}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: wp, height: wp * 0.75 }}
-                  resizeMode="cover"
-                />
-              </View>
-            ))}
+        {eventImages?.map((image: string, index: number) => (
+          <View key={index} style={{ width: wp, height: wp * 0.75 }}>
+            <Image
+              source={{ uri: image }}
+              style={{ width: wp, height: wp * 0.75 }}
+              resizeMode="cover"
+            />
+          </View>
+        ))}
       </ScrollView>
       <View
         style={{
@@ -93,7 +97,7 @@ export const ImageSlide: React.FC = () => {
           marginTop: 10,
         }}
       >
-        {images.map((_: ImageType, index: number) => (
+        {eventImages?.map((image: string, index: number) => (
           <View
             key={index}
             style={{

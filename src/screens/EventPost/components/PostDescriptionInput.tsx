@@ -14,7 +14,7 @@ const hp = hpSize("100%");
 
 export const PostDescriptionInput: React.FC = () => {
   const eventDescription = useSelector(
-    (state: RootState) => state.eventPost.EventDto.eventDescription
+    (state: RootState) => state.eventPost.EventDto.content
   );
   return (
     <View>

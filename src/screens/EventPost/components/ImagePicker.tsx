@@ -23,7 +23,7 @@ export const ImagePickerComponent: React.FC = (prop) => {
 
   const IsUpdate = useSelector((state: RootState) => state.UI.IsEventUpdate);
   const eventImages = useSelector(
-    (state: RootState) => state.eventPost.EventDto.eventImages
+    (state: RootState) => state.eventPost.EventDto.images
   );
   const selectedImage = useSelector(
     (state: RootState) => state.eventPost.eventSelectImage

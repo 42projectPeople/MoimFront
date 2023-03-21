@@ -25,7 +25,7 @@ const hp = hpSize("100%");
 export const PostMaxParticipantInput: React.FC = () => {
   const dispatch = useAppDispatch();
   const eventMaxParticipant = useSelector(
-    (state: RootState) => state.eventPost.EventDto.eventParticipant
+    (state: RootState) => state.eventPost.EventDto.maxParticipant
   );
   const eventCurrParticipant = useSelector(
     (state: RootState) => state.eventPost.eventCurrParticipant

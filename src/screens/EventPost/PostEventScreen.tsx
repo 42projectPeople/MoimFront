@@ -42,25 +42,17 @@ export const PostEventScreen: React.FC = () => {
       if (UI.IsEventUpdate === true) {
         const date = new Date(event.event.eventDate);
         const eventDto: EventPostDto = {
-          eventTitle: event.event.eventTitle,
-          eventDescription: event.event.eventDescription,
-          eventOpenTalkLink: event.event.eventOpenTalkLink,
-          eventHashtagId: event.event.eventHashtag.hashtagId,
-          eventImages: event.event.eventImages,
+          header: event.event.eventTitle,
+          content: event.event.eventDescription,
+          openTalkLink: event.event.eventOpenTalkLink,
+          hashtag: event.event.eventHashtag.hashtagId,
+          images: event.event.eventImages,
           eventDate: event.event.eventDate,
-          eventMap: {
-            name: event.event.eventMap.tradeName,
-            address: event.event.eventMap.address,
-            longitude: event.event.eventMap.longitude,
-            latitude: event.event.eventMap.latitude,
-          },
-          eventParticipant: event.event.eventMaxParticipant,
-          eventCalender: {
-            day: date.getDay(),
-            month: date.getMonth(),
-            year: date.getFullYear(),
-          },
-          eventTime: { hours: date.getHours(), minute: date.getMinutes() },
+          tradeName: event.event.eventMap.tradeName,
+          location: event.event.eventMap.address,
+          longitude: event.event.eventMap.longitude,
+          latitude: event.event.eventMap.latitude,
+          maxParticipant: event.event.eventMaxParticipant,
         };
         dispatch(postEventSlice.actions.addAll(eventDto));
         dispatch(

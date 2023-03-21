@@ -26,5 +26,9 @@ export const HomeSlice = createSlice({
     addSummaryEvent(state, action: PayloadAction<summaryEvent>) {
       state.summaryEvents = [...state.summaryEvents, action.payload];
     },
+    deleteAll(state) {
+      state = initialState;
+      return state;
+    },
   },
 });

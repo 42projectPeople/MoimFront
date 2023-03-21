@@ -17,41 +17,36 @@ interface Address {
 }
 
 export interface EventPostDto {
-  eventTitle: string;
-  eventDescription: string;
-  eventOpenTalkLink: string;
-  eventHashtagId: number;
+  header: string;
+  content: string;
+  openTalkLink: string;
+  hashtag: number;
   eventDate: string;
-  eventImages: string[];
-  eventMap: {
-    name: string;
-    address: string;
-    longitude: number;
-    latitude: number;
-  };
-  eventParticipant: number;
-  eventCalender: { day: number; month: number; year: number };
-  eventTime: { hours: number; minute: number };
+  images: string[];
+  tradeName: string;
+  location: string;
+  longitude: number;
+  latitude: number;
+  maxParticipant: number;
 }
 
 const initialState = {
   EventDto: {
-    eventTitle: "",
-    eventDescription: "",
-    eventOpenTalkLink: "",
-    eventHashtagId: 0,
+    header: "",
+    content: "",
+    openTalkLink: "",
+    hashtag: 0,
     eventDate: "",
-    eventImages: [] as string[],
-    eventMap: {
-      name: "",
-      address: "",
-      longitude: 127.06529,
-      latitude: 37.4882618,
-    },
-    eventParticipant: 0,
-    eventCalender: { day: 0, month: 0, year: 0 },
-    eventTime: { hours: 0, minute: 0 },
+    images: [] as string[],
+    tradeName: "",
+    location: "",
+    longitude: 127.06529,
+    latitude: 37.4882618,
+    maxParticipant: 0,
   } as EventPostDto,
+  host: 0,
+  eventTime: { hours: 0, minute: 0 },
+  eventCalender: { day: 0, month: 0, year: 0 },
   eventSelectImage: [] as string[],
   eventImageCount: 0,
   eventCurrParticipant: 0,
@@ -62,38 +57,42 @@ export const postEventSlice = createSlice({
   initialState: initialState,
   reducers: {
     addTitle: (state, action: PayloadAction<string>) => {
-      state.EventDto.eventTitle = action.payload;
+      state.EventDto.header = action.payload;
     },
     addDescription: (state, action: PayloadAction<string>) => {
-      state.EventDto.eventDescription = action.payload;
+      state.EventDto.content = action.payload;
     },
     addOpenTalkLink: (state, action: PayloadAction<string>) => {
-      state.EventDto.eventOpenTalkLink = action.payload;
+      state.EventDto.openTalkLink = action.payload;
     },
     addHashtagId(state, action: PayloadAction<number>) {
-      state.EventDto.eventHashtagId = action.payload;
+      state.EventDto.hashtag = action.payload;
     },
     addParticipant(state, action: PayloadAction<number>) {
-      state.EventDto.eventParticipant = action.payload;
+      state.EventDto.maxParticipant = action.payload;
     },
     addImages(state, action: PayloadAction<string[]>) {
-      state.EventDto.eventImages = action.payload;
+      state.EventDto.images = action.payload;
+      state.eventImageCount = state.EventDto.images.length;
     },
     addDate(state, action: PayloadAction<string>) {
       state.EventDto.eventDate = action.payload;
     },
     addCalender(state, action: PayloadAction<CalenderType>) {
-      state.EventDto.eventCalender = action.payload;
+      state.eventCalender = action.payload;
     },
     addTime(state, action: PayloadAction<TimeType>) {
-      state.EventDto.eventTime = action.payload;
+      state.eventTime = action.payload;
     },
     addMap(state, action: PayloadAction<Address>) {
-      state.EventDto.eventMap = action.payload;
+      state.EventDto.tradeName = action.payload.name;
+      state.EventDto.location = action.payload.address;
+      state.EventDto.latitude = action.payload.latitude;
+      state.EventDto.longitude = action.payload.longitude;
     },
     addAll(state, action: PayloadAction<EventPostDto>) {
       state.EventDto = action.payload;
-      state.eventImageCount = action.payload.eventImages.length;
+      state.eventImageCount = action.payload.images.length;
     },
     addCurrParticipant(state, action: PayloadAction<number>) {
       state.eventCurrParticipant = action.payload;
@@ -107,44 +106,45 @@ export const postEventSlice = createSlice({
     addRemoveImages(state, action: PayloadAction<string[]>) {
       state.removeImages = action.payload;
     },
+    addHostId(state, action: PayloadAction<number>) {
+      state.host = action.payload;
+    },
     deleteTitle(state) {
-      state.EventDto.eventTitle = "";
+      state.EventDto.header = "";
     },
     deleteDescription(state) {
-      state.EventDto.eventDescription = "";
+      state.EventDto.content = "";
     },
     deleteOpenTalkLink(state) {
-      state.EventDto.eventOpenTalkLink = "";
+      state.EventDto.openTalkLink = "";
     },
     deleteMap(state) {
-      state.EventDto.eventMap = {
-        name: "",
-        address: "",
-        latitude: 37.4882618,
-        longitude: 127.06529,
-      };
+      state.EventDto.tradeName = "";
+      state.EventDto.location = "";
+      state.EventDto.longitude = 127.06529;
+      state.EventDto.latitude = 37.4882618;
     },
     deleteHashtagId(state) {
-      state.EventDto.eventHashtagId = 0;
+      state.EventDto.hashtag = 0;
     },
     deleteParticipant(state) {
-      state.EventDto.eventParticipant = 0;
+      state.EventDto.maxParticipant = 0;
     },
     deleteImages(state, action: PayloadAction<string[]>) {
-      state.EventDto.eventImages = action.payload;
+      state.EventDto.images = action.payload;
       state.eventImageCount = action.payload.length;
     },
     deleteSelectImages(state, action: PayloadAction<string[]>) {
       state.eventSelectImage = action.payload;
     },
     deleteAllImage(state) {
-      state.EventDto.eventImages = [];
+      state.EventDto.images = [];
       state.eventImageCount = 0;
     },
     deleteDate(state) {
       state.EventDto.eventDate = "";
-      state.EventDto.eventTime = { hours: 0, minute: 0 };
-      state.EventDto.eventCalender = { day: 0, month: 0, year: 0 };
+      state.eventTime = { hours: 0, minute: 0 };
+      state.eventCalender = { day: 0, month: 0, year: 0 };
     },
     deleteAll(state) {
       state = initialState;

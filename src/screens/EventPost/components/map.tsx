@@ -24,23 +24,21 @@ interface Place {
 
 export const MapScreen: React.FC = () => {
   const dispatch = useAppDispatch();
-  const eventMap = useSelector(
-    (state: RootState) => state.eventPost.EventDto.eventMap
-  );
-  const [longitude, setLongitude] = useState<number>(eventMap.longitude);
-  const [latitude, setLatitude] = useState<number>(eventMap.latitude);
+  const event = useSelector((state: RootState) => state.eventPost.EventDto);
+  const [longitude, setLongitude] = useState<number>(event.longitude);
+  const [latitude, setLatitude] = useState<number>(event.latitude);
   const [isSelected, setIsSelected] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
-      setLatitude(eventMap.latitude);
-      setLongitude(eventMap.longitude);
+      setLatitude(event.latitude);
+      setLongitude(event.longitude);
       setIsSelected(false);
     }, [])
   );
   const handlePlaceSelect = async (place: Place) => {
     const response = await fetch(
-      `http://127.0.0.1:3000/map/coordination?address=${place.roadAddress}`
+      `${key.URL}map/coordination?address=${place.roadAddress}`
     );
     // TODO:: 나중에 배포하면 배포서버 URL로 수정하기
     const data = await response.json();
@@ -81,8 +79,8 @@ export const MapScreen: React.FC = () => {
               latitude: latitude,
               longitude: longitude,
             }}
-            title={eventMap.address}
-            description={eventMap.name}
+            title={event.location}
+            description={event.tradeName}
           />
         )}
       </MapView>
@@ -94,10 +92,10 @@ export const MapScreen: React.FC = () => {
         }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          {eventMap.name ? `${eventMap.name}` : "주소선택을 해주세요."}
+          {event.tradeName ? `${event.tradeName}` : "주소선택을 해주세요."}
         </Text>
         <Spacer size={10} />
-        <Text>{eventMap.address ? `${eventMap.address}` : ""}</Text>
+        <Text>{event.location ? `${event.location}` : ""}</Text>
       </View>
       <Spacer />
       <MapSearch

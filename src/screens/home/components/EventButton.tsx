@@ -25,13 +25,8 @@ export const EventButton: React.FC<{
   const events = useSelector((state: RootState) => state.home.summaryEvents);
   const dispatch = useAppDispatch();
   const onPressEvent = () => {
-    console.log(props.index);
     dispatch(
-      UISlice.actions.setSelectEventId(
-        events[props.index]?.eventId !== undefined
-          ? events[props.index].eventId
-          : 0
-      )
+      UISlice.actions.setSelectEventId(events[props.index]?.eventId ?? 61)
     );
     navigation.navigate("Event");
   };
