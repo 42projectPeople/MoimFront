@@ -9,11 +9,11 @@ const useHandleEndReached = () => {
 	const page = useSelector(selectPage);
   
 	const handleEndReached = useCallback(() => {
-	  if (page === -1) {
+	  if (page ===1) {
 		return;
 	  }
 	  dispatch(getHashtagData());
-	}, [page, dispatch]);
+	}, [page]);
   
 	return handleEndReached;
   };

@@ -6,12 +6,11 @@ import axios from "axios";
 const PAGE_SIZE = 8
 
 const summaryData = (dataArr: object[]): summaryUserType[] => {
-	const ret = dataArr.map((data: any) => ({
+	return dataArr.map((data: any) => ({
 		userId: data.u_userId,
 		nickname: data.u_userNickName,
 		main_image: data.u_userProfilePhoto,
 	}))
-	  return ret;
   };
 
 export const getUserData = createAsyncThunk(
@@ -20,14 +19,15 @@ export const getUserData = createAsyncThunk(
 	  try {
 		const page = (getState() as RootState).search.userPage;
 		const input = (getState() as RootState).search.input;
+		if (!input)
+			return { data: [], page: 1 };
 		const res = await axios.get(
 			`http://54.180.201.67:3000/search/user?word=${input}&page=${page}&pageSize=${PAGE_SIZE}
 			&sortByLevel=true&sortByName=true`,
 			{ headers: { Accept: "application/json", }}
 		);
-		if (res.data.length === 0) {
+		if (res.data.length === 0) 
 		  return { data: [], page: 1 };
-		}
 		return { data: summaryData(res.data), page: page + 1 };
 	  } catch (err: any) {
 		return rejectWithValue(err.response.data as string);

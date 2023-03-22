@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
 import { useAppDispatch } from "../../../redux/RootStore";
-import { selectEventPage, selectUserPage, selectInput} from "../../../redux/Slices/Search";
 import { getEventData } from "./getEventData";
 import { getUserData } from "./getUserData";
+import { selectEventPage, selectUserPage, selectInput} from "../../../redux/Slices/Search";
 
 const isvaild = (target: string | object) => {
 	return (!target ? false : true);
@@ -19,7 +19,7 @@ export const useHandleEndReachedEvent = () => {
 		return;
 	  }
 	  dispatch(getEventData());
-	}, [dispatch]);
+	}, [page]);
 	return handleEndReachedEvent;
   };
 
@@ -33,6 +33,6 @@ export const useHandleEndReachedUser = () => {
 		return;
 	  }
 	  dispatch(getUserData());
-	}, [dispatch]);
+	}, [page]);
 	return handleEndReachedUser;
   };

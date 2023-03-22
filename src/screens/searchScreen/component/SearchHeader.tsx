@@ -1,15 +1,15 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import ImageButton from "../../components/ImageButton";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import ImageButton from "../../../components/ImageButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { SearchSlice } from "../../../redux/Slices/Search";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
-import { useAppDispatch } from "../../redux/RootStore";
-import { SearchSlice } from "../../redux/Slices/Search";
 
 type RootStackParamList = {
   Home: undefined;
@@ -18,7 +18,7 @@ type RootStackParamList = {
 const wp = wpSize("100");
 const hp = hpSize("100%");
 
-export const SearchHeader: React.FC = () => {
+const SearchHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -42,7 +42,7 @@ export const SearchHeader: React.FC = () => {
           <ImageButton
             onPress={onPressBack}
             style={styleHeader.backButton}
-            source={require("../../assets/BackButton.png")}
+            source={require("../../../assets/BackButton.png")}
           />
         </View>
       </View>
@@ -72,3 +72,5 @@ const styleHeader = StyleSheet.create({
     height: hp * 0.13,
   },
 });
+
+export default React.memo(SearchHeader);

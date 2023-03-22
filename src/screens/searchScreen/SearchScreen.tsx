@@ -1,8 +1,8 @@
 import React from "react";
+import  DispatchData  from "./component/DispatchData";
+import  SearchHeader  from "./component/SearchHeader";
 import { View, TextInput, StyleSheet} from "react-native";
 import { useSelector } from "react-redux";
-import { SearchHeader } from "./SearchHeader";
-import { EventFlatList } from "./component/EventFlatList";
 import { useAppDispatch } from "../../redux/RootStore";
 import { SearchSlice, selectInput } from "../../redux/Slices/Search";
 import { widthPercentageToDP as wpSize, 
@@ -28,7 +28,7 @@ export const SearchScreen: React.FC = () => {
 			placeholder="검색어를 입력하세요."
 			onChangeText={handleInputChange}
 		/>
-		<EventFlatList />
+		<DispatchData />
 		<View style={styles.lastMargin}></View>
     </View>
   );

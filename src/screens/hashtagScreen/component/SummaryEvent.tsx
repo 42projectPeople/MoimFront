@@ -1,3 +1,4 @@
+import React from "react";
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
 import { useHomeNavigation } from "../../../navigations/Navigation";
@@ -12,10 +13,10 @@ import { widthPercentageToDP as wpSize,
 const wp = wpSize('100%');
 const hp = hpSize('100%');
 
-const SummaryEvent: React.FC<summaryEventType> = (props) => {
+const SummaryEvent: React.FC<summaryEventType> = React.memo(({...props}) => {
 	const navigation = useHomeNavigation<"HashTag">();
 	const dispatch = useAppDispatch();
-
+	
 	const handleOnPress = () => {
 		const uid = useSelector((state: RootState) => state.global.userId);
 
@@ -43,7 +44,7 @@ const SummaryEvent: React.FC<summaryEventType> = (props) => {
 		</View>
 	</TouchableWithoutFeedback>
 	)
-}
+});
 
 const styles = StyleSheet.create({
 	mainContainer: {
@@ -81,4 +82,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default SummaryEvent;
+export default React.memo(SummaryEvent);

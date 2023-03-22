@@ -1,50 +1,36 @@
-import React, { useRef, useEffect, useLayoutEffect } from "react";
+import React, { memo, useCallback } from "react";
 import SummaryEvent from "../../hashtagScreen/component/SummaryEvent";
-import { View, FlatList } from "react-native";
+import UserFlatList from "./UserFlatList";
+import { FlatList, ListRenderItem, View } from "react-native";
 import { useSelector } from "react-redux";
-import { debounce } from "lodash";
-import { useAppDispatch } from "../../../redux/RootStore";
-import { SearchSlice, selectInput, selectEventData } from "../../../redux/Slices/Search";
-import { getEventData } from "./getEventData";
+import { selectEventData } from "../../../redux/Slices/Search";
 import { useHandleEndReachedEvent } from "./handleEndReached";
-import { UserFlatList } from "./UserFlatList";
+import { summaryEventType } from "src/redux/Slices/HashTag";
 
-export const EventFlatList: React.FC = () => {
-	const dispatch = useAppDispatch();
-	const input = useSelector(selectInput);
+const EventFlatList:React.FC = () => {
 	const data = useSelector(selectEventData);
 	const handleEndReached = useHandleEndReachedEvent();
 
-	useLayoutEffect(()=> {
-		try {
-			dispatch(SearchSlice.actions.deleteEventData());
-			if (input)
-				delayedQuery();
-		} catch (err) {
-			console.error(err);
-		}
-	}, [input])
+	const renderItem:ListRenderItem<summaryEventType> = useCallback(({ item }) => <SummaryEvent {...item} />,[]);
+	const keyExtractor = useCallback((item: summaryEventType) => item.eventId.toString(), []);
 
-	const delayedQuery = useRef(
-		debounce(async() => {
-			dispatch(getEventData());
-		}, 500)
-	).current
+	return (
+		<View style={{flex: 1}} >
+			<FlatList
+				ListHeaderComponent={UserFlatList}
+				data = {data}
+				keyExtractor={keyExtractor}
+				numColumns={2}
+				renderItem={renderItem}
+				onEndReached={handleEndReached}
+				onEndReachedThreshold={0.5}
+				showsVerticalScrollIndicator={false}
+				initialNumToRender={4}
+				maxToRenderPerBatch={6}
+				windowSize={3}
+			/>
+		</View>
+	);
+}
 
-  return (
-    <View style={{flex: 1}}>
-		<FlatList
-			ListHeaderComponent={UserFlatList}
-			data = {data}
-			keyExtractor={(item) => item.eventId.toString()}
-			numColumns={2}
-			renderItem={({ item }) => {
-				return ( <SummaryEvent {...item} /> );
-			}}
-			onEndReached={handleEndReached}
-			onEndReachedThreshold={0.5}
-			showsVerticalScrollIndicator={false}
-		/>
-    </View>
-  );
-};
+export default memo(EventFlatList);

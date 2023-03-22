@@ -8,6 +8,8 @@ export interface summaryEventType {
 	header: string,
 	location: string,
 	main_image: string,
+	navigation?: any,
+	dispatch?: any,
 }
 
 interface init {
@@ -46,7 +48,10 @@ export const HashtagSlice = createSlice({
 		  state.data = state.data.concat(action.payload.data);
 		  state.page = action.payload.page;
 		})
-		.addCase(getHashtagData.rejected, (state) => {})
+		.addCase(getHashtagData.rejected, (state, action: PayloadAction<any>) => {
+			state.data = state.data.concat(action.payload.data);
+			state.page = action.payload.page;
+		  })
 	  },
 	});
 	

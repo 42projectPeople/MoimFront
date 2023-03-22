@@ -39,6 +39,12 @@ export const SearchSlice = createSlice({
 		setUserPage(state, action: PayloadAction<number>) {
 			state.userPage = action.payload;
 		},
+		deleteEventPage(state) {
+			state.eventPage = 1
+		},
+		deleteUserPage(state) {
+			state.userPage = 1
+		},
 		deleteEventData(state) {
 			state.eventData = []
 		},

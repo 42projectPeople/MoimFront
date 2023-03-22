@@ -1,15 +1,15 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import ImageButton from "../../../components/ImageButton";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { HashtagSlice } from "../../../redux/Slices/HashTag";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
-import { useAppDispatch } from "../../../redux/RootStore";
-import { HashtagSlice } from "../../../redux/Slices/HashTag";
 
 type RootStackParamList = {
   Home: undefined;
@@ -18,7 +18,7 @@ type RootStackParamList = {
 const wp = wpSize("100");
 const hp = hpSize("100%");
 
-export const HashTagHeader: React.FC = () => {
+const HashTagHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -72,3 +72,6 @@ const styleHeader = StyleSheet.create({
     height: hp * 0.13,
   },
 });
+
+
+export default memo(HashTagHeader);
