@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Alert, BackHandler } from "react-native";
+import {
+  View,
+  Alert,
+  BackHandler,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import axios from "axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import ImageButton from "../../../components/ImageButton";
@@ -36,6 +42,9 @@ export const PostHeader: React.FC = () => {
   const IsUpdate = useSelector((state: RootState) => state.UI.IsEventUpdate);
   const globalState = useSelector((state: RootState) => state.global);
 
+  const backbutton = require("../../../assets/back.png");
+  const submitbutton = require("../../../assets/OK.png");
+
   const handleDeleteAll = useCallback(() => {
     dispatch(postEventSlice.actions.deleteAll());
   }, [dispatch]);
@@ -43,6 +52,8 @@ export const PostHeader: React.FC = () => {
   const [ImageBinary, setImageBinary] = useState<string | ArrayBuffer | null>(
     null
   );
+  const [backButtonLoading, setBackButtonLoading] = useState(false);
+  const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -116,18 +127,20 @@ export const PostHeader: React.FC = () => {
   );
 
   const handleBackButton = useCallback(() => {
+    setBackButtonLoading(true);
     Alert.alert(
       "",
       "작성을 취소하시겠습니까?",
       [
         {
           text: "No",
-          onPress: () => null,
+          onPress: () => setBackButtonLoading(false),
           style: "cancel",
         },
         {
           text: "Yes",
           onPress: () => {
+            setBackButtonLoading(false);
             handleDeleteAll();
             navigation.navigate("Home");
           },
@@ -145,13 +158,17 @@ export const PostHeader: React.FC = () => {
   }, []);
 
   const onPressSubmit = () => {
+    setSubmitButtonLoading(true);
     Alert.alert(
       "",
       "이벤트를 업로드하시겠습니까?",
       [
         {
           text: "No",
-          onPress: () => console.log("Post submission cancelled"),
+          onPress: () => {
+            console.log("Post submission cancelled");
+            setSubmitButtonLoading(false);
+          },
           style: "cancel",
         },
         {
@@ -209,6 +226,8 @@ export const PostHeader: React.FC = () => {
             } catch (error) {
               console.error("Error in post request:", error);
               // 에러 처리를 원하는 방식으로 수정
+            } finally {
+              setSubmitButtonLoading(false);
             }
           },
         },
@@ -221,16 +240,26 @@ export const PostHeader: React.FC = () => {
     <SafeAreaView edges={["top"]}>
       <View style={styleHeader.container}>
         <View style={styleHeader.container2}>
-          <ImageButton
+          <TouchableOpacity
             onPress={handleBackButton}
-            style={styleHeader.backButton}
-            source={require("../../../assets/back.png")}
-          />
-          <ImageButton
+            disabled={backButtonLoading}
+          >
+            <Image
+              source={backbutton}
+              style={styleHeader.backButton}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={onPressSubmit}
-            style={styleHeader.submitButton}
-            source={require("../../../assets/OK.png")}
-          />
+            disabled={submitButtonLoading}
+          >
+            <Image
+              source={submitbutton}
+              style={styleHeader.submitButton}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
