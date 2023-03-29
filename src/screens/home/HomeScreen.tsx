@@ -28,7 +28,7 @@ export const HomeScreen: React.FC = () => {
 
   const onPressHashtag = useCallback(
     (hashtag: number) => {
-      homenavigation.navigate("HashTag");
+      homenavigation.navigate("HashTag", { hashtag: hashtag });
     },
     [homenavigation]
   );

@@ -46,11 +46,11 @@ export const HomeNavigation: React.FC = () => {
   );
 };
 
-export const useHomeNavigation = <RouteName extends keyof HomeStackParam>() => {
-  return useNavigation<NativeStackNavigationProp<HomeStackParam, RouteName>>();
-};
+// export const useHomeNavigation = <RouteName extends keyof HomeStackParam>() => {
+//   return useNavigation<NativeStackNavigationProp<HomeStackParam, RouteName>>();
+// };
 
-export const useRouteProps = <RouteName extends keyof HomeStackParam>() => {
-  type props = RouteProp<HomeStackParam, RouteName>;
-  return useRoute<props>();
-};
+// export const useRouteProps = <RouteName extends keyof HomeStackParam>() => {
+//   type props = RouteProp<HomeStackParam, RouteName>;
+//   return useRoute<props>();
+// };

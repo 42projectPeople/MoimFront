@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../redux/RootStore";
 import { HashtagSlice } from "../../redux/Slices/HashTag";
 import HashtagFlatList from "./component/HashtagFlatList";
 import { getHashtagData } from "./component/getHashtagData";
-import { Loading } from "../searchScreen/component/Loading";
+import { Loading } from "../../components/Loading";
 
 export const HashtagScreen: React.FC = () => {
   const props = useRouteProps<"HashTag">();
