@@ -37,7 +37,6 @@ export const HomeScreen: React.FC = () => {
     try {
       const res = await instance.get(`${key.URL}home`);
       const data = await res.data;
-      console.log(data.events[1]);
       for (let i = 0; i < data.events.length; ++i) {
         const sumEvent: summaryEvent = {
           eventId: data.events[i].eventId as number,

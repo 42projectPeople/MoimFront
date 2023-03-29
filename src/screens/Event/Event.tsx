@@ -23,6 +23,7 @@ import { key } from "../../../config";
 import { hashtagType } from "../../@Type/hashtag";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HomeStackParam } from "../../navigations/HomeNavigation";
+import { Loading } from "../../components/Loading";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -79,7 +80,6 @@ export const EventScreen: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log(UI.SelectEventId);
       if (UI.SelectEventId !== 0) getEventData();
       if (UI.SelectEventId === 0) navigation.navigate("Home");
       return () => {
@@ -91,7 +91,7 @@ export const EventScreen: React.FC = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {event.IsLoading === true ? (
-        <ActivityIndicator />
+        <Loading />
       ) : (
         <View>
           <EventHeader />

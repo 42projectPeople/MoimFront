@@ -88,7 +88,6 @@ export const PostHeader: React.FC = () => {
         const blobUrl = await imageUrl.blob();
         const dateBin = await imageConvertTobinary(blobUrl);
         if (!dateBin) {
-          console.log("리턴!");
           return;
         }
         const response = await axios.post(key.IMAGE_UPLOAD_URL, {
