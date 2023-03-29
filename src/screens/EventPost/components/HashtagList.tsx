@@ -15,7 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 export const HashtagList: React.FC = () => {
   const dispatch = useAppDispatch();
   const hashtagId = useSelector(
-    (state: RootState) => state.eventPost.eventHashtagId
+    (state: RootState) => state.eventPost.EventDto.hashtag
   );
   useFocusEffect(
     React.useCallback(() => {

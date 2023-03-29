@@ -10,9 +10,7 @@ import {
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const HomeEventList: React.FC<{
-  onPressEvent: () => void;
-}> = (props) => {
+export const HomeEventList: React.FC = () => {
   return (
     <View
       style={{
@@ -29,8 +27,8 @@ export const HomeEventList: React.FC<{
           paddingVertical: hp * 0.02,
         }}
       >
-        <EventButton onPressEvent={props.onPressEvent} />
-        <EventButton onPressEvent={props.onPressEvent} />
+        <EventButton index={0} />
+        <EventButton index={1} />
       </View>
       <View
         style={{
@@ -40,8 +38,8 @@ export const HomeEventList: React.FC<{
           paddingVertical: hp * 0.02,
         }}
       >
-        <EventButton onPressEvent={props.onPressEvent} />
-        <EventButton onPressEvent={props.onPressEvent} />
+        <EventButton index={2} />
+        <EventButton index={3} />
       </View>
       <View
         style={{
@@ -51,8 +49,8 @@ export const HomeEventList: React.FC<{
           paddingVertical: hp * 0.02,
         }}
       >
-        <EventButton onPressEvent={props.onPressEvent} />
-        <EventButton onPressEvent={props.onPressEvent} />
+        <EventButton index={4} />
+        <EventButton index={5} />
       </View>
       <View
         style={{
@@ -62,10 +60,10 @@ export const HomeEventList: React.FC<{
           paddingVertical: hp * 0.02,
         }}
       >
-        <EventButton onPressEvent={props.onPressEvent} />
-        <EventButton onPressEvent={props.onPressEvent} />
+        <EventButton index={6} />
+        <EventButton index={7} />
       </View>
-      <Spacer size={Dimensions.get("window").height * 0.1} />
+      <Spacer size={hp * 0.1} />
     </View>
   );
 };

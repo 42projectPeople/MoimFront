@@ -14,13 +14,13 @@ const hp = hpSize("100%");
 
 export const PostDescriptionInput: React.FC = () => {
   const eventDescription = useSelector(
-    (state: RootState) => state.eventPost.eventDescription
+    (state: RootState) => state.eventPost.EventDto.content
   );
   return (
     <View>
       <PostInput
         inputTitle="이벤트 설명"
-        textMax={200}
+        textMax={150}
         value={eventDescription}
         PlaceHolder={"이벤트 설명을 입력해주세요."}
         type={inputType.DESCRIPTION}

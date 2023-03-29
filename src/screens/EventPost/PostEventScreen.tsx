@@ -25,13 +25,42 @@ import {
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { Octicons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../redux/RootStore";
+import { EventPostDto, postEventSlice } from "../../redux/Slices/EventPost";
+import { RootState } from "../../redux/RootReducer";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
 export const PostEventScreen: React.FC = () => {
+  const event = useSelector((state: RootState) => state.event);
+  const UI = useSelector((state: RootState) => state.UI);
+  const dispatch = useAppDispatch();
+
   useFocusEffect(
     React.useCallback(() => {
-      return () => {};
+      if (UI.IsEventUpdate === true) {
+        const date = new Date(event.event.eventDate);
+        const eventDto: EventPostDto = {
+          header: event.event.eventTitle,
+          content: event.event.eventDescription,
+          openTalkLink: event.event.eventOpenTalkLink,
+          hashtag: event.event.eventHashtag.hashtagId,
+          images: event.event.eventImages,
+          eventDate: event.event.eventDate,
+          tradeName: event.event.eventMap.tradeName,
+          location: event.event.eventMap.address,
+          longitude: event.event.eventMap.longitude,
+          latitude: event.event.eventMap.latitude,
+          maxParticipant: event.event.eventMaxParticipant,
+        };
+        dispatch(postEventSlice.actions.addAll(eventDto));
+        dispatch(
+          postEventSlice.actions.addCurrParticipant(
+            event.event.eventCurrParticipant
+          )
+        );
+      }
     }, [])
   );
 

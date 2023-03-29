@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PostEventDto } from "src/Screens/EventPost/Types/PostDto";
-
 interface CalenderType {
   day: number;
   month: number;
@@ -19,70 +17,66 @@ interface Address {
 }
 
 export interface EventPostDto {
-  eventTitle: string;
-  eventDescription: string;
-  eventOpenTalkLink: string;
-  eventHashtagId: number;
+  header: string;
+  content: string;
+  openTalkLink: string;
+  hashtag: number;
   eventDate: string;
-  eventImages: string[];
-  eventSelectImage: string;
-  eventMap: {
-    name: string;
-    address: string;
-    longitude: number;
-    latitude: number;
-  };
-  eventParticipant: number;
-  eventImageCount: number;
-  eventCalender: { day: number; month: number; year: number };
-  eventTime: { hours: number; minute: number };
+  images: string[];
+  tradeName: string;
+  location: string;
+  longitude: number;
+  latitude: number;
+  maxParticipant: number;
 }
 
-const initialState: EventPostDto = {
-  eventTitle: "",
-  eventDescription: "",
-  eventOpenTalkLink: "",
-  eventHashtagId: 0,
-  eventSelectImage: "",
-  eventDate: "",
-  eventImages: [] as string[],
-  eventMap: {
-    name: "",
-    address: "",
+const initialState = {
+  EventDto: {
+    header: "",
+    content: "",
+    openTalkLink: "",
+    hashtag: 0,
+    eventDate: "",
+    images: [] as string[],
+    tradeName: "",
+    location: "",
     longitude: 127.06529,
     latitude: 37.4882618,
-  },
-  eventParticipant: 0,
-  eventImageCount: 0,
-  eventCalender: { day: 0, month: 0, year: 0 },
+    maxParticipant: 0,
+  } as EventPostDto,
+  host: 0,
   eventTime: { hours: 0, minute: 0 },
+  eventCalender: { day: 0, month: 0, year: 0 },
+  eventSelectImage: [] as string[],
+  eventImageCount: 0,
+  eventCurrParticipant: 0,
+  removeImages: [] as string[],
 };
-
 export const postEventSlice = createSlice({
   name: "eventPost",
   initialState: initialState,
   reducers: {
     addTitle: (state, action: PayloadAction<string>) => {
-      state.eventTitle = action.payload;
+      state.EventDto.header = action.payload;
     },
     addDescription: (state, action: PayloadAction<string>) => {
-      state.eventDescription = action.payload;
+      state.EventDto.content = action.payload;
     },
     addOpenTalkLink: (state, action: PayloadAction<string>) => {
-      state.eventOpenTalkLink = action.payload;
+      state.EventDto.openTalkLink = action.payload;
     },
     addHashtagId(state, action: PayloadAction<number>) {
-      state.eventHashtagId = action.payload;
+      state.EventDto.hashtag = action.payload;
     },
     addParticipant(state, action: PayloadAction<number>) {
-      state.eventParticipant = action.payload;
+      state.EventDto.maxParticipant = action.payload;
     },
     addImages(state, action: PayloadAction<string[]>) {
-      state.eventImages = action.payload;
-      state.eventImageCount = state.eventImageCount + 1;
+      state.EventDto.images = action.payload;
+      state.eventImageCount = state.EventDto.images.length;
     },
     addDate(state, action: PayloadAction<string>) {
-      state.eventDate = action.payload;
+      state.EventDto.eventDate = action.payload;
     },
     addCalender(state, action: PayloadAction<CalenderType>) {
       state.eventCalender = action.payload;
@@ -91,44 +85,64 @@ export const postEventSlice = createSlice({
       state.eventTime = action.payload;
     },
     addMap(state, action: PayloadAction<Address>) {
-      state.eventMap = action.payload;
+      state.EventDto.tradeName = action.payload.name;
+      state.EventDto.location = action.payload.address;
+      state.EventDto.latitude = action.payload.latitude;
+      state.EventDto.longitude = action.payload.longitude;
     },
     addAll(state, action: PayloadAction<EventPostDto>) {
-      state = action.payload;
+      state.EventDto = action.payload;
+      state.eventImageCount = action.payload.images.length;
+    },
+    addCurrParticipant(state, action: PayloadAction<number>) {
+      state.eventCurrParticipant = action.payload;
+    },
+    addSelectedImage(state, action: PayloadAction<string[]>) {
+      state.eventSelectImage = action.payload;
+    },
+    addSetImageCount(state, action: PayloadAction<number>) {
+      state.eventImageCount = action.payload;
+    },
+    addRemoveImages(state, action: PayloadAction<string[]>) {
+      state.removeImages = action.payload;
+    },
+    addHostId(state, action: PayloadAction<number>) {
+      state.host = action.payload;
     },
     deleteTitle(state) {
-      state.eventTitle = "";
+      state.EventDto.header = "";
     },
     deleteDescription(state) {
-      state.eventDescription = "";
+      state.EventDto.content = "";
     },
     deleteOpenTalkLink(state) {
-      state.eventOpenTalkLink = "";
+      state.EventDto.openTalkLink = "";
     },
     deleteMap(state) {
-      state.eventMap = {
-        name: "",
-        address: "",
-        latitude: 37.4882618,
-        longitude: 127.06529,
-      };
+      state.EventDto.tradeName = "";
+      state.EventDto.location = "";
+      state.EventDto.longitude = 127.06529;
+      state.EventDto.latitude = 37.4882618;
     },
     deleteHashtagId(state) {
-      state.eventHashtagId = 0;
+      state.EventDto.hashtag = 0;
     },
     deleteParticipant(state) {
-      state.eventParticipant = 0;
+      state.EventDto.maxParticipant = 0;
     },
     deleteImages(state, action: PayloadAction<string[]>) {
-      state.eventImages = action.payload;
+      state.EventDto.images = action.payload;
       state.eventImageCount = action.payload.length;
     },
+    deleteSelectImages(state, action: PayloadAction<string[]>) {
+      state.eventSelectImage = action.payload;
+    },
     deleteAllImage(state) {
-      state.eventImages = [];
+      state.EventDto.images = [];
       state.eventImageCount = 0;
     },
     deleteDate(state) {
-      state.eventDate = "";
+      state.EventDto.eventDate = "";
       state.eventTime = { hours: 0, minute: 0 };
       state.eventCalender = { day: 0, month: 0, year: 0 };
     },

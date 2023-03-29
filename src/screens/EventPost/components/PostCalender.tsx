@@ -28,9 +28,8 @@ export const PostCalender: React.FC = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setSelectedDate("");
-      };
+      setSelectedDate("");
+      return () => {};
     }, [])
   );
   const handleDateSelect = (date: any) => {

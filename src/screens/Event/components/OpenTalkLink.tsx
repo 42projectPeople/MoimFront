@@ -19,7 +19,11 @@ export const EventOpenTalkLink: React.FC = () => {
       <Text style={{ fontSize: 20, fontWeight: "600" }}>오픈톡 링크</Text>
       <Spacer size={hp * 0.01} />
       {EventOpenTalkLink.length <= 0 ? (
-        <Text>{`이벤트오픈톡링크입니다.`}</Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL("https://open.kakao.com/o/gHyjJG9e")}
+        >
+          <Text>{`https://open.kakao.com/o/gHyjJG9e`}</Text>
+        </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={() => Linking.openURL(EventOpenTalkLink)}>
           <Text>{EventOpenTalkLink}</Text>
