@@ -20,19 +20,27 @@
     "axios": "^1.3.4",
     "badwords-ko": "^1.0.3",
     "expo": "~48.0.4",
+<<<<<<< HEAD
     "expo-cli": "^6.3.2",
     "expo-document-picker": "^11.2.1",
+=======
+    "expo-document-picker": "~11.2.2",
+>>>>>>> 98ad8600 (feat: 멥뷰 수정, homeSlice summaryEvent 저장하는 로직 수정)
     "expo-dotenv": "^0.1.0",
     "expo-image-editor": "^1.7.1",
     "expo-image-manipulator": "^11.1.1",
     "expo-image-picker": "^14.1.1",
     "expo-linking": "^4.0.1",
     "expo-location": "^15.1.1",
+<<<<<<< HEAD
     "expo-media-library": "^15.2.2",
 <<<<<<< HEAD
     "expo-react-native-fast-image": "^2.0.0",
     "expo-secure-store": "^12.1.1",
 =======
+=======
+    "expo-media-library": "~15.2.3",
+>>>>>>> 98ad8600 (feat: 멥뷰 수정, homeSlice summaryEvent 저장하는 로직 수정)
     "expo-secure-store": "~12.1.1",
 >>>>>>> 07f3cbcd (feat: axios 인터셉터 및 mapAPIServer 연동)
     "expo-status-bar": "~1.4.4",
@@ -43,8 +51,12 @@
     "mr": "^17.0.14",
     "native": "^0.3.3",
     "react": "18.2.0",
+<<<<<<< HEAD
     "react-devtools": "^4.27.2",
     "react-native": "0.71.3",
+=======
+    "react-native": "0.71.4",
+>>>>>>> 98ad8600 (feat: 멥뷰 수정, homeSlice summaryEvent 저장하는 로직 수정)
     "react-native-calendars": "^1.1293.0",
     "react-native-config": "^1.5.0",
     "react-native-custom-switch": "^1.0.7",
