@@ -57,7 +57,6 @@ export const HomeScreen: React.FC = () => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(HomeSlice.actions.setLoading(true));
-      console.log("무조건 홈이지?");
       const ret = async () => {
         await SecureStore.setItemAsync(
           "refreshToken",
