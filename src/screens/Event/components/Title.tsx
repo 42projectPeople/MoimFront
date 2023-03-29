@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wpSize,
@@ -15,49 +9,47 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/RootReducer";
 import { useFocusEffect } from "@react-navigation/native";
 import { Spacer } from "../../../components/Spacer";
-import { AxiosError } from "axios";
-import instance from "../../../utils/axios";
-import { key } from "../../../../config";
-import { useAppDispatch } from "../../../redux/RootStore";
-import { EventSlice } from "../../../redux/Slices/Event";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const EventTitle: React.FC = () => {
+export const EventTitle: React.FC<{
+  isHost: boolean;
+}> = (props) => {
   const event = useSelector((state: RootState) => state.event);
+  const [isCheck, setIsCheck] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
-  const IsLoading = useSelector((state: RootState) => state.event.IsLoading);
-  const globalState = useSelector((state: RootState) => state.global);
-  const dispatch = useAppDispatch();
 
-  const TransFerDate = (data: string): string => {
-    const date = new Date(data);
+  const TransFerDate = (): string => {
+    const date = new Date(event.event.eventDate);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const hours = date.getHours();
+    const time = date.getTime();
     const min = date.getMinutes();
-    return `${year}년 ${month}월 ${day}일 ${hours}:${min}`;
+    return `${year}년 ${month}월 ${day}일 ${time}:${min}`;
   };
   useFocusEffect(
     React.useCallback(() => {
-      const tmpDate = new Date(event.event.eventDate);
-      const newDate = new Date();
-      if (tmpDate <= newDate) setIsFinished(true);
-      if (
-        event.event.eventMaxParticipant === event.event.eventCurrParticipant
-      ) {
-        setIsFinished(true);
-        //TODO: data도 비교해서 지난 파티일경우 피니시드를 true로 켜주면 됨
-      }
-
-      return () => {};
+      return () => {
+        if (
+          event.event.eventMaxParticipant === event.event.eventCurrParticipant
+        ) {
+          setIsFinished(false); // TODO: 지금은 데이터가 없으니까 false, 나중에 데이터를 받아온다면 꼭 true로 바꿔줄 것
+          //TODO: data도 비교해서 지난 파티일경우 피니시드를 true로 켜주면 됨
+        } else {
+          setIsCheck(false);
+        }
+        if (event.isGuest === false) setIsCheck(false);
+        else if (event.isGuest === true) {
+          setIsCheck(true);
+        }
+      };
     }, [])
   );
 
   const handleCheckOnPress = () => {
-    if (event.eventUserRoll === "guest") {
+    if (isCheck) {
       Alert.alert("", "이벤트 참여를 취소하시겠습니까?", [
         {
           text: "NO",
@@ -66,27 +58,10 @@ export const EventTitle: React.FC = () => {
         },
         {
           text: "YES",
-          onPress: async () => {
+          onPress: () => {
             // TODO: DELETE 요청 이벤트 참여 취소
             // TODO: 요청 후에 Participant 업데이트
-            try {
-              const req = { eventId: event.eventId };
-              const res = await instance.delete(
-                `${key.URL}user/${
-                  globalState.userId === 0 ? 1 : globalState.userId
-                }/event`,
-                { data: req }
-              );
-              if (res.data === 200)
-                dispatch(
-                  EventSlice.actions.setEventParticipant(
-                    event.event.eventCurrParticipant + 1
-                  )
-                );
-            } catch (e) {
-              const error = e as AxiosError;
-              Alert.alert("", `${error.message}`);
-            }
+            setIsCheck(!isCheck);
           },
         },
       ]);
@@ -99,27 +74,10 @@ export const EventTitle: React.FC = () => {
         },
         {
           text: "YES",
-          onPress: async () => {
-            try {
-              const req = { eventId: event.eventId };
-              const res = await instance.post(
-                `${key.URL}user/${
-                  globalState.userId === 0 ? 1 : globalState.userId
-                }/event`,
-                req
-              );
-              if (res.data === 201)
-                dispatch(
-                  EventSlice.actions.setEventParticipant(
-                    event.event.eventCurrParticipant + 1
-                  )
-                );
-            } catch (e) {
-              const error = e as AxiosError;
-              Alert.alert("", `${error.message}`);
-            }
+          onPress: () => {
             // TODO: POST 요청 이벤트 참여
             // TODO: 요청 후에 Participant 업데이트
+            setIsCheck(!isCheck);
           },
         },
       ]);
@@ -154,9 +112,9 @@ export const EventTitle: React.FC = () => {
               fontWeight: "500",
             }}
           >
-            {event.event.eventCreateAt?.length <= 0
+            {event.event.eventCreateAt.length <= 0
               ? "2023-1-23 13:22"
-              : TransFerDate(event.event.eventCreateAt)}
+              : event.event.eventCreateAt}
           </Text>
         </View>
       </View>
@@ -199,7 +157,7 @@ export const EventTitle: React.FC = () => {
             >
               {event.event.eventDate.length <= 0
                 ? "2042년 02월 04일 24:42"
-                : TransFerDate(event.event.eventDate)}
+                : TransFerDate()}
             </Text>
           </View>
         </View>
@@ -211,44 +169,14 @@ export const EventTitle: React.FC = () => {
             alignItems: "center",
           }}
         >
-          {event.eventUserRoll !== "host" ? ( // TODO : dispatch(action.isUpdate (true)); 그래야 Post 페이지에서 분기처리할 수 있음
-            <TouchableOpacity>
-              <View
-                style={{
-                  width: wp * 0.25,
-                  backgroundColor: "#e0321f",
-                  borderRadius: 5,
-                  paddingHorizontal: 10,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: hp * 0.05,
-                }}
-              >
-                <Text
-                  style={{ color: "white", fontSize: 16, fontWeight: "800" }}
-                >
-                  수정하기
-                </Text>
-              </View>
-            </TouchableOpacity>
+          {props.isHost ? (
+            <Text>수정하기</Text>
           ) : isFinished ? (
-            <View
-              style={{
-                width: wp * 0.25,
-                backgroundColor: "#727272",
-                borderRadius: 5,
-                paddingHorizontal: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                height: hp * 0.05,
-              }}
-            >
-              <Text>참여불가</Text>
-            </View>
+            <Text>참여 불가</Text>
           ) : (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <TouchableOpacity onPress={handleCheckOnPress}>
-                {event.eventUserRoll !== "guest" ? (
+                {isCheck === false ? (
                   <MaterialCommunityIcons
                     name="checkbox-blank-outline"
                     size={30}

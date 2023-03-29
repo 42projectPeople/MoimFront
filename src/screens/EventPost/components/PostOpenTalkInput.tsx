@@ -14,7 +14,7 @@ const hp = hpSize("100%");
 
 export const PostOpenTalkInput: React.FC = () => {
   const eventOpenTalkLink = useSelector(
-    (state: RootState) => state.eventPost.EventDto.openTalkLink
+    (state: RootState) => state.eventPost.eventOpenTalkLink
   );
   return (
     <View>

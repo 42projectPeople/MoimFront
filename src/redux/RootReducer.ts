@@ -2,8 +2,9 @@ import { combineReducers } from "redux";
 import { EventSlice } from "./Slices/Event";
 import { postEventSlice } from "./Slices/EventPost";
 import { GlobalSlice } from "./Slices/Global";
-import { HomeSlice } from "./Slices/Home";
+import { HashtagSlice } from "./Slices/HashTag";
 import { UISlice } from "./Slices/UI";
+import { SearchSlice } from "./Slices/Search";
 
 export const rootReducer = combineReducers({
   eventPost: postEventSlice.reducer,
@@ -11,6 +12,7 @@ export const rootReducer = combineReducers({
   global: GlobalSlice.reducer,
   UI: UISlice.reducer,
   home: HomeSlice.reducer,
+  search: SearchSlice.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

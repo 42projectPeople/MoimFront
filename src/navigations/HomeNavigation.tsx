@@ -5,7 +5,7 @@ import {
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 import React from "react";
-import { HomeScreen } from "../screens/Home/HomeScreen";
+import { HomeScreen } from "../screens/home/HomeScreen";
 import { EventScreen } from "../screens/Event/Event";
 import { HashtagScreen } from "../screens/hashtagScreen/HashtagScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
@@ -15,7 +15,9 @@ import { SearchScreen } from "../screens/searchScreen/SearchScreen";
 export type HomeStackParam = {
   Home: undefined;
   Event: undefined;
-  HashTag: undefined;
+  HashTag: {
+    hashtag: number;
+  };
   EventPost: undefined;
   User: undefined;
   Search: undefined;

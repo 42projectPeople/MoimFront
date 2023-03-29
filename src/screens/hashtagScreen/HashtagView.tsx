@@ -1,47 +1,47 @@
+import React from "react";
 import {
   View,
   Text,
   TouchableWithoutFeedback,
   Image,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
-import { useHomeNavigation } from "../../navigations/Navigation";
+import { useHomeNavigation } from "../../../navigations/Navigation";
+import { RootState } from "../../../redux/RootReducer";
+import { useAppDispatch } from "../../../redux/RootStore";
+import { summaryEventType } from "../../../redux/Slices/HashTag";
+import { UISlice } from "../../../redux/Slices/UI";
+import { useSelector } from "react-redux";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 
-const HEIGHT = Dimensions.get("window").height;
-const WIDTH = Dimensions.get("window").width;
-
-type hashtagProps = {
-  title: string;
-  location: string;
-  imageUri: string;
-  //어캐 객체타입도 넣을 수 잇을 거 같은데..
-};
 const wp = wpSize("100%");
 const hp = hpSize("100%");
-const HashTagView: React.FC<hashtagProps> = ({ title, location, imageUri }) => {
+
+const SummaryEvent: React.FC<summaryEventType> = React.memo(({ ...props }) => {
   const navigation = useHomeNavigation<"HashTag">();
+  const dispatch = useAppDispatch();
+
+  const handleOnPress = () => {
+    const uid = useSelector((state: RootState) => state.global.userId);
+
+    dispatch(UISlice.actions.setSelectEventId(props.eventId));
+    dispatch(UISlice.actions.setSelectUserId(uid));
+    navigation.navigate("Event");
+  };
+
   return (
-    <TouchableWithoutFeedback
-      onPress={() =>
-        navigation.navigate("Event", {
-          title: title,
-          location: location,
-          imageUri: imageUri,
-        })
-      }
-    >
+    <TouchableWithoutFeedback onPress={() => handleOnPress}>
       <View style={styles.mainContainer}>
-        <Image source={{ uri: imageUri }} style={styles.image} />
+        <Image source={{ uri: props.main_image }} style={styles.image} />
         <View style={styles.titleContainer}>
           <Text style={styles.title} numberOfLines={2}>
-            {" "}
-            {title}{" "}
+            {props.header?.length > 40
+              ? props.header?.slice(0, 39)
+              : props.header}
           </Text>
         </View>
         <View style={styles.locationContainer}>
@@ -51,12 +51,16 @@ const HashTagView: React.FC<hashtagProps> = ({ title, location, imageUri }) => {
             size={20}
             color="grey"
           />
-          <Text style={styles.locationText}> {location} </Text>
+          <Text style={styles.locationText}>
+            {props.location?.length > 40
+              ? props.location?.slice(0, 39)
+              : props.location}
+          </Text>
         </View>
       </View>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -93,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HashTagView;
+export default React.memo(SummaryEvent);
