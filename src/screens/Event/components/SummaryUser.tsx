@@ -12,6 +12,7 @@ import { Spacer } from "../../../components/Spacer";
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackParam } from "../../../navigations/HomeNavigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { UISlice } from "../../../redux/Slices/UI";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -21,7 +22,7 @@ export const SummaryUser: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeStackParam, "Event">>();
   const onPressUser = () => {
-    // TODO: user dispatch()
+    dispatch(UISlice.actions.setSelectUserId(eventUser.id));
     navigation.navigate("User");
   };
   return (
@@ -38,7 +39,7 @@ export const SummaryUser: React.FC = () => {
           onPress={onPressUser}
         >
           <View>
-            {eventUser.profileImage.length <= 0 ? (
+            {eventUser.profileImage ? (
               <Image
                 source={require("../../../assets/allView.png")}
                 style={{ width: wp * 0.2, height: wp * 0.2 }}
@@ -60,7 +61,7 @@ export const SummaryUser: React.FC = () => {
         >
           <View>
             <Text style={{ fontSize: 18, fontWeight: "700" }}>
-              {eventUser.nickName.length <= 0 ? "Moim" : eventUser.nickName}
+              {eventUser.nickName ? "Moim" : eventUser.nickName}
             </Text>
           </View>
           <Spacer size={5} />

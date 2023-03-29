@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useCallback, useState } from "react";
 import {
   Text,
   TextInput,
@@ -6,13 +7,13 @@ import {
   View,
   Modal,
   ScrollView,
+  Alert,
 } from "react-native";
+import instance from "../../../utils/axios";
 import { key } from "../../../../config";
 import { MapSearchStyles } from "../styleSheets/mapSearch";
 
 interface Place {
-  x: string;
-  y: string;
   name: string;
   roadAddress: string;
 }
@@ -27,41 +28,48 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleSearch = async () => {
-    try {
-      const encodedQuery = encodeURIComponent(searchText);
-      const response = await fetch(
-        `https://openapi.naver.com/v1/search/local.json?query=${encodedQuery}&display=5&sort=random`,
-        {
-          headers: {
-            "X-Naver-Client-Id": key.naverSearchC,
-            "X-Naver-Client-Secret": key.naverSearchS,
+  const handleSearch = useCallback(
+    async (searchText: string) => {
+      try {
+        const response = await instance.get(`${key.URL}map/search`, {
+          params: {
+            keyword: searchText,
           },
-        }
-      );
-      const data = await response.json();
-      if (data && data.items && data.items.length > 0) {
+        });
+        const data = response.data;
         const newPlaces: Place[] = [];
-        for (let i = 0; i < 5; ++i) {
-          const tmp = data.items[i];
-          const place: Place = {
-            name: tmp.title.replace(/(<([^>]+)>)/gi, ""),
-            roadAddress: tmp.roadAddress.replace(/(<([^>]+)>)/gi, ""),
-            x: tmp.mapx,
-            y: tmp.mapy,
+        for (let i = 1; i <= 5; i++) {
+          const place = data[`place${i}`];
+          if (!place) {
+            break; // 데이터가 존재하지 않으면 루프를 종료
+          }
+          const newPlace: Place = {
+            name: place.name,
+            roadAddress: place.address,
           };
-          newPlaces.push(place);
+          newPlaces.push(newPlace);
         }
         setPlaces([...places, ...newPlaces]);
         setModalVisible(true);
         props.setIsSelected(true);
-      } else {
-        setPlaces([]);
+      } catch (e) {
+        if (axios.isAxiosError(e) && e.response && e.response.status === 401) {
+          // refreshToken 재발급 실패시 로그아웃 처리하고, loginScreen으로 네비게이션해야함
+        } else {
+          console.error(e);
+        }
       }
-    } catch (e) {
-      console.error(e);
+    },
+    [places, modalVisible]
+  );
+
+  const handleSearchPress = useCallback(() => {
+    if (searchText.length <= 0) {
+      Alert.alert("", "검색어를 입력해주세요.");
+      return;
     }
-  };
+    handleSearch(searchText);
+  }, [searchText, handleSearch]);
 
   const handlePlacePress = (place: Place) => {
     props.onPlaceSelect(place);
@@ -81,7 +89,7 @@ export const MapSearch: React.FC<MapSearchProps> = (props) => {
         />
         <TouchableOpacity
           style={MapSearchStyles.searchButton}
-          onPress={handleSearch}
+          onPress={handleSearchPress}
         >
           <Text style={MapSearchStyles.searchButtonText}>검색</Text>
         </TouchableOpacity>

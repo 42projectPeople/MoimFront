@@ -25,15 +25,17 @@ const hp = hpSize("100%");
 export const PostMaxParticipantInput: React.FC = () => {
   const dispatch = useAppDispatch();
   const eventMaxParticipant = useSelector(
-    (state: RootState) => state.eventPost.eventParticipant
+    (state: RootState) => state.eventPost.EventDto.maxParticipant
   );
+  const eventCurrParticipant = useSelector(
+    (state: RootState) => state.eventPost.eventCurrParticipant
+  );
+  const IsUpdate = useSelector((state: RootState) => state.UI.IsEventUpdate);
   const [number, setNumber] = useState("");
 
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setNumber("");
-      };
+      setNumber("");
     }, [])
   );
 
@@ -46,6 +48,12 @@ export const PostMaxParticipantInput: React.FC = () => {
       ]);
     } else {
       const maxParticipant = Number(filteredText);
+      if (IsUpdate === true && maxParticipant <= eventCurrParticipant) {
+        Alert.alert(
+          "현재 참여인원보다 작거나 같습니다. 더 큰값을 입력해주세요."
+        ),
+          [{ text: "확인" }];
+      }
       if (
         isNaN(maxParticipant) ||
         maxParticipant > 1000 ||

@@ -5,20 +5,48 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/RootReducer";
+import { useAppDispatch } from "../../../redux/RootStore";
 import { Spacer } from "../../../components/Spacer";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { HomeStackParam } from "../../../navigations/HomeNavigation";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { UISlice } from "../../../redux/Slices/UI";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
 export const EventButton: React.FC<{
-  onPressEvent: () => void;
+  index: number;
 }> = (props) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<HomeStackParam, "Home">>();
+  const events = useSelector((state: RootState) => state.home.summaryEvents);
+  const home = useSelector((state: RootState) => state.home);
+  const dispatch = useAppDispatch();
+  const onPressEvent = () => {
+    dispatch(
+      UISlice.actions.setSelectEventId(events[props.index]?.eventId ?? 60)
+    );
+    navigation.navigate("Event");
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log(events[0]);
+      return () => {};
+    }, [])
+  );
   return (
-    <TouchableOpacity onPress={props.onPressEvent}>
+    <TouchableOpacity onPress={onPressEvent}>
       <View style={{ width: wp * 0.4 }}>
         <Image
           source={{
-            uri: "https://image.shutterstock.com/image-vector/watercolor-abstract-woddland-fir-trees-260nw-782586496.jpg",
+            uri:
+              events[props.index] === undefined
+                ? "https://image.shutterstock.com/image-vector/watercolor-abstract-woddland-fir-trees-260nw-782586496.jpg"
+                : events[props.index]?.eventMainImage,
           }}
           style={{
             width: wp * 0.38,
@@ -33,9 +61,9 @@ export const EventButton: React.FC<{
             numberOfLines={2}
             ellipsizeMode={"tail"}
           >
-            이벤트 제목입니다.이벤트 제목입니다.이벤트 제목입니다.이벤트
-            제목입니다.이벤트 제목입니다.이벤트 제목입니다.이벤트
-            제목입니다.이벤트 제목입니다.이벤트 제목입니다.이벤트 제목입니다.
+            {events[props.index] === undefined
+              ? "이벤트 제목이 없습니다."
+              : events[props.index].eventTitle}
           </Text>
         </View>
         <View
@@ -57,7 +85,9 @@ export const EventButton: React.FC<{
             numberOfLines={1}
             ellipsizeMode={"tail"}
           >
-            이벤트가 진행되는 주소입니다.
+            {events[props.index] === undefined
+              ? "이벤트가 진행되는 주소입니다."
+              : events[props.index].eventLocation}
           </Text>
         </View>
       </View>
