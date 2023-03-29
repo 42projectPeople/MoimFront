@@ -24,6 +24,7 @@ import { hashtagType } from "../../@Type/hashtag";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HomeStackParam } from "../../navigations/HomeNavigation";
 import { Loading } from "../../components/Loading";
+import { AxiosError } from "axios";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
@@ -73,6 +74,7 @@ export const EventScreen: React.FC = () => {
       dispatch(EventSlice.actions.addEventUserRoll(data.role));
     } catch (e) {
       console.error(e);
+      const tmp = e as AxiosError;
       dispatch(EventSlice.actions.deleteEvent());
       throw new Error("Failed to get event data.");
     }

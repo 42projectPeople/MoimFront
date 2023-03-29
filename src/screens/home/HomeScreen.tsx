@@ -19,6 +19,7 @@ import { GlobalSlice } from "../../redux/Slices/Global";
 import { HomeSlice, summaryEvent } from "../../redux/Slices/Home";
 import instance from "../../utils/axios";
 import { key } from "../../../config";
+import { Loading } from "../../components/Loading";
 
 export const HomeScreen: React.FC = () => {
   //  const homenavigation = useNavigation();
@@ -77,7 +78,7 @@ export const HomeScreen: React.FC = () => {
   );
 
   return home.isLoading === true ? (
-    <Text>로딩중</Text>
+    <Loading />
   ) : (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <MoimHeader showBackButton={false} />

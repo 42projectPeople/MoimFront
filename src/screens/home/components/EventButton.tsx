@@ -56,8 +56,8 @@ export const EventButton: React.FC<{
         />
         <View style={{ width: wp * 0.4 }}>
           <Text
-            style={{ fontSize: 20, fontWeight: "bold" }}
-            numberOfLines={2}
+            style={{ fontSize: 18, fontWeight: "bold" }}
+            numberOfLines={1}
             ellipsizeMode={"tail"}
           >
             {events[props.index] === undefined
@@ -65,9 +65,6 @@ export const EventButton: React.FC<{
               : events[props.index].eventTitle}
           </Text>
         </View>
-        <View
-          style={{ backgroundColor: "black", height: 1, marginVertical: 5 }}
-        />
         <Spacer size={2} />
         <View
           style={{
@@ -80,7 +77,7 @@ export const EventButton: React.FC<{
         >
           <Entypo name="location-pin" size={15} color="black" />
           <Text
-            style={{ fontSize: 14 }}
+            style={{ fontSize: 13.5 }}
             numberOfLines={1}
             ellipsizeMode={"tail"}
           >
