@@ -6,27 +6,28 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/RootStore";
 import { useSelector } from "react-redux";
-import Loading from "./src/components/Loading";
+import MainLoading from "./src/components/MainLoading";
 
 export default function App() {
-	const [isloading, setIsLoading] = useState(true);
-	
-	useEffect(() => {
-		setTimeout(() => {setIsLoading(false)}, 2000);
-	}, [])
+  const [isloading, setIsLoading] = useState(true);
 
-  return (
-	isloading ? 
-		<Loading />
-	:
-		<NavigationContainer>
-		<SafeAreaProvider>
-			<Provider store={store}>
-			<View style={{ flex: 1 }}>
-				<TabBar />
-			</View>
-			</Provider>
-		</SafeAreaProvider>
-		</NavigationContainer>
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  return isloading ? (
+    <MainLoading />
+  ) : (
+    <NavigationContainer>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <View style={{ flex: 1 }}>
+            <TabBar />
+          </View>
+        </Provider>
+      </SafeAreaProvider>
+    </NavigationContainer>
   );
 }
