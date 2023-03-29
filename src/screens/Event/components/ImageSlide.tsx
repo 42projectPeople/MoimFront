@@ -66,11 +66,7 @@ export const ImageSlide: React.FC = () => {
     }, [])
   );
 
-  return IsLoading === true ? (
-    <View style={{ marginHorizontal: 15 }}>
-      <ActivityIndicator />
-    </View>
-  ) : (
+  return (
     <View style={{ marginHorizontal: 15 }}>
       <ScrollView
         ref={scrollViewRef}

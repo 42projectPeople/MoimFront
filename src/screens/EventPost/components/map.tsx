@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     marginTop: hp * 0.1,
     flex: 1,
     width: wp * 0.9,
-    height: wp * 0.9,
+    height: wp * 0.6,
     alignItems: "center",
     justifyContent: "center",
   },

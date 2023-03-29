@@ -126,11 +126,7 @@ export const EventTitle: React.FC = () => {
     }
   };
 
-  return IsLoading === true ? (
-    <View style={{ marginHorizontal: 15 }}>
-      <ActivityIndicator />
-    </View>
-  ) : (
+  return (
     <View style={{ flex: 1 }}>
       <View
         style={{

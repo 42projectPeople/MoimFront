@@ -14,11 +14,7 @@ export const EventDescription: React.FC = () => {
   const event = useSelector((state: RootState) => state.event.event);
   const IsLoading = useSelector((state: RootState) => state.event.IsLoading);
 
-  return IsLoading === true ? (
-    <View style={{ marginHorizontal: 15 }}>
-      <ActivityIndicator />
-    </View>
-  ) : (
+  return (
     <View>
       <Text style={{ fontSize: 20, fontWeight: "600" }}>상세 설명</Text>
       <Spacer size={hp * 0.01} />

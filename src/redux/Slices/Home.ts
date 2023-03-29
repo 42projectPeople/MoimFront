@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface summaryEvent {
+export interface summaryEvent {
   eventId: number;
   eventMainImage: string;
   eventTitle: string;
@@ -9,14 +9,8 @@ interface summaryEvent {
 
 const initialState = {
   hashtagId: [1, 2, 3, 4, 5, 6, 7, 8],
-  summaryEvents: [
-    {
-      eventId: 0,
-      eventMainImage: "",
-      eventTitle: "",
-      eventLocation: "",
-    },
-  ] as summaryEvent[],
+  summaryEvents: [] as summaryEvent[],
+  isLoading: true,
 };
 
 export const HomeSlice = createSlice({
@@ -25,6 +19,9 @@ export const HomeSlice = createSlice({
   reducers: {
     addSummaryEvent(state, action: PayloadAction<summaryEvent>) {
       state.summaryEvents = [...state.summaryEvents, action.payload];
+    },
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
     },
     deleteAll(state) {
       state = initialState;

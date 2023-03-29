@@ -63,7 +63,7 @@ export const HomeEventList: React.FC = () => {
         <EventButton index={6} />
         <EventButton index={7} />
       </View>
-      <Spacer size={Dimensions.get("window").height * 0.1} />
+      <Spacer size={hp * 0.1} />
     </View>
   );
 };
