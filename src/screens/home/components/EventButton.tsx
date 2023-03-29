@@ -34,7 +34,6 @@ export const EventButton: React.FC<{
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log(events[0]);
       return () => {};
     }, [])
   );
