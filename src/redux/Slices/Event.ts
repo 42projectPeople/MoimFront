@@ -36,12 +36,12 @@ export interface EventDto {
 
 interface InitialState {
   eventId: number;
+  isGuest: boolean;
   event: EventDto;
-  eventUserRoll: string;
-  IsLoading: boolean;
 }
 const initialState: InitialState = {
   eventId: 0,
+  isGuest: false,
   event: {
     eventTitle: "",
     eventDescription: "",
@@ -60,9 +60,7 @@ const initialState: InitialState = {
     eventCreateAt: "",
     eventViewCount: 0,
     eventDate: "",
-  } as EventDto,
-  eventUserRoll: "",
-  IsLoading: true,
+  },
 };
 
 export const EventSlice = createSlice({
@@ -71,20 +69,12 @@ export const EventSlice = createSlice({
   reducers: {
     addEvent(state, action: PayloadAction<EventDto>) {
       state.event = action.payload;
-      state.IsLoading = false;
     },
     addEventId(state, action: PayloadAction<number>) {
       state.eventId = action.payload;
     },
-    addIsLoading(state, action: PayloadAction<boolean>) {
-      state.IsLoading = action.payload;
-      if (action.payload === false) console.log(state);
-    },
-    addEventUserRoll(state, action: PayloadAction<string>) {
-      state.eventUserRoll = action.payload;
-    },
-    setEventParticipant(state, action: PayloadAction<number>) {
-      state.event.eventCurrParticipant = action.payload;
+    addEventISGuest(state, action: PayloadAction<boolean>) {
+      state.isGuest = action.payload;
     },
     deleteEvent(state) {
       state = initialState;

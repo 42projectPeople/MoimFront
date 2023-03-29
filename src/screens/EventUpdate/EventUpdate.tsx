@@ -10,7 +10,6 @@ import {
 import { ImagePickerComponent } from "./components/ImagePicker";
 import { Spacer } from "../../components/Spacer";
 import { useFocusEffect } from "@react-navigation/native";
-import { PostHeader } from "./components/PostHeader";
 import { PostCalender } from "./components/PostCalender";
 import { MapScreen } from "./components/map";
 import { PostTitle } from "./components/PostTitle";
@@ -25,13 +24,49 @@ import {
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
 import { Octicons } from "@expo/vector-icons";
+import { EventUpdateHeader } from "./component/Header";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/RootReducer";
+import { useAppDispatch } from "../../redux/RootStore";
+import { EventPostDto, postEventSlice } from "src/redux/Slices/EventPost";
+import { PostEventDto } from "../EventPost/Types/PostDto";
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const PostEventScreen: React.FC = () => {
+export const EventUpdateScreen: React.FC = () => {
+  const event = useSelector((state: RootState) => state.event);
+  const dispatch = useAppDispatch();
   useFocusEffect(
     React.useCallback(() => {
-      return () => {};
+      return () => {
+        if (event.event.eventTitle.length > 0) {
+          const date = new Date(event.event.eventDate);
+          const eventDto: EventPostDto = {
+            eventTitle: event.event.eventTitle,
+            eventDescription: event.event.eventDescription,
+            eventOpenTalkLink: event.event.eventOpenTalkLink,
+            eventHashtagId: event.event.eventHashtag.hashtagId,
+            eventImages: event.event.eventImages,
+            eventDate: event.event.eventDate,
+            eventMap: {
+              name: event.event.eventMap.tradeName,
+              address: event.event.eventMap.address,
+              longitude: event.event.eventMap.longitude,
+              latitude: event.event.eventMap.latitude,
+            },
+            eventParticipant: event.event.eventMaxParticipant,
+            eventCalender: {
+              day: date.getDay(),
+              month: date.getMonth(),
+              year: date.getFullYear(),
+            },
+            eventTime: { hours: date.getHours(), minute: date.getMinutes() },
+            eventImageCount: event.event.eventImages.length,
+            eventSelectImage: "",
+          };
+          dispatch(postEventSlice.actions.addAll(eventDto));
+        }
+      };
     }, [])
   );
 
@@ -41,7 +76,7 @@ export const PostEventScreen: React.FC = () => {
         backgroundColor: "white",
       }}
     >
-      <PostHeader />
+      <EventUpdateHeader />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 64 : hp * 0.07}
