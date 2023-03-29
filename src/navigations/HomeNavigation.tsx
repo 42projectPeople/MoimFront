@@ -15,7 +15,9 @@ import { SearchScreen } from "../screens/searchScreen/SearchScreen";
 export type HomeStackParam = {
   Home: undefined;
   Event: undefined;
-  HashTag: undefined;
+  HashTag: {
+    hashtag: number;
+  };
   EventPost: undefined;
   User: undefined;
   Search: undefined;

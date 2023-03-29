@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HashTagView;
+export default React.memo(SummaryEvent);
