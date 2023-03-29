@@ -14,7 +14,7 @@ const hp = hpSize("100%");
 
 export const PostTitleInput: React.FC = () => {
   const eventTitle = useSelector(
-    (state: RootState) => state.eventPost.EventDto.header
+    (state: RootState) => state.eventPost.eventTitle
   );
   return (
     <View>

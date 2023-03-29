@@ -10,16 +10,16 @@ import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
 } from "react-native-responsive-screen";
-import { styleHeader } from "../styleSheets/PostHeader";
 import { HomeStackParam } from "../../../navigations/HomeNavigation";
 import { useAppDispatch } from "../../../redux/RootStore";
 import { postEventSlice } from "../../../redux/Slices/EventPost";
 import { RootState } from "../../../redux/RootReducer";
+import { EventUpdateHeaderStyle } from "../styleSheet/Header";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export const PostHeader: React.FC = () => {
+export const EventUpdateHeader: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<HomeStackParam, "EventPost">>();
@@ -43,7 +43,7 @@ export const PostHeader: React.FC = () => {
           text: "Yes",
           onPress: () => {
             handleDeleteAll();
-            navigation.navigate("Home");
+            navigation.goBack();
           },
         },
       ],
@@ -85,7 +85,8 @@ export const PostHeader: React.FC = () => {
             }
             // TODO: 여기가 곧 모든걸 파싱하고 폼을 완성해서 서버로 보내는 곳
             handleDeleteAll();
-            navigation.navigate("Event");
+            // TODO: eventId 셋팅
+            navigation.goBack();
           },
         },
       ],
@@ -95,16 +96,16 @@ export const PostHeader: React.FC = () => {
 
   return (
     <SafeAreaView edges={["top"]}>
-      <View style={styleHeader.container}>
-        <View style={styleHeader.container2}>
+      <View style={EventUpdateHeaderStyle.container}>
+        <View style={EventUpdateHeaderStyle.container2}>
           <ImageButton
             onPress={handleBackButton}
-            style={styleHeader.backButton}
+            style={EventUpdateHeaderStyle.backButton}
             source={require("../../../assets/back.png")}
           />
           <ImageButton
             onPress={onPressSubmit}
-            style={styleHeader.submitButton}
+            style={EventUpdateHeaderStyle.submitButton}
             source={require("../../../assets/OK.png")}
           />
         </View>

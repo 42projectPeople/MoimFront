@@ -22,8 +22,10 @@ export const EventMapView: React.FC = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setLatitude(eventMap.latitude);
-      setLongitude(eventMap.longitude);
+      return () => {
+        setLatitude(eventMap.latitude);
+        setLongitude(eventMap.longitude);
+      };
     }, [])
   );
 
@@ -35,7 +37,7 @@ export const EventMapView: React.FC = () => {
       <Spacer size={hp * 0.01} />
       <MapView
         provider={PROVIDER_GOOGLE}
-        style={{ width: wp * 0.9, height: wp * 0.6 }} // MapView component의 style prop을 변경함으로써 맵의 크기를 변경할 수 있습니다.
+        style={{ width: wp * 0.9, height: wp * 0.9 }} // MapView component의 style prop을 변경함으로써 맵의 크기를 변경할 수 있습니다.
         region={{
           // region prop은 맵이 보여지는 부분(latitude, longitude)을 지정합니다.
           latitude: latitude, // latitude of the center of the map view

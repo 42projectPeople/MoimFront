@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text } from "react-native";
 import {
   widthPercentageToDP as wpSize,
   heightPercentageToDP as hpSize,
@@ -12,8 +12,6 @@ const hp = hpSize("100%");
 
 export const EventDescription: React.FC = () => {
   const event = useSelector((state: RootState) => state.event.event);
-  const IsLoading = useSelector((state: RootState) => state.event.IsLoading);
-
   return (
     <View>
       <Text style={{ fontSize: 20, fontWeight: "600" }}>상세 설명</Text>
