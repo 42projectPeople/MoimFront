@@ -1,16 +1,16 @@
-import React from "react";
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, Dimensions } from "react-native";
-import { summaryUserType } from "src/redux/Slices/Search";
-import { widthPercentageToDP as wpSize, 
-	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
+import { EvilIcons } from '@expo/vector-icons';
+import { useHomeNavigation } from "../../../navigations/Navigation";
 
-//const wp = wpSize('100%');
-//const hp = hpSize('100%');
+type userProfileProps = {
+	nickname: string,
+	profilePhoto: string,
+}
 
-const WIDTH =  wpSize('100%');
-const HEIGHT = hpSize('100%');
+const HEIGHT = Dimensions.get("window").height;
+const WIDTH = Dimensions.get("window").width;
 
-const SummaryUser: React.FC<summaryUserType> = React.memo(({...props}) => {
+const UserProfileView: React.FC<userProfileProps> = ({ nickname, profilePhoto }) => {
 
 	//const navigation = useHomeNavigation<"">();
 	return (
@@ -18,12 +18,12 @@ const SummaryUser: React.FC<summaryUserType> = React.memo(({...props}) => {
 		//onPress={() => navigation.navigate("Event", 
 		//	{title: title, location: location, imageUri: imageUri})}>
 		<View style={styles.mainContainer}>
-			<Image source={{uri: props.main_image}} style={styles.image} />
-			<Text style={styles.title}> {props.nickname} </Text>
+			<Image source={{uri: profilePhoto}} style={styles.image} />
+			<Text style={styles.title}> {nickname} </Text>
 		</View>
 	//</TouchableWithoutFeedback>
 	)
-})
+}
 
 const styles = StyleSheet.create({
 	mainContainer: {
@@ -37,11 +37,15 @@ const styles = StyleSheet.create({
 		height: HEIGHT * 0.15,
 	},
 	image : {
+		//alignItems: 'center',
+		//justifyContent: 'center',
 		borderRadius: 50,
 		width: WIDTH * 0.2,
 		height: WIDTH * 0.2,
 	},
 	title: {
+		//justifyContent: 'center',
+		//alignItems: 'center',
 		fontSize: 12,
 		fontWeight:'bold',
 		marginBottom: 5,
@@ -50,4 +54,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default React.memo(SummaryUser);
+export default UserProfileView;
