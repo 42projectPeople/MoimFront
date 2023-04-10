@@ -25,7 +25,7 @@ export const ProfileHeader: React.FC = () => {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const onPressBack = () => {
-    dispatch(ProfileSlice.actions.removeAll());
+    //dispatch(ProfileSlice.actions.removeAll());
     navigation.goBack();
   };
 

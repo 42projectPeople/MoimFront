@@ -1,43 +1,37 @@
 import React, {useState} from 'react'
-import { View, Text, FlatList, Image, Touchable, Button, ScrollView} from 'react-native'
+import { View, Text, FlatList, Image, Touchable, Button, ScrollView, SafeAreaView, StyleSheet} from 'react-native'
 import { useSelector } from 'react-redux'
-import { RootState } from 'src/redux/RootReducer'
-import { UserReviewType } from 'src/redux/Slices/Profile'
+import { RootState } from '../../../redux/RootReducer'
+import { getStatus, selectUserReview, UserReviewType } from '../../../redux/Slices/Profile'
+import { ProfileReviewFlatlist } from './ProfileReviewFlatList'
+import { ProfileReviewScrollView } from './ProfileReviewScrollView'
 
 
-export const ProfileReviewBasicView = () =>{	
-	const ReviewInfo = useSelector((state: RootState) => state.profile.userReview);
+export const ProfileReviewBasicView = () => {
+	const [isShowMore, setisShowMore] = useState(false);
+	const ReviewInfo = useSelector(selectUserReview);
 	const ReviewCount = ReviewInfo.length;
-	const [reviews, setReviews] = useState<UserReviewType[]>([]);
-	if (ReviewCount > 5) {
-		for (let i = 0; i < 5; ++i)
-			setReviews([...reviews, ReviewInfo[i]]);
-	} else {
-		for (let i = 0; i < ReviewCount; ++i)
-			setReviews([...reviews, ReviewInfo[i]]);
-	}
+
+	const status = useSelector (getStatus);
 	return (
-		<ScrollView scrollEnabled={false} showsVerticalScrollIndicator={false}>
-			<View>
-				{ReviewCount === 0 ? <Text>
-						리뷰가 없습니다. 
-				</Text> 
-				: reviews.map((review)=> {
-					return (
-						<View>
-							<Text>
-								{review.reviewerNickName}
-							</Text>
-							<Text>
-								{review.reviewerContent}
-							</Text>
-							<Text>
-								{review.reviewerLatestDate}
-							</Text>
-						</View>
-					)
-				})}
-			</View>
-		</ScrollView>
+		<SafeAreaView style={{flex: 1}}>
+			<Text>
+				리뷰
+			</Text>
+			{ReviewCount > 5 ? <Button title={'더보기'} onPress={()=>	{
+				!isShowMore ?setisShowMore(true) : setisShowMore(false)
+			}}/> : <></>}
+			{status === 'idle' && ReviewCount === 0 ? <Text> 리뷰가 없습니다. </Text> 
+			: status === 'idle' && ReviewCount < 5 ? <ProfileReviewScrollView />
+			: status === 'idle' && ReviewCount > 5 && isShowMore === false
+			?  <ProfileReviewScrollView />	
+			: <ProfileReviewFlatlist />}
+		</SafeAreaView>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		color:'gray'
+	}
+})
