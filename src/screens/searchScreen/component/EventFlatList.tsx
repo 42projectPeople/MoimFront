@@ -1,7 +1,7 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import SummaryEvent from "../../hashtagScreen/component/SummaryEvent";
 import UserFlatList from "./UserFlatList";
-import { FlatList, ListRenderItem, View } from "react-native";
+import { FlatList, ListRenderItem, View, Text, SafeAreaView } from "react-native";
 import { useSelector } from "react-redux";
 import { selectEventData } from "../../../redux/Slices/Search";
 import { useHandleEndReachedEvent } from "./handleEndReached";

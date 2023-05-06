@@ -14,6 +14,7 @@ interface initialState {
 	input: string,
 	eventPage: number,
 	userPage: number,
+	isLoading: boolean,
 	eventData: summaryEventType[],
 	userData: summaryUserType[],
 }
@@ -22,6 +23,7 @@ const initialState: initialState = {
 	input: "",
 	eventPage: 1,
 	userPage: 1,
+	isLoading: false,
 	eventData: [],
 	userData: [],
 }
@@ -45,6 +47,9 @@ export const SearchSlice = createSlice({
 		deleteUserPage(state) {
 			state.userPage = 1
 		},
+		setIsLoading(state, action: PayloadAction<boolean>) {
+			state.isLoading = action.payload;
+		},
 		deleteEventData(state) {
 			state.eventData = []
 		},
@@ -62,8 +67,8 @@ export const SearchSlice = createSlice({
 		  state.eventPage = action.payload.page;
 		})
 		.addCase(getUserData.fulfilled, (state, action: PayloadAction<any>) => {
-		  state.userData = state.userData.concat(action.payload.data);
-		  state.userPage = action.payload.page;
+			state.userData = state.userData.concat(action.payload.data);
+			state.userPage = action.payload.page;
 		})
 		.addCase(getEventData.pending, (state) => {})
 		.addCase(getUserData.pending, (state) => {})
@@ -83,3 +88,4 @@ export const selectEventPage = (state: RootState) => state.search.eventPage;
 export const selectEventData = (state: RootState) => state.search.eventData;
 export const selectUserPage = (state: RootState) => state.search.userPage;
 export const selectUserData = (state: RootState) => state.search.userData;
+export const selectIsLoading = (state: RootState) => state.search.isLoading;

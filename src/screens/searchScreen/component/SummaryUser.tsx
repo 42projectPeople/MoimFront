@@ -1,27 +1,33 @@
 import React from "react";
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, Dimensions } from "react-native";
 import { summaryUserType } from "src/redux/Slices/Search";
+import { useAppDispatch } from "../../..//redux/RootStore";
+import { useHomeNavigation } from "../../../navigations/Navigation";
+import { UISlice } from "../../../redux/Slices/UI";
 import { widthPercentageToDP as wpSize, 
 	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
-
-//const wp = wpSize('100%');
-//const hp = hpSize('100%');
+import { useSelector } from "react-redux";
 
 const WIDTH =  wpSize('100%');
 const HEIGHT = hpSize('100%');
 
 const SummaryUser: React.FC<summaryUserType> = React.memo(({...props}) => {
+	const navigation = useHomeNavigation<"Search">();
+	const dispatch = useAppDispatch();
 
-	//const navigation = useHomeNavigation<"">();
+	const handleOnPress = () => {
+		//UI slice 한 번 리셋 해줘야하는거아님..?
+		dispatch(UISlice.actions.setSelectUserId(props.userId));
+		navigation.navigate("User");
+	}
+
 	return (
-		//<TouchableWithoutFeedback 
-		//onPress={() => navigation.navigate("Event", 
-		//	{title: title, location: location, imageUri: imageUri})}>
+		<TouchableWithoutFeedback onPress={handleOnPress}>
 		<View style={styles.mainContainer}>
 			<Image source={{uri: props.main_image}} style={styles.image} />
 			<Text style={styles.title}> {props.nickname} </Text>
 		</View>
-	//</TouchableWithoutFeedback>
+	</TouchableWithoutFeedback>
 	)
 })
 

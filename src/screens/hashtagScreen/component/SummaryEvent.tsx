@@ -26,15 +26,15 @@ const SummaryEvent: React.FC<summaryEventType> = React.memo(({ ...props }) => {
   const dispatch = useAppDispatch();
 
   const handleOnPress = () => {
-    const uid = useSelector((state: RootState) => state.global.userId);
+    //const uid = useSelector((state: RootState) => state.global.userId);
 
     dispatch(UISlice.actions.setSelectEventId(props.eventId));
-    dispatch(UISlice.actions.setSelectUserId(uid));
+    //dispatch(UISlice.actions.setSelectUserId(uid));
     navigation.navigate("Event");
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => handleOnPress}>
+    <TouchableWithoutFeedback onPress={handleOnPress}>
       <View style={styles.mainContainer}>
         <Image source={{ uri: props.main_image }} style={styles.image} />
         <View style={styles.titleContainer}>

@@ -6,6 +6,7 @@ import { HashtagSlice } from "./Slices/HashTag";
 import { HomeSlice } from "./Slices/Home";
 import { SearchSlice } from "./Slices/Search";
 import { UISlice } from "./Slices/UI";
+import { EnrollSlice } from "./Slices/Enroll";
 
 export const rootReducer = combineReducers({
   hashtag: HashtagSlice.reducer,
@@ -15,6 +16,7 @@ export const rootReducer = combineReducers({
   UI: UISlice.reducer,
   home: HomeSlice.reducer,
   search: SearchSlice.reducer,
+  enroll: EnrollSlice.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

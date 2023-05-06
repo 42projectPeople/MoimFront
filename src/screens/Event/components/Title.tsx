@@ -30,7 +30,6 @@ export const EventTitle: React.FC = () => {
   const IsLoading = useSelector((state: RootState) => state.event.IsLoading);
   const globalState = useSelector((state: RootState) => state.global);
   const dispatch = useAppDispatch();
-
   const TransFerDate = (data: string): string => {
     const date = new Date(data);
     const year = date.getFullYear();
@@ -211,7 +210,7 @@ export const EventTitle: React.FC = () => {
             alignItems: "center",
           }}
         >
-          {event.eventUserRoll !== "host" ? ( // TODO : dispatch(action.isUpdate (true)); 그래야 Post 페이지에서 분기처리할 수 있음
+          {event.eventUserRoll == "host" ? ( // TODO : dispatch(action.isUpdate (true)); 그래야 Post 페이지에서 분기처리할 수 있음
             <TouchableOpacity>
               <View
                 style={{

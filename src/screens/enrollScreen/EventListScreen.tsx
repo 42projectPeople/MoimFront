@@ -1,79 +1,38 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
-  ScrollView,
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { EnrollHeader } from "./component/EnrollHeader";
-import { EventList } from "./component/EventList";
-import {
-  widthPercentageToDP as wpSize,
-  heightPercentageToDP as hpSize,
-} from "react-native-responsive-screen";
-import { useFocusEffect } from "@react-navigation/native";
+import { useAppDispatch } from "../../redux/RootStore";
+import { useSelector } from "react-redux";
+import { getHostEvent } from "./component/getHostEvent";
+import { getGuestEvent } from "./component/getGuestEvent";
+import { EnrollSlice, selectRole } from "../../../src/redux/Slices/Enroll";
+import HostEnrollFlatList from "./component/HostEnrollFlatList";
+import GuestEnrollFlatList from "./component/GuestEnrollFlatList";
+import { widthPercentageToDP as wpSize, 
+	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-export type eventData = {
-  eventId: number;
-  header: string;
-  content: string;
-  main_image: string;
-  date: string;
-};
-
 export const EventListScreen: React.FC = () => {
-  const [hostEvent, setHostEvent] = useState<eventData[]>([]);
-  const [guestEvent, setGuestEvent] = useState<eventData[]>([]);
-  const [role, setRole] = useState(true);
+	const dispatch = useAppDispatch();
+	const role = useSelector(selectRole);
+	
+	useEffect(() => {
+		dispatch(getHostEvent());
+		dispatch(getGuestEvent());
+	}, [])
 
-  useEffect(() => {
-    getData("host");
-    getData("guest");
-  }, []);
-
-  const isvaild = (target: string | object) => {
-    return !target ? false : true;
-  };
-
-  const arrMap = (dataObj: object[]) => {
-    const newArr = dataObj.map((data: any) => ({
-      eventId: data.e_eventId,
-      header: data.e_header,
-      content: data.e_content,
-      main_image: data.e_main_image,
-      date: data.e_eventDate,
-    }));
-    return newArr;
-  };
-
-  const getData = async (target: string) => {
-    const res =
-      target === "host"
-        ? await axios.get(
-            `http://54.180.201.67:3000/search/event?word=lo&page=1&pageSize=6&sortByViews=true&includeMax=false&sortByRating=false`,
-            {
-              headers: { Accept: "application/json" },
-            }
-          )
-        : await axios.get(
-            `http://54.180.201.67:3000/search/event?word=so&page=1&pageSize=6&sortByViews=true&includeMax=false&sortByRating=false`,
-            {
-              headers: { Accept: "application/json" },
-            }
-          );
-    if (!isvaild(res.data)) return; // 수정
-    const data = arrMap(res.data);
-    target === "host" ? setHostEvent(data) : setGuestEvent(data);
-  };
-
-  const handelPressRole = (role: string) => {
-    role === "host" ? setRole(true) : setRole(false);
-  };
+	const handleOnPressRole = (role: boolean) => {
+		role 
+		? dispatch(EnrollSlice.actions.setRole(true)) 
+		: dispatch(EnrollSlice.actions.setRole(false))
+	}
 
   useFocusEffect(
     React.useCallback(() => {
@@ -86,7 +45,7 @@ export const EventListScreen: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={() => handelPressRole("host")}
+            onPress={() => handleOnPressRole(true)}
             activeOpacity={0.7}
           >
             <View style={role ? styles.clickedRole : styles.unclickedRole}>
@@ -96,7 +55,7 @@ export const EventListScreen: React.FC = () => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handelPressRole("guest")}
+            onPress={() => handleOnPressRole(false)}
             activeOpacity={0.7}
           >
             <View style={!role ? styles.clickedRole : styles.unclickedRole}>
@@ -106,12 +65,11 @@ export const EventListScreen: React.FC = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <ScrollView
-          style={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          <EventList dataArr={role ? hostEvent : guestEvent} />
-        </ScrollView>
+		{	
+			role
+			? <HostEnrollFlatList/>
+			: <GuestEnrollFlatList />
+		}
       </View>
     </View>
   );
@@ -128,10 +86,10 @@ const styles = StyleSheet.create({
     height: hp * 0.035,
     flexDirection: "row",
     marginHorizontal: wp * 0.1,
-    marginBottom: hp * 0.01,
+    marginBottom: hp * 0.035,
     marginTop: hp * 0.002,
     justifyContent: "space-between",
-  },
+	},
   clickedRole: {
     flex: 1,
     borderBottomWidth: 2,

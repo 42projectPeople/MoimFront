@@ -37,7 +37,6 @@ export const HomeScreen: React.FC = () => {
     try {
       const res = await instance.get(`${key.URL}home`);
       const data = await res.data;
-      console.log(data.events[1]);
       for (let i = 0; i < data.events.length; ++i) {
         const sumEvent: summaryEvent = {
           eventId: data.events[i].eventId as number,
@@ -66,7 +65,9 @@ export const HomeScreen: React.FC = () => {
       ret();
       dispatch(
         GlobalSlice.actions.addAToken(
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3OTM2OTIwOSwiZXhwIjoxNjgxOTYxMjA5fQ.gtdUlFe5M53fM34YoifkF7mpoCert2FBMf_JmZbwG14"
+        //  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3OTM2OTIwOSwiZXhwIjoxNjgxOTYxMjA5fQ.gtdUlFe5M53fM34YoifkF7mpoCert2FBMf_JmZbwG14"
+		//수정했습니다!!!!!!!!!! 34반
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcklkIjozNH0.SHswjJMEuEbumVIxW6G2ydcKn7FzvugFabNBiCxxzfY"
         )
       );
       // TODO : 지금은 테스트용이라 토큰 만들어서 사용함. 테스트 이후엔 삭제

@@ -8,19 +8,21 @@ export interface summaryEventType {
 	header: string,
 	location: string,
 	main_image: string,
-	navigation?: any,
-	dispatch?: any,
+	date?: string,
+	content?: string,
 }
 
 interface init {
 	hashtag: number,
 	page: number,
+	isLoading: boolean,
 	data: summaryEventType[]
 }
 
 const initialState: init = {
 	hashtag: 0,
 	page: 1,
+	isLoading: false,
 	data: [],
 }
 
@@ -36,6 +38,9 @@ export const HashtagSlice = createSlice({
 		},
 		addDataArr(state, action: PayloadAction<summaryEventType[]>){
 			state.data = state.data.concat(action.payload);
+		},
+		setIsLoading(state, action: PayloadAction<boolean>) {
+			state.isLoading = action.payload;
 		},
 		reset(state) {
 			return initialState;
@@ -56,5 +61,6 @@ export const HashtagSlice = createSlice({
 	});
 	
 	export const selectHashtag = (state: RootState) => state.hashtag.hashtag;
+	export const selectIsLoading = (state: RootState) => state.hashtag.isLoading;
 	export const selectPage = (state: RootState) => state.hashtag.page;
 	export const selectData = (state: RootState) => state.hashtag.data;
