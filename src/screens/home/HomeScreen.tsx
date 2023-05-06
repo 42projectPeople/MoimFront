@@ -13,7 +13,7 @@ import {
 } from "react-native-responsive-screen";
 import { useHomeNavigation } from "../../navigations/Navigation";
 import { useSelector } from "react-redux";
-import { RootState, rootReducer } from "../../redux/RootReducer";
+import { RootState } from "../../redux/RootReducer";
 import { useAppDispatch } from "../../redux/RootStore";
 import { GlobalSlice } from "../../redux/Slices/Global";
 import { HomeSlice, summaryEvent } from "../../redux/Slices/Home";
@@ -37,7 +37,6 @@ export const HomeScreen: React.FC = () => {
     try {
       const res = await instance.get(`${key.URL}home`);
       const data = await res.data;
-    //  console.log(data.events[1]);
       for (let i = 0; i < data.events.length; ++i) {
         const sumEvent: summaryEvent = {
           eventId: data.events[i].eventId as number,

@@ -16,7 +16,7 @@ export type HomeStackParam = {
   Home: undefined;
   Event: undefined;
   HashTag: {
-	hashtag: number
+    hashtag: number;
   };
   EventPost: undefined;
   User: undefined;

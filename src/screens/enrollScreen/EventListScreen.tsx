@@ -34,6 +34,11 @@ export const EventListScreen: React.FC = () => {
 		: dispatch(EnrollSlice.actions.setRole(false))
 	}
 
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {};
+    }, [])
+  );
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <EnrollHeader />

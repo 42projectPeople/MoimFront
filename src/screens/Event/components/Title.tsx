@@ -30,7 +30,6 @@ export const EventTitle: React.FC = () => {
   const IsLoading = useSelector((state: RootState) => state.event.IsLoading);
   const globalState = useSelector((state: RootState) => state.global);
   const dispatch = useAppDispatch();
-  console.log(useSelector((state: RootState) => state.event.eventUserRoll));
   const TransFerDate = (data: string): string => {
     const date = new Date(data);
     const year = date.getFullYear();
