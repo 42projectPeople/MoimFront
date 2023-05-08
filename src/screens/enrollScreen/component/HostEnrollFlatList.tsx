@@ -29,4 +29,4 @@ const HostEnrollFlatList:React.FC = () => {
 	);
 };
 
-export default memo(HostEnrollFlatList);
+export default HostEnrollFlatList;

@@ -15,7 +15,6 @@ const EventFlatList:React.FC = () => {
 	const keyExtractor = useCallback((item: summaryEventType) => item.eventId.toString(), []);
 
 	return (
-		<View style={{flex: 1}} >
 			<FlatList
 				ListHeaderComponent={UserFlatList}
 				data = {data}
@@ -29,8 +28,8 @@ const EventFlatList:React.FC = () => {
 				maxToRenderPerBatch={6}
 				windowSize={3}
 			/>
-		</View>
 	);
 }
 
-export default memo(EventFlatList);
+export default EventFlatList;
+//export default memo(EventFlatList);

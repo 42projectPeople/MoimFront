@@ -18,13 +18,13 @@ const DispatchData: React.FC = React.memo(() => {
 
   useLayoutEffect(() => {
     try {
-			dispatch(SearchSlice.actions.deleteEventData());
+	  dispatch(SearchSlice.actions.deleteEventData());
       dispatch(SearchSlice.actions.deleteEventPage());
       dispatch(SearchSlice.actions.deleteUserData());
       dispatch(SearchSlice.actions.deleteUserPage());
       if (input) {
-				dispatch(SearchSlice.actions.setIsLoading(true));
-				delayedQuery();
+		dispatch(SearchSlice.actions.setIsLoading(true));
+		delayedQuery();
       }
     } catch (err) {
       console.error(err);
@@ -35,18 +35,28 @@ const DispatchData: React.FC = React.memo(() => {
     debounce(async() => {
       dispatch(getEventData());
       dispatch(getUserData());
-			dispatch(SearchSlice.actions.setIsLoading(false));
+	  dispatch(SearchSlice.actions.setIsLoading(false));
     }, 500), []);
 	
 		if (isLoading)
 			return <Loading />
-		else if (userData[0]?.userId === -1 && eventData[0]?.hostId === -1)
+		// 로딩중 아니고, 검색어 입력했는데 res.data === 0 일때
+		else if (userData[0]?.userId === -1 && eventData[0]?.hostId === -1) {
 			return (
 				<View style={{flex: 1}}>
 					<Text> 검색 결과가 없습니다. </Text>
 				</View>
 			);
-			return <EventFlatList />
+		}
+		// 로딩중 아니고, 배열 초기일 때
+		else if (userData?.length === 0 && eventData?.length === 0) {
+			return (
+				<View style={{flex: 1}}>
+				</View>
+			);
+		}
+		// 로딩중 아니고, 검색 결과 있을 때
+		return <EventFlatList />
 		//if (isLoading)
 		//	return <Loading />
 		//else if (!isMatch && userData.length === 0 && eventData.length === 0)

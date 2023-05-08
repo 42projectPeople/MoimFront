@@ -10,11 +10,12 @@ import { useAppDispatch } from "../../redux/RootStore";
 import { useSelector } from "react-redux";
 import { getHostEvent } from "./component/getHostEvent";
 import { getGuestEvent } from "./component/getGuestEvent";
-import { EnrollSlice, selectRole } from "../../../src/redux/Slices/Enroll";
+import { EnrollSlice, selectIsLoading, selectRole } from "../../../src/redux/Slices/Enroll";
 import HostEnrollFlatList from "./component/HostEnrollFlatList";
 import GuestEnrollFlatList from "./component/GuestEnrollFlatList";
 import { widthPercentageToDP as wpSize, 
 	heightPercentageToDP as hpSize} from 'react-native-responsive-screen';
+import { Loading } from "../../components/Loading";
 
 const wp = wpSize("100%");
 const hp = hpSize("100%");
@@ -22,10 +23,13 @@ const hp = hpSize("100%");
 export const EventListScreen: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const role = useSelector(selectRole);
+	const isLoading = useSelector(selectIsLoading);
 	
 	useEffect(() => {
+		dispatch(EnrollSlice.actions.setLoading(true));
 		dispatch(getHostEvent());
 		dispatch(getGuestEvent());
+		dispatch(EnrollSlice.actions.setLoading(false));
 	}, [])
 
 	const handleOnPressRole = (role: boolean) => {
@@ -35,7 +39,9 @@ export const EventListScreen: React.FC = () => {
 	}
 	
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+	isLoading
+	? <Loading />
+	: <View style={{ flex: 1, backgroundColor: "white" }}>
       <EnrollHeader />
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
