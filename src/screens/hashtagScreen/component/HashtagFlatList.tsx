@@ -23,12 +23,12 @@ const HashtagFlatList:React.FC = () => {
 			onEndReached={handleEndReached}
 			onEndReachedThreshold={0.5}
 			showsVerticalScrollIndicator={false}
-			initialNumToRender={6}
-			maxToRenderPerBatch={6}
-			windowSize={3}
+			initialNumToRender={1}
+			maxToRenderPerBatch={2}
+			windowSize={2}
 		/>
 	);
 };
 
-export default memo(HashtagFlatList);
-//export default HashtagFlatList;
+//export default memo(HashtagFlatList);
+export default HashtagFlatList;

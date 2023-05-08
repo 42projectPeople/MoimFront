@@ -21,15 +21,14 @@ import {
 const wp = wpSize("100%");
 const hp = hpSize("100%");
 
-const SummaryEvent: React.FC<summaryEventType> = React.memo(({ ...props }) => {
+const SummaryEvent: React.FC<summaryEventType> = ({ ...props }) => {
   const navigation = useHomeNavigation<"HashTag">();
   const dispatch = useAppDispatch();
 
   const handleOnPress = () => {
     //const uid = useSelector((state: RootState) => state.global.userId);
-
-    dispatch(UISlice.actions.setSelectEventId(props.eventId));
     //dispatch(UISlice.actions.setSelectUserId(uid));
+    dispatch(UISlice.actions.setSelectEventId(props.eventId));
     navigation.navigate("Event");
   };
 
@@ -60,7 +59,7 @@ const SummaryEvent: React.FC<summaryEventType> = React.memo(({ ...props }) => {
       </View>
     </TouchableWithoutFeedback>
   );
-});
+};
 
 const styles = StyleSheet.create({
   mainContainer: {

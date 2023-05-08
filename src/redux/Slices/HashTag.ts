@@ -39,6 +39,9 @@ export const HashtagSlice = createSlice({
 		addDataArr(state, action: PayloadAction<summaryEventType[]>){
 			state.data = state.data.concat(action.payload);
 		},
+		deleteDataArr(state) {
+			state.data = initialState.data;
+		},
 		setIsLoading(state, action: PayloadAction<boolean>) {
 			state.isLoading = action.payload;
 		},

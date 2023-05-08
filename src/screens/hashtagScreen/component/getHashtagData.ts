@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../../redux/RootReducer";
 import { summaryEventType } from "../../../redux/Slices/HashTag";
 import { key } from "../../../../config"
-import axios from "axios";
 import instance from "../../../utils/axios";
 
 const PAGE_SIZE = 12
@@ -19,11 +18,12 @@ export const summaryData = (dataArr: object[]): summaryEventType[] => {
 
 export const getHashtagData = createAsyncThunk(
 	'hashtag/getData',
-	async (_, { getState, rejectWithValue }) => {
+	async (value: string, { getState, rejectWithValue }) => {
 		try {
 			const page = (getState() as RootState).hashtag.page
 			const hashtag = (getState() as RootState).hashtag.hashtag;
-			const Uri = key.URL + `hashtag/events/${hashtag}?page=${page}&recommendation=true&pageSize=${PAGE_SIZE}`
+			const sort = value === 'popular' ? true : false
+			const Uri = key.URL + `hashtag/events/${hashtag}?page=${page}&recommendation=${sort}&pageSize=${PAGE_SIZE}`
 			const res = await instance.get(Uri);
 			if (res.data.length === 0)
 				return { data: [], page: 1 };

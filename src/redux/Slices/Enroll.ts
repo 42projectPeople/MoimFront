@@ -8,6 +8,7 @@ interface initialState {
 	role: boolean,
 	hostPage: number,
 	guestPage: number,
+	isLoading: boolean,
 	hostEvent: summaryEventType[],
 	guestEvent: summaryEventType[],
 }
@@ -16,6 +17,7 @@ const initialState: initialState  ={
 	role: true,
 	hostPage: 1,
 	guestPage: 1,
+	isLoading: false,
 	hostEvent: [],
 	guestEvent: []
 }
@@ -26,6 +28,9 @@ export const EnrollSlice = createSlice({
 	reducers: {
 		setRole(state, action: PayloadAction<boolean>) {
 			state.role = action.payload;
+		},
+		setLoading(state, action: PayloadAction<boolean>) {
+			state.isLoading = action.payload;
 		},
 		addHostEvent(state, action:PayloadAction<summaryEventType[]>) {
 			state.hostEvent = state.hostEvent.concat(action.payload);
@@ -64,3 +69,4 @@ export const selectGuestPage = (state: RootState) => state.enroll.guestPage;
 export const selectHostEvent = (state: RootState) => state.enroll.hostEvent;
 export const selectGuestEvent = (state: RootState) => state.enroll.guestEvent;
 export const selectRole = (state:RootState) => state.enroll.role;
+export const selectIsLoading = (state:RootState) => state.enroll.isLoading;
