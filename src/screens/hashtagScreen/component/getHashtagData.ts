@@ -18,15 +18,20 @@ export const summaryData = (dataArr: object[]): summaryEventType[] => {
 
 export const getHashtagData = createAsyncThunk(
 	'hashtag/getData',
-	async (value: string, { getState, rejectWithValue }) => {
+	async (_, { getState, rejectWithValue }) => {
 		try {
 			const page = (getState() as RootState).hashtag.page
+			console.log("getData: " + page);
 			const hashtag = (getState() as RootState).hashtag.hashtag;
-			const sort = value === 'popular' ? true : false
-			const Uri = key.URL + `hashtag/events/${hashtag}?page=${page}&recommendation=${sort}&pageSize=${PAGE_SIZE}`
-			const res = await instance.get(Uri);
+			const sortRec = (getState() as RootState).hashtag.sortRecommend;
+			const sortDate = (getState() as RootState).hashtag.sortDate;
+			const Uri = key.URL + `hashtag/events/${hashtag}?page=${page}&sortByDate=${sortDate}&recommendation=${sortRec}&pageSize=${PAGE_SIZE}`
+			const AllViewUri = key.URL + `hashtag/events/{hashtagId}?page=${page}&sortByDate=${sortDate}&recommendation=${sortRec}&pageSize=${PAGE_SIZE}`
+			const res = await instance.get(hashtag === 8 ? AllViewUri : Uri);
 			if (res.data.length === 0)
 				return { data: [], page: 1 };
+			else if (res.data.length !== PAGE_SIZE)
+				return { data: summaryData(res.data), page: 1 };
 			return { data: summaryData(res.data), page: page + 1 };
 	  } catch (err: any) {
 		return rejectWithValue(err.response.data as string);

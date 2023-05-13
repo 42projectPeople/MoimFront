@@ -1,15 +1,14 @@
-import React, { useCallback, memo } from "react";
-import { FlatList, ListRenderItem } from "react-native";
+import React, { useCallback, memo, useEffect } from "react";
+import { FlatList, ListRenderItem, View, } from "react-native";
 import { useSelector } from "react-redux";
 import SummaryEvent from "./SummaryEvent";
-import { summaryEventType } from "../../../redux/Slices/HashTag";
+import { selectPage, summaryEventType } from "../../../redux/Slices/HashTag";
 import { selectData } from "../../../redux/Slices/HashTag";
 import useHandleEndReached from "./useHandelEndReached";
 
 const HashtagFlatList:React.FC = () => {
 	const data = useSelector(selectData);
 	const handleEndReached = useHandleEndReached();
-
 	const renderItem: ListRenderItem<summaryEventType> = useCallback(({ item }) => (
 		<SummaryEvent {...item} />), []);
 	const keyExtractor = useCallback((item: summaryEventType) => item.eventId.toString(), []);
@@ -21,11 +20,11 @@ const HashtagFlatList:React.FC = () => {
 			numColumns={2}
 			renderItem={renderItem}
 			onEndReached={handleEndReached}
-			onEndReachedThreshold={0.5}
+			//onEndReachedThreshold={0.01}
 			showsVerticalScrollIndicator={false}
 			initialNumToRender={1}
-			maxToRenderPerBatch={2}
-			windowSize={2}
+			//maxToRenderPerBatch={2}
+			//windowSize={2}
 		/>
 	);
 };

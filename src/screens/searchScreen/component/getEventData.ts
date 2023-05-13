@@ -12,7 +12,8 @@ export const getEventData = createAsyncThunk(
 		try {
 		  const page = (getState() as RootState).search.eventPage;
 		  const input = (getState() as RootState).search.input;
-		  const Uri = key.URL + `search/event?word=${input}&page=${page}&pageSize=${PAGE_SIZE}&sortByViews=true&includeMax=false&sortByRating=false`;
+		  const Uri = key.URL + `search/event?word=${input}&page=${page}&pageSize=${PAGE_SIZE}&sortByViews=false&sortByDate=true&includeMax=true&sortByRating=true`
+		//  const Uri = key.URL + `search/event?word=${input}&page=${page}&pageSize=${PAGE_SIZE}&sortByViews=false&sortByDate=true&includeMax=true&sortByRating=true`
 		  if (!input)
 		  	return { data: [], page: 1 }
 			const res = await instance.get(Uri);

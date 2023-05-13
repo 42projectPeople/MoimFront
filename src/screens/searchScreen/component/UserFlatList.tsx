@@ -9,6 +9,7 @@ import {
 	widthPercentageToDP as wpSize,
 	heightPercentageToDP as hpSize,
   } from "react-native-responsive-screen";
+import { TouchableWithoutFeedback } from "react-native";
 
   const HP = hpSize("100%");
   const WP = wpSize("100%");
@@ -22,9 +23,11 @@ const UserFlatList:React.FC = () => {
 
 	return (
 		<>
-		<View style={styles.userTextContainer}>
-			<Text style={styles.text}>USER ></Text>
-		</View>
+		{/*<TouchableWithoutFeedback onPress={}>*/}
+			<View style={styles.userTextContainer}>
+				<Text style={styles.text}>USER ></Text>
+			</View>
+		{/*</TouchableWithoutFeedback>*/}
 		<FlatList
 			data = {data}
 			keyExtractor={keyExtractor}

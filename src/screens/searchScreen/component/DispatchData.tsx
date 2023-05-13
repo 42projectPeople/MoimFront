@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useCallback, useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { debounce } from "lodash";
 import { useAppDispatch } from "../../../redux/RootStore";
@@ -7,7 +7,15 @@ import { SearchSlice, selectEventData, selectUserData, selectInput, selectIsLoad
 import { getEventData } from "./getEventData";
 import { getUserData } from "./getUserData";
 import { Loading } from "../../../components/Loading";
+import DropDownPicker from "react-native-dropdown-picker";
 import EventFlatList from "./EventFlatList";
+import {
+	widthPercentageToDP as wpSize,
+	heightPercentageToDP as hpSize,
+  } from "react-native-responsive-screen";
+
+const wp = wpSize("100%");
+const hp = hpSize("100%");
 
 const DispatchData: React.FC = React.memo(() => {
   const dispatch = useAppDispatch();
@@ -15,6 +23,15 @@ const DispatchData: React.FC = React.memo(() => {
 	const isLoading = useSelector(selectIsLoading);
 	const eventData = useSelector(selectEventData);
 	const userData = useSelector(selectUserData);
+
+	//picker용 변수
+	const [open, setOpen] = useState(false);
+	const [value, setValue] = useState("popular");
+	const [items, setItems] = useState([
+	  {label: "인기글 정렬", value: "popular"},
+	  {label: "최신순 정렬", value: "recent"},
+	  {label: "등급순 정렬", value: "rating"}
+	]);
 
   useLayoutEffect(() => {
     try {
@@ -56,7 +73,23 @@ const DispatchData: React.FC = React.memo(() => {
 			);
 		}
 		// 로딩중 아니고, 검색 결과 있을 때
-		return <EventFlatList />
+		return (
+			<>
+				<View style={styles.dropContainer}>
+					<DropDownPicker
+						items={items}
+						open={open}
+						value={value}
+						setOpen={setOpen}
+						setValue={setValue}
+						setItems={setItems}
+						containerStyle={styles.dropContainerStyle}
+						style={styles.dropStyle}
+					/>
+				</View>
+				<EventFlatList />
+			</>
+		);
 		//if (isLoading)
 		//	return <Loading />
 		//else if (!isMatch && userData.length === 0 && eventData.length === 0)
@@ -67,6 +100,35 @@ const DispatchData: React.FC = React.memo(() => {
 		//	);
 		//	return <EventFlatList />
 			
+});
+
+const styles = StyleSheet.create({
+	rootContainer: {
+		flex: 1,
+		backgroundColor: "white",
+	},
+	topNaviContainer: {
+		height: hp * 0.06,
+		justifyContent: 'space-between',
+		width: wp * 0.9,
+		flexDirection: 'row',
+		//backgroundColor: 'red'
+	},
+	naviContainer: {
+		width: wp * 0.55,
+	},
+	dropContainer: {
+		width: wp * 0.33,
+		justifyContent: 'center'
+	},
+	dropContainerStyle: {
+		position: 'relative',
+		marginVertical: hp * 0.01,
+	},
+	dropStyle: {
+		borderWidth: 0,
+		minHeight: hp * 0.02,
+	},
 });
 
 export default React.memo(DispatchData);

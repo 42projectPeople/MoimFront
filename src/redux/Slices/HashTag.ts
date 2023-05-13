@@ -16,6 +16,8 @@ interface init {
 	hashtag: number,
 	page: number,
 	isLoading: boolean,
+	sortDate: boolean,
+	sortRecommend: boolean,
 	data: summaryEventType[]
 }
 
@@ -23,6 +25,8 @@ const initialState: init = {
 	hashtag: 0,
 	page: 1,
 	isLoading: false,
+	sortDate: false,
+	sortRecommend: true,
 	data: [],
 }
 
@@ -48,11 +52,17 @@ export const HashtagSlice = createSlice({
 		reset(state) {
 			return initialState;
 		},
+		setSortDate(state, action: PayloadAction<boolean>) {
+			state.sortDate = action.payload;
+		},
+		setSortRecommend(state, action: PayloadAction<boolean>) {
+			state.sortRecommend = action.payload;
+		},
 	},
 	extraReducers: (builder) => {
 		builder
 		.addCase(getHashtagData.pending, (state) => {})
-		.addCase(getHashtagData.fulfilled, (state, action) => {
+		.addCase(getHashtagData.fulfilled, (state, action: PayloadAction<any>) => {
 		  state.data = state.data.concat(action.payload.data);
 		  state.page = action.payload.page;
 		})
@@ -67,3 +77,6 @@ export const HashtagSlice = createSlice({
 	export const selectIsLoading = (state: RootState) => state.hashtag.isLoading;
 	export const selectPage = (state: RootState) => state.hashtag.page;
 	export const selectData = (state: RootState) => state.hashtag.data;
+	export const selectSortData = (state: RootState) => state.hashtag.sortDate;
+	export const selectSortRecommend = (state: RootState) => state.hashtag.sortRecommend;
+
